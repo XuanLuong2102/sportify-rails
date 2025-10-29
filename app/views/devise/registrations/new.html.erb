@@ -3,7 +3,7 @@
     <div class="card">
       <div class="row justify-content-center">
         <div class="col-md-6 text-center mb-5 mt-5">
-          <h2 class="heading-section">SIGN UP</h2>
+          <h2 class="heading-section"><%= I18n.t('login.sign_up') %></h2>
         </div>
         <div class="col-md-10 col-lg-8">
           <%= render "devise/shared/error_messages", resource: resource %>
@@ -14,21 +14,21 @@
           <div class="login-wrap p-0">
             <%= form_for(resource, as: resource_name, url: registration_path(resource_name), class: 'signin-form') do |f| %>
               <div class="form-group">
-                <%= f.email_field :email, autofocus: true, class: 'form-control', placeholder:'Email' %>
+                <%= f.email_field :email, autofocus: true, class: 'form-control', placeholder: I18n.t('login.email') %>
               </div>
               <div class="form-group">
-                <%= f.password_field :password, autocomplete: 'new-password', class:'form-control', placeholder:'Password'  %>
+                <%= f.password_field :password, autocomplete: 'new-password', class:'form-control', placeholder: I18n.t('login.password') %>
               </div>
               <div class="form-group">
-                <%= f.password_field :password_confirmation, autocomplete: 'new-password', class:'form-control', placeholder:'Password confirmation'  %>
+                <%= f.password_field :password_confirmation, autocomplete: 'new-password', class:'form-control', placeholder: I18n.t('login.password_confirm') %>
               </div>
               <div class="form-group">
-                <%= f.submit "Sign up", class: 'btn btn-primary submit px-3 btn-login' %>
+                <%= f.submit I18n.t('login.sign_up'), class: 'btn btn-primary submit px-3 btn-login' %>
               </div>
             <% end %>
             <div class="d-flex mt-4 link-to">
               <div class="w-100 text-md-right">
-                <p>Have an account?<i class="ms-2"><%= link_to "Login", new_session_path(resource_name) %></i></p><br />
+                <p><%= I18n.t('login.have_account') %><i class="ms-2"><%= link_to I18n.t('login.login'), new_session_path(resource_name) %></i></p><br />
               </div>
             </div>
           </div>

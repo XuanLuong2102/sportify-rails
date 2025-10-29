@@ -3,7 +3,7 @@
     <div class="card">
       <div class="row justify-content-center">
         <div class="col-md-6 text-center mb-5 mt-5">
-          <h2 class="heading-section">LOGIN</h2>
+          <h2 class="heading-section"><%= I18n.t('login.login') %></h2>
         </div>
         <div class="col-md-10 col-lg-8">
           <%= render '/layouts/messages' %>
@@ -14,10 +14,10 @@
           <div class="login-wrap p-0">
             <%= form_for(resource, as: resource_name, url: session_path(resource_name), class: 'signin-form') do |f| %>
               <div class="form-group">
-                <%= f.email_field :email, autofocus: true, class: 'form-control', placeholder:'Email' %>
+                <%= f.email_field :email, autofocus: true, class: 'form-control', placeholder:I18n.t('login.email') %>
               </div>
               <div class="form-group">
-                <%= f.password_field :password, autocomplete: 'current-password', class:'form-control', placeholder:'Password'  %>
+                <%= f.password_field :password, autocomplete: 'current-password', class:'form-control', placeholder: I18n.t('login.password') %>
                 <span toggle="#user_password" class="fa fa-fw fa-eye field-icon toggle-password"></span>
               </div>
               <div class="form-group d-md-flex">
@@ -26,21 +26,21 @@
                     <label class="checkbox-wrap checkbox-primary">
                       <%= f.check_box :remember_me %>
                       <span class="checkmark"></span>
-                      Remember Me
+                      <%= I18n.t('login.remember_me') %>
                     </label>
                   </div>
                 <% end %>
               </div>
               <div class="form-group">
-                <%= f.submit "Log in", class: 'btn btn-primary submit px-3 btn-login' %>
+                <%= f.submit I18n.t('login.login'), class: 'btn btn-primary submit px-3 btn-login' %>
               </div>
             <% end %>
             <div class="d-flex mt-4 link-to">
               <div class="w-50 text-md-right">
-                <%= link_to "Forgot your password?", new_password_path(resource_name) %><br />
+                <%= link_to I18n.t('login.forgot_password'), new_password_path(resource_name) %><br />
               </div>
               <div class="w-50 text-md-right d-flex justify-content-end">
-                <%= link_to "Sign up", new_registration_path(resource_name) %><br />
+                <%= link_to I18n.t('login.sign_up'), new_registration_path(resource_name) %><br />
               </div>
             </div>
           </div>
