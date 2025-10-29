@@ -1,0 +1,146 @@
+input:-webkit-autofill,
+input:-webkit-autofill:focus{
+  -webkit-box-shadow: 0 0 0 1000px rgba(212, 212, 212, 0.13) inset !important;
+  -webkit-text-fill-color: #fff !important;
+  transition: background-color 9999s ease-in-out 0s;
+}
+
+.ftco-section {
+  margin-top: 150px;
+}
+
+.form-control {
+  height: 50px;
+  color: white !important;
+  border: 1px solid rgba(255, 255, 255, 0.212);
+  border-radius: 40px;
+  background: rgba(212, 212, 212, 0.13);
+  padding-left: 20px;
+  padding-right: 20px;
+  -webkit-transition: 0.3s;
+  transition: 0.3s;
+  margin-bottom: 25px;
+  &:hover, &:focus {
+    border-color: rgba(255, 255, 255, 0.671);
+    background: transparent;
+    outline: none;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+  }
+  &::placeholder {
+    color: #fff;
+  }
+}
+
+.heading-section {
+    font-size: 28px;
+    font-weight: 600;
+    color: #fff;
+}
+
+.card {
+  background-color: rgba(255, 255, 255, 0.082) !important;
+  border-color: #b8b8b8cc !important;
+  width: 40%;
+  height: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.checkbox-primary {
+    color: #fff;
+}
+
+.checkbox-wrap {
+    display: block;
+    position: relative;
+    padding-left: 10px;
+    padding-right: 10px;
+    margin-right: 10px;
+    margin-bottom: 15px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 400;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.checkbox-wrap input[type="hidden"] {
+  display: none;
+}
+
+/* Ẩn checkbox thật, chỉ dùng checkmark để hiển thị */
+.checkbox-wrap input[type="checkbox"] {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+}
+
+/* Style checkmark */
+.checkbox-wrap .checkmark {
+  position: relative;
+  height: 20px;
+  width: 20px;
+  background-color: #eee;
+  border-radius: 4px;
+  display: inline-block;
+  vertical-align: middle;
+  transition: background-color 0.3s;
+  margin-right: 8px;
+}
+
+/* Hover effect */
+.checkbox-wrap:hover input[type="checkbox"] ~ .checkmark {
+  background-color: #ccc;
+}
+
+/* Khi checkbox được chọn */
+.checkbox-wrap input[type="checkbox"]:checked ~ .checkmark {
+  background-color: #6f8f4b; /* màu xanh dương */
+}
+
+/* Dấu tick */
+.checkbox-wrap .checkmark::after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+/* Hiện dấu tick khi checked */
+.checkbox-wrap input[type="checkbox"]:checked ~ .checkmark::after {
+  display: block;
+}
+
+/* Hình dấu tick */
+.checkbox-wrap .checkmark::after {
+  top: 4px;
+  left: 7px;
+  width: 5px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+.btn-login {
+  width: 100%;
+  color: #fff;
+  background: #6f8f4b;
+  padding: 8px 0;
+  border: 1px solid #6f8f4b !important;
+  border-radius: 10px;
+  &:hover, &:active, &:focus-visible,
+  &:disabled, &[disabled], &:disabled:hover {
+    background: #576d3e !important;
+    border-color: #576d3e !important;
+  }
+}
+
+.link-to a {
+  color: #fff;
+  &:hover {
+    color: #a3a3a3;
+  }
+}
