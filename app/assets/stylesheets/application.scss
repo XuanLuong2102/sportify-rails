@@ -10,6 +10,19 @@
  * files in this directory. Styles in this file should be added after the last require_* statement.
  * It is generally better to create a new file per style scope.
  *
+ *= require bootstrap
  *= require_tree .
  *= require_self
  */
+@import "bootstrap/scss/bootstrap";
+@import "login";
+
+a {
+ text-decoration: none;
+}
+
+@media (min-width: 1400px) {
+  .container {
+    max-width: 1500px;
+  }
+}
