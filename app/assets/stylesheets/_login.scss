@@ -138,9 +138,11 @@ input:-webkit-autofill:focus{
   }
 }
 
-.link-to a {
-  color: #fff;
-  &:hover {
+.link-to {
+  & a, & p {
+    color: #fff;
+  }
+  & a:hover {
     color: #a3a3a3;
   }
 }
