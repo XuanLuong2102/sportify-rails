@@ -9,12 +9,7 @@
     <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_importmap_tags %>
   </head>
-
-  <body>
-    <%= render 'layouts/navbar' %>
-    <div class="container">
-      <%= render 'layouts/messages' %>
-    </div>
+  <body class="img js-fullheight mt-5" style="background-image: url(<%= asset_path('bg-login.avif') %>);">
     <%= yield %>
   </body>
 </html>
