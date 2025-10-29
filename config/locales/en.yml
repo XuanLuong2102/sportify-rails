@@ -12,3 +12,10 @@ en:
     forgot_password: Forgot your password?
     sign_up: Sign up
     have_account: Have an account?
+    logout: Logout
+  navbar:
+    account: Account
+    my_account: My account
+    change_password: Change password
+    home: Home
+
