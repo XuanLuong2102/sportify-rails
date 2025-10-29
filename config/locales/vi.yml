@@ -1,0 +1,14 @@
+vi:
+  language:
+    language: Tiếng Việt
+    english: Tiếng Anh
+    vietnamese: Tiếng Việt
+  login:
+    login: Đăng nhập
+    email: Email
+    password: Mật khẩu
+    password_confirm: Nhập lại mật khẩu
+    remember_me: Ghi nhớ đăng nhập
+    forgot_password: Quên mật khẩu?
+    sign_up: Đăng ký
+    have_account: Đã có tài khoản?
