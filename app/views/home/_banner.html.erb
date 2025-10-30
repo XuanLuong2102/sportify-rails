@@ -1,0 +1,21 @@
+<% banners = ["soccer", "batminton", "pickleball", "volleyball"] %>
+
+<div class="container-fluid py-4">
+  <div class="row justify-content-center">
+    <div class="col-12">
+      <!-- Swiper -->
+      <div class="swiper mySwiper">
+        <div class="swiper-wrapper">
+          <% banners.each do |b| %>
+            <div class="swiper-slide">
+              <%= image_tag "#{b}_banner.jpg", alt: "#{b}_banner", class: "slide-image" %>
+            </div>
+          <% end %>
+        </div>
+
+        <!-- pagination -->
+        <div class="swiper-pagination"></div>
+      </div>
+    </div>
+  </div>
+</div>

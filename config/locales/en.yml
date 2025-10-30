@@ -18,4 +18,8 @@ en:
     my_account: My account
     change_password: Change password
     home: Home
-
+    booking: Booking
+  home:
+    categories:
+      sport: Sport categories
+      location: Location Category

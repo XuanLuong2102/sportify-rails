@@ -39,11 +39,11 @@ input:-webkit-autofill:focus{
     text-transform: uppercase;
 }
 
-.card {
+.card-login {
   background-color: rgba(255, 255, 255, 0.082) !important;
   border-color: #b8b8b8cc !important;
   width: 40%;
-  height: 600px;
+  height: 600px !important;
   margin-left: auto;
   margin-right: auto;
 }
