@@ -10,7 +10,7 @@
     <div class="collapse navbar-collapse" id="navbarScroll">
       <ul class="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll" style="--bs-scroll-height: 100px;">
         <li class="nav-item">
-          <a class="nav-link" aria-current="page" href="#">Home</a>
+          <a class="nav-link" aria-current="page" href="#"><%= I18n.t('navbar.home') %></a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="#">Link</a>
@@ -43,18 +43,19 @@
           </ul>
         </li>
       <% if user_signed_in? %>
-      <li class="nav-item navbar-item dropdown">
+        <li class="nav-item navbar-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="navbarScrollingDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Account
+            <%= I18n.t('navbar.account') %>
           </a>
           <ul class="dropdown-menu" aria-labelledby="navbarScrollingDropdown">
-            <li><a class="dropdown-item" href="#"><%= current_user.first_name || current_user.email %></a></li>
-            <li><%= button_to "Logout", destroy_user_session_path, method: :delete, class: 'dropdown-item' %></li>
+            <li><%= link_to I18n.t('navbar.my_account'), root_path, class:'dropdown-item' %></li>
+            <li><%= link_to I18n.t('navbar.change_password'), root_path, class:'dropdown-item' %></li>
+            <li><%= button_to I18n.t('login.logout'), destroy_user_session_path, method: :delete, class: 'dropdown-item' %></li>
           </ul>
         </li>
       <% else %>
-        <%= link_to 'Login', new_user_session_path, class: 'btn btn-primary me-3 ps-4 pe-4' %>
-        <%= link_to 'Signup', new_user_registration_path, class: 'btn btn-outline-secondary ps-3 pe-3' %>
+        <li class="nav-item navbar-item ms-4"><%= link_to I18n.t('login.login'), new_user_session_path, class: 'btn btn-primary me-3 ps-4 pe-4' %></li>
+        <li class="nav-item navbar-item"><%= link_to I18n.t('login.sign_up'), new_user_registration_path, class: 'btn btn-outline-secondary ps-3 pe-3' %></li>
       <% end %>
       </ul>
     </div>
