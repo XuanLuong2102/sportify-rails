@@ -42,7 +42,10 @@ ActiveRecord::Schema[8.1].define(version: 2025_10_28_023628) do
   create_table "notifications", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.boolean "is_read", default: false
-    t.text "message"
+    t.text "message_en"
+    t.text "message_vi"
+    t.string "title_en", limit: 50
+    t.string "title_vi", limit: 50
     t.datetime "updated_at", null: false
     t.integer "user_id", null: false
     t.index ["user_id"], name: "fk_rails_b080fb4855"
@@ -79,6 +82,8 @@ ActiveRecord::Schema[8.1].define(version: 2025_10_28_023628) do
     t.boolean "is_close", default: false
     t.boolean "maintenance_sport", default: false
     t.integer "place_id", null: false
+    t.decimal "price_per_hour_usd", precision: 10, scale: 2
+    t.decimal "price_per_hour_vnd", precision: 10, scale: 2
     t.integer "sportfield_id", null: false
     t.datetime "updated_at", null: false
     t.index ["place_id"], name: "fk_rails_0c10514a22"
@@ -86,21 +91,29 @@ ActiveRecord::Schema[8.1].define(version: 2025_10_28_023628) do
   end
 
   create_table "places", primary_key: "place_id", id: :integer, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
-    t.string "address", limit: 100
-    t.string "city", limit: 20
+    t.string "address_en", limit: 100
+    t.string "address_vi", limit: 100
+    t.string "city_en", limit: 30
+    t.string "city_vi", limit: 30
     t.datetime "created_at", null: false
-    t.string "district", limit: 20
+    t.text "description_en"
+    t.text "description_vi"
+    t.string "district_en", limit: 30
+    t.string "district_vi", limit: 30
     t.boolean "is_close", default: false
     t.boolean "maintenance_place", default: false
-    t.string "name", limit: 50
+    t.string "name_en", limit: 50
+    t.string "name_vi", limit: 50
     t.datetime "updated_at", null: false
   end
 
   create_table "posts", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
-    t.text "content"
+    t.text "content_en"
+    t.text "content_vi"
     t.datetime "created_at", null: false
     t.string "image_url"
-    t.string "title"
+    t.string "title_en"
+    t.string "title_vi"
     t.datetime "updated_at", null: false
     t.integer "user_id", null: false
     t.index ["user_id"], name: "fk_rails_5b5ddfd518"
@@ -143,9 +156,10 @@ ActiveRecord::Schema[8.1].define(version: 2025_10_28_023628) do
 
   create_table "sportfields", primary_key: "sportfield_id", id: :integer, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.datetime "created_at", null: false
-    t.string "name"
-    t.decimal "price_per_hour", precision: 10, scale: 2
-    t.string "sport_type", limit: 100
+    t.text "description_en"
+    t.text "description_vi"
+    t.string "name_en", limit: 50
+    t.string "name_vi", limit: 50
     t.datetime "updated_at", null: false
   end
 
@@ -163,6 +177,7 @@ ActiveRecord::Schema[8.1].define(version: 2025_10_28_023628) do
     t.string "reset_password_token"
     t.integer "role_id"
     t.datetime "updated_at", null: false
+    t.string "username", limit: 30
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
     t.index ["role_id"], name: "index_users_on_role_id"

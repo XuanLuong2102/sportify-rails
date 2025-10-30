@@ -5,6 +5,8 @@ class CreatePlaceSports < ActiveRecord::Migration[8.1]
       t.integer :sportfield_id, null: false
       t.boolean :maintenance_sport, default: false
       t.boolean :is_close, default: false
+      t.decimal :price_per_hour_vnd, precision: 10, scale: 2
+      t.decimal :price_per_hour_usd, precision: 10, scale: 2
 
       t.timestamps
     end

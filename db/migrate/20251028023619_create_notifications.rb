@@ -2,7 +2,10 @@ class CreateNotifications < ActiveRecord::Migration[8.1]
   def change
     create_table :notifications do |t|
       t.integer :user_id, null: false
-      t.text :message
+      t.string :title_en, limit: 50
+      t.string :title_vi, limit: 50
+      t.text :message_en
+      t.text :message_vi
       t.boolean :is_read, default: false
 
       t.timestamps
