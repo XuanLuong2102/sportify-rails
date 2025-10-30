@@ -16,6 +16,7 @@
  */
 @import "bootstrap/scss/bootstrap";
 @import "login";
+@import "banner";
 
 a {
  text-decoration: none;
@@ -38,4 +39,16 @@ a {
   font-weight: 700;
   font-size: 26px;
   margin-right: 50px;
+}
+
+.bg-navbar, .card-sport-field {
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  width: 100%;
+  display: block;
+}
+
+.card-sport-field:hover {
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
 }

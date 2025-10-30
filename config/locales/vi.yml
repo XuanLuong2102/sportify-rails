@@ -18,3 +18,8 @@ vi:
     my_account: Tài khoản của tôi
     change_password: Đổi mật khẩu
     home: Trang chủ
+    booking: Đặt sân
+  home:
+    categories:
+      sport: Danh mục thể thao
+      location: Danh mục địa điểm

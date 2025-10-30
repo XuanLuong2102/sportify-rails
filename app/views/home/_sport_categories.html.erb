@@ -1,0 +1,8 @@
+<h2 class="mt-5 mb-3"><%= I18n.t('home.categories.sport')%></h2>
+<div class="list_sport_field d-flex flex-wrap gap-3">
+  <% ["football", "volleyball", "tennis", "pickleball", "batminton"].each do |image| %>
+    <%= link_to root_path, class: "card card-sport-field", style: "width: 18rem;" do %>
+      <%= image_tag "sports/#{image}.jpg", class: "card-img-top", alt: image %>
+    <% end %>
+  <% end %>
+</div>
