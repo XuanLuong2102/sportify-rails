@@ -23,3 +23,27 @@ en:
     categories:
       sport: Sport categories
       location: Location Category
+  users:
+    detail:
+      infor: Personal information
+      locked: Locked
+      active: Active
+      fullname: Full Name
+      first_name: First name
+      middle_name: Middle name
+      last_name: Last name
+      mail: Email address
+      phone: Phone
+      gender: Gender
+      role: Role
+      male: Male
+      female: Female
+  buttons:
+    edit: Edit
+    update: Update
+    cancel: Cancel
+  messages:
+    users:
+      update:
+        success: Information updated successfully
+        failed: Failed to update information

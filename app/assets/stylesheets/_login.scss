@@ -9,17 +9,9 @@ input:-webkit-autofill:focus{
   margin-top: 150px;
 }
 
-.form-control {
-  height: 50px;
+.login-wrap .form-control {
   color: white !important;
-  border: 1px solid rgba(255, 255, 255, 0.212);
   border-radius: 40px;
-  background: rgba(212, 212, 212, 0.13);
-  padding-left: 20px;
-  padding-right: 20px;
-  -webkit-transition: 0.3s;
-  transition: 0.3s;
-  margin-bottom: 25px;
   &:hover, &:focus {
     border-color: rgba(255, 255, 255, 0.671);
     background: transparent;

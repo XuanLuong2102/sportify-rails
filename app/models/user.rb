@@ -15,4 +15,13 @@ class User < ApplicationRecord
   has_many :place_managers
 
   # enum gender: { male: 0, female: 1, other: 2 }
+
+  def fullname
+    names = [first_name, middle_name, last_name].compact_blank
+    if I18n.locale == :vi
+      names.reverse.join(' ')
+    else
+      names.join(' ')
+    end
+  end
 end

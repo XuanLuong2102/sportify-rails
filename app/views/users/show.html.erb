@@ -1,0 +1,64 @@
+<div class="container mt-5 d-flex justify-content-center">
+  <div class="card shadow-sm border-0 w-75">
+    <!-- Header -->
+    <div class="card-header bg-info bg-gradient bg-opacity-50 d-flex justify-content-between align-items-center border-0 pb-4 pt-4">
+      <h4 class="mb-0 w-100 text-center"><%= I18n.t('users.detail.infor') %></h4>
+    </div>
+
+    <!-- Body -->
+    <div class="card-body">
+      <div class="row mb-4 d-flex justify-content-between">
+        <!-- Avatar & Username -->
+        <div class="col-md-3 d-flex align-items-center">
+          <%= image_tag "default-avatar.png", class: "img-fluid rounded-circle mb-2", width: 100, height: 100 %>
+          <div class="ms-5">
+            <div class="d-flex align-items-center">
+              <h5 class="mt-2"><%= @user.username %></h5>
+              <span class="ms-2 badge bg-<%= @user.is_locked ? 'danger' : 'success' %>">
+                <%= I18n.t("users.detail.#{ @user.is_locked ? 'locked' : 'active' }") %>
+              </span>
+            </div>
+            <%= @user.email %>
+          </div>
+        </div>
+
+        <div class="d-flex align-items-center col-md-2 me-5">
+          <%= link_to edit_user_path(@user), class: "btn btn-primary" do %>
+            <i class="bi bi-pencil-square"></i> <%= I18n.t('buttons.edit') %>
+          <% end %>
+        </div>
+      </div>
+
+      <!-- User info table -->
+     <div class="row g-3">
+        <!-- Full Name -->
+        <div class="col-md-6">
+          <label class="form-label"><%= I18n.t('users.detail.fullname') %></label>
+          <input type="text" class="form-control" value="<%= @user.fullname %>" readonly>
+        </div>
+
+        <!-- Email -->
+        <div class="col-md-6">
+          <label class="form-label"><%= I18n.t('users.detail.mail') %></label>
+          <input type="text" class="form-control" value="<%= @user.email %>" readonly>
+        </div>
+
+        <!-- Phone -->
+        <div class="col-md-6">
+          <label class="form-label"><%= I18n.t('users.detail.phone') %></label>
+          <input type="text" class="form-control text-black" value="<%= @user.phone.presence || "-" %>" readonly>
+        </div>
+
+        <!-- Gender -->
+        <div class="col-md-6">
+          <label class="form-label"><%= I18n.t('users.detail.gender') %></label>
+          <input type="text" class="form-control" value="<%= I18n.t("users.detail.#{ @user.gender == 1 ? 'male' : 'female'}") %>" readonly>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="card-footer bg-light d-flex justify-content-end gap-2 border-0">
+    </div>
+  </div>
+</div>
