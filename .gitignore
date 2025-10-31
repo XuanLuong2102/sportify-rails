@@ -29,4 +29,3 @@
 /config/master.key
 /node_modules
 /vendor
-.env
