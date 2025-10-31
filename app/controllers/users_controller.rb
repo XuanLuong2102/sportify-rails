@@ -1,4 +1,6 @@
 class UsersController < ApplicationController
+  layout "user"
+
   before_action :authenticate_user!
   before_action :load_user, :ensure_correct_user, only: [:show, :edit, :update]
 

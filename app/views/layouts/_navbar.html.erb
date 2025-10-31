@@ -17,24 +17,16 @@
           <%= link_to I18n.t('navbar.booking'), root_path, class: 'nav-link' %>
         </li>
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="navbarScrollingDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Link
-          </a>
-          <ul class="dropdown-menu" aria-labelledby="navbarScrollingDropdown">
-            <li><a class="dropdown-item" href="#">Action</a></li>
-            <li><a class="dropdown-item" href="#">Another action</a></li>
-            <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" href="#">Something else here</a></li>
-          </ul>
+          <%= link_to I18n.t('navbar.news'), root_path, class: 'nav-link' %>
         </li>
-        <li class="nav-item">
-          <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Link</a>
+        <li class="nav-item dropdown">
+          <%= link_to I18n.t('navbar.about'), root_path, class: 'nav-link' %>
         </li>
       </ul>
     </div>
     <div class="d-flex align-items-center">
-      <ul class="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll" style="--bs-scroll-height: 100px;">
-        <li class="nav-item dropdown">
+      <ul class="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll d-flex align-items-center" style="--bs-scroll-height: 100px;">
+        <li class="nav-item dropdown me-3">
           <a class="nav-link dropdown-toggle" href="#" id="navbarScrollingDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             <%= I18n.t('language.language') %>
           </a>
@@ -44,13 +36,35 @@
           </ul>
         </li>
       <% if user_signed_in? %>
+        <!-- Notification dropdown -->
+        <li class="nav-item navbar-item dropdown me-3">
+          <div class="nav-link" id="navbarNotificationDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="bi bi-bell-fill fs-5"></i>
+          </div>
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarNotificationDropdown">
+            <li>
+              <h6 class="dropdown-header text-center bg-light fw-semibold">
+                <i class="bi bi-bell me-1"></i> <%= I18n.t('navbar.notifications') %>
+              </h6>
+            </li>
+            <li><hr class="dropdown-divider"></li>
+            <li><span class="dropdown-item text-muted text-center">No new notifications</span></li>
+          </ul>
+        </li>
+
+        <!-- Account dropdown -->
         <li class="nav-item navbar-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="navbarScrollingDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            <%= I18n.t('navbar.account') %>
-          </a>
-          <ul class="dropdown-menu" aria-labelledby="navbarScrollingDropdown">
-            <li><%= link_to I18n.t('navbar.my_account'), user_path(current_user.user_id), class:'dropdown-item' %></li>
-            <li><%= link_to I18n.t('navbar.change_password'), root_path, class:'dropdown-item' %></li>
+          <%= link_to "#", id: "navbarAccountDropdown", class: "nav-link d-flex align-items-center", role: "button", data: { bs_toggle: "dropdown" }, aria: { expanded: "false" } do %>
+            <div>
+              <%= image_tag "default-avatar.png", class: "rounded-circle me-2", width: 32, height: 32 %>
+              <span class="d-none d-md-inline"><%= current_user.username %></span>
+            </div>
+          <% end %>
+
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarAccountDropdown">
+            <li><%= link_to I18n.t('navbar.my_account'), user_path(current_user.user_id), class: 'dropdown-item' %></li>
+            <li><%= link_to I18n.t('navbar.booking_history'), root_path, class: 'dropdown-item' %></li>
+            <li><%= link_to I18n.t('navbar.change_password'), root_path, class: 'dropdown-item' %></li>
             <li><%= button_to I18n.t('login.logout'), destroy_user_session_path, method: :delete, class: 'dropdown-item' %></li>
           </ul>
         </li>

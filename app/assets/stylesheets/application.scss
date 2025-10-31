@@ -43,11 +43,10 @@ input[readonly]:active {
   }
 }
 
-.nav-item.dropdown:hover .dropdown-menu {
-  display: block;
-  opacity: 1;
-  visibility: visible;
-  transform: translateY(0);
+.nav-item.dropdown .dropdown-menu {
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  right: auto !important;
 }
 
 .navbar-brand {

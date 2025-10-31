@@ -19,6 +19,10 @@ vi:
     change_password: Đổi mật khẩu
     home: Trang chủ
     booking: Đặt sân
+    news: Tin tức
+    about: Giới thiệu
+    notifications: Thông báo
+    booking_history: Lịch sử đặt sân
   home:
     categories:
       sport: Danh mục thể thao
