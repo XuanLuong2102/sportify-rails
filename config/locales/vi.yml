@@ -23,3 +23,27 @@ vi:
     categories:
       sport: Danh mục thể thao
       location: Danh mục địa điểm
+  users:
+    detail:
+      infor: Thông tin cá nhân
+      locked: Đã khóa
+      active: Hoạt động
+      fullname: Họ và tên
+      first_name: Tên
+      middle_name: Tên đệm
+      last_name: Họ
+      mail: Địa chỉ email
+      phone: Số điện thoại
+      gender: Giới tính
+      role: Vai trò
+      male: Nam
+      female: Nữ
+  buttons:
+    edit: Chỉnh sửa
+    update: Cập nhật
+    cancel: Hủy
+  messages:
+    users:
+      update:
+        success: Cập nhật thông tin thành công
+        failed: Cập nhật thông tin thất bại

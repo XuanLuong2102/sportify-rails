@@ -171,6 +171,7 @@ ActiveRecord::Schema[8.1].define(version: 2025_10_28_023628) do
     t.integer "gender", default: 0, null: false
     t.boolean "is_locked", default: false
     t.string "last_name", limit: 30
+    t.string "middle_name", limit: 30
     t.string "phone", limit: 20
     t.datetime "remember_created_at"
     t.datetime "reset_password_sent_at"

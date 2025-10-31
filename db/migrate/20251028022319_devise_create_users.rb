@@ -6,6 +6,7 @@ class DeviseCreateUsers < ActiveRecord::Migration[8.1]
       ## Custom fields
       t.integer :role_id
       t.string  :first_name, limit: 30
+      t.string  :middle_name, limit: 30
       t.string  :last_name,  limit: 30
       t.string  :username,  limit: 30
       t.integer :gender, default: 0, null: false
