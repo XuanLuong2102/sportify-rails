@@ -19,6 +19,10 @@ en:
     change_password: Change password
     home: Home
     booking: Booking
+    news: News
+    about: About
+    notifications: Notifications
+    booking_history: Booking history
   home:
     categories:
       sport: Sport categories

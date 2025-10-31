@@ -1,0 +1,5 @@
+<nav class="nav flex-column ms-4 card mt-5 h-50">
+  <%= link_to I18n.t('navbar.my_account'), user_path(current_user.user_id), class: 'nav-link mb-3 mt-3' %>
+  <%= link_to I18n.t('navbar.booking_history'), user_path(current_user.user_id), class: 'nav-link mb-3' %>
+  <%= link_to I18n.t('navbar.change_password'), user_path(current_user.user_id), class: 'nav-link mb-3' %>
+</nav>
