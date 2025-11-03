@@ -95,6 +95,7 @@ ActiveRecord::Schema[8.1].define(version: 2025_10_28_023628) do
     t.string "address_vi", limit: 100
     t.string "city_en", limit: 30
     t.string "city_vi", limit: 30
+    t.time "close_time", default: "2000-01-01 21:00:00", null: false
     t.datetime "created_at", null: false
     t.text "description_en"
     t.text "description_vi"
@@ -104,6 +105,7 @@ ActiveRecord::Schema[8.1].define(version: 2025_10_28_023628) do
     t.boolean "maintenance_place", default: false
     t.string "name_en", limit: 50
     t.string "name_vi", limit: 50
+    t.time "open_time", default: "2000-01-01 08:00:00", null: false
     t.datetime "updated_at", null: false
   end
 
