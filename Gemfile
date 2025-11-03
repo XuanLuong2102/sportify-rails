@@ -58,3 +58,5 @@ gem "importmap-rails"
 gem "dotenv-rails"
 gem 'devise'
 gem "rails_toastify"
+gem 'csv'
+gem 'rack-cors'
