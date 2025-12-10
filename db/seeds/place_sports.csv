@@ -1,0 +1,11 @@
+place_name_en,sport_name_en,price_per_hour_usd,price_per_hour_vnd,is_close,maintenance_sport
+Sun Sport Arena,Soccer,15,350000,false,false
+Sun Sport Arena,Tennis,12,280000,false,false
+Sun Sport Arena,Volleyball,10,230000,false,false
+Sun Sport Arena,Pickleball,9,210000,false,false
+Ocean View Sport Center,Soccer,15,350000,false,false
+Ocean View Sport Center,Tennis,12,280000,false,false
+Ocean View Sport Center,Pickleball,9,210000,false,false
+Dragon Peak Stadium,Soccer,15,350000,false,false
+Dragon Peak Stadium,Badminton,8,180000,false,false
+Dragon Peak Stadium,Volleyball,10,230000,false,false

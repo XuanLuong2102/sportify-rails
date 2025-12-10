@@ -9,6 +9,8 @@ class CreatePlaces < ActiveRecord::Migration[8.1]
       t.string :district_vi, limit: 30
       t.string :city_en, limit: 30
       t.string :city_vi, limit: 30
+      t.time :open_time, default: '08:00', null: false
+      t.time :close_time, default: '21:00', null: false
       t.text :description_en
       t.text :description_vi
       t.boolean :maintenance_place, default: false
