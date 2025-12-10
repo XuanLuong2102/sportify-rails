@@ -51,3 +51,35 @@ vi:
       update:
         success: Cập nhật thông tin thành công
         failed: Cập nhật thông tin thất bại
+  api:
+    errors:
+      # Authentication errors
+      missing_token: Thiếu mã xác thực
+      invalid_token: Mã xác thực không hợp lệ hoặc sai định dạng
+      token_expired: Mã xác thực đã hết hạn
+      user_not_found: Không tìm thấy người dùng
+      unauthorized: Bạn không được phép thực hiện hành động này
+      forbidden: Bạn không có quyền truy cập tài nguyên này
+
+      # Validation errors
+      validation_failed: Xác thực thất bại
+      invalid_fields: "Các trường không hợp lệ: %{fields}"
+
+      # General errors
+      not_found: "%{model} không tồn tại"
+      internal_server_error: Đã xảy ra lỗi không xác định
+      bad_request: Yêu cầu không hợp lệ
+
+    success:
+      created: Tạo dữ liệu thành công
+      updated: Cập nhật dữ liệu thành công
+      deleted: Xóa dữ liệu thành công
+
+    places:
+      not_found: Không tìm thấy địa điểm
+      created: Tạo địa điểm thành công
+      updated: Cập nhật địa điểm thành công
+      deleted: Xóa địa điểm thành công
+      fetched_places_success: Lấy thông tin danh sách địa điểm thành công
+      fetched_place_success: Lấy thông tin địa điểm thành công
+  
