@@ -51,3 +51,34 @@ en:
       update:
         success: Information updated successfully
         failed: Failed to update information
+  api:
+    errors:
+      # Authentication errors
+      missing_token: Authorization token is missing
+      invalid_token: Invalid or malformed token
+      token_expired: Token has expired
+      user_not_found: User not found
+      unauthorized: You are not authorized to perform this action
+      forbidden: You don't have permission to access this resource
+      
+      # Validation errors
+      validation_failed: Validation failed
+      invalid_fields: "Invalid query fields: %{fields}"
+      
+      # General errors
+      not_found: "%{model} not found"
+      internal_server_error: An unexpected error occurred
+      bad_request: Bad request
+      
+    success:
+      created: Resource created successfully
+      updated: Resource updated successfully
+      deleted: Resource deleted successfully
+
+    places:
+      not_found: Place not found
+      created: Place created successfully
+      updated: Place updated successfully
+      deleted: Place deleted successfully
+      fetched_places_success: Places information fetched successfully
+      fetched_place_success: Place information fetched successfully
