@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2025_11_03_070732) do
+ActiveRecord::Schema[8.1].define(version: 2025_12_11_083003) do
   create_table "api_clients", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "api_key"
     t.datetime "created_at", null: false
@@ -128,6 +128,114 @@ ActiveRecord::Schema[8.1].define(version: 2025_11_03_070732) do
     t.index ["user_id"], name: "fk_rails_5b5ddfd518"
   end
 
+  create_table "product_brands", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "name", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "product_categories", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.text "description_en"
+    t.text "description_vi"
+    t.string "name_en", null: false
+    t.string "name_vi", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "product_colors", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+    t.string "code_rgb"
+    t.datetime "created_at", null: false
+    t.string "name", null: false
+    t.datetime "updated_at", null: false
+    t.index ["name", "code_rgb"], name: "index_product_colors_on_name_and_code_rgb", unique: true
+  end
+
+  create_table "product_images", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "image_url", null: false
+    t.bigint "product_color_id"
+    t.bigint "product_id", null: false
+    t.integer "sort_order", default: 0, null: false
+    t.datetime "updated_at", null: false
+    t.string "view_type"
+    t.index ["product_color_id"], name: "index_product_images_on_product_color_id"
+    t.index ["product_id", "image_url"], name: "idx_unique_product_image", unique: true
+    t.index ["product_id", "product_color_id", "image_url"], name: "idx_unique_color_image", unique: true
+    t.index ["product_id"], name: "index_product_images_on_product_id"
+  end
+
+  create_table "product_listings", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.boolean "is_active", default: true
+    t.integer "place_id", null: false
+    t.bigint "product_id", null: false
+    t.integer "sold_count", default: 0, null: false
+    t.datetime "updated_at", null: false
+    t.index ["place_id", "product_id"], name: "index_product_listings_on_place_id_and_product_id", unique: true
+    t.index ["product_id"], name: "fk_rails_d55070d4ef"
+  end
+
+  create_table "product_reviews", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+    t.text "comment"
+    t.datetime "created_at", null: false
+    t.bigint "product_listing_id", null: false
+    t.integer "rating", default: 5, null: false
+    t.datetime "updated_at", null: false
+    t.integer "user_id", null: false
+    t.index ["product_listing_id"], name: "index_product_reviews_on_product_listing_id"
+    t.index ["user_id"], name: "index_product_reviews_on_user_id"
+    t.check_constraint "`rating` between 1 and 5"
+  end
+
+  create_table "product_sizes", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "name", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "product_stocks", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.bigint "product_listing_id", null: false
+    t.bigint "product_variant_id", null: false
+    t.integer "stock_quantity", default: 0, null: false
+    t.datetime "updated_at", null: false
+    t.index ["product_listing_id", "product_variant_id"], name: "idx_on_product_listing_id_product_variant_id_fa8f706a6d", unique: true
+    t.index ["product_variant_id"], name: "fk_rails_4afa31fea2"
+  end
+
+  create_table "product_variants", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.boolean "is_active", default: true
+    t.decimal "price_usd", precision: 10, scale: 2
+    t.decimal "price_vnd", precision: 10, scale: 2, null: false
+    t.bigint "product_color_id"
+    t.bigint "product_id", null: false
+    t.bigint "product_size_id"
+    t.string "sku"
+    t.datetime "updated_at", null: false
+    t.index ["product_color_id"], name: "index_product_variants_on_product_color_id"
+    t.index ["product_id", "product_color_id", "product_size_id"], name: "idx_on_product_id_product_color_id_product_size_id_904c79a58a", unique: true
+    t.index ["product_id"], name: "index_product_variants_on_product_id"
+    t.index ["product_size_id"], name: "index_product_variants_on_product_size_id"
+    t.index ["sku"], name: "index_product_variants_on_sku", unique: true
+  end
+
+  create_table "products", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+    t.bigint "brand_id"
+    t.bigint "category_id"
+    t.datetime "created_at", null: false
+    t.text "description_en"
+    t.text "description_vi"
+    t.boolean "is_active", default: true
+    t.string "name_en", null: false
+    t.string "name_vi", null: false
+    t.string "thumbnail_url"
+    t.datetime "updated_at", null: false
+    t.index ["brand_id"], name: "index_products_on_brand_id"
+    t.index ["category_id"], name: "index_products_on_category_id"
+  end
+
   create_table "recurring_bookings", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.integer "day_of_week", default: 0, null: false
@@ -207,6 +315,19 @@ ActiveRecord::Schema[8.1].define(version: 2025_11_03_070732) do
   add_foreign_key "place_sports", "places", primary_key: "place_id"
   add_foreign_key "place_sports", "sportfields", primary_key: "sportfield_id"
   add_foreign_key "posts", "users", primary_key: "user_id"
+  add_foreign_key "product_images", "product_colors"
+  add_foreign_key "product_images", "products"
+  add_foreign_key "product_listings", "places", primary_key: "place_id"
+  add_foreign_key "product_listings", "products"
+  add_foreign_key "product_reviews", "product_listings"
+  add_foreign_key "product_reviews", "users", primary_key: "user_id"
+  add_foreign_key "product_stocks", "product_listings"
+  add_foreign_key "product_stocks", "product_variants"
+  add_foreign_key "product_variants", "product_colors"
+  add_foreign_key "product_variants", "product_sizes"
+  add_foreign_key "product_variants", "products"
+  add_foreign_key "products", "product_brands", column: "brand_id"
+  add_foreign_key "products", "product_categories", column: "category_id"
   add_foreign_key "recurring_bookings", "place_sports"
   add_foreign_key "recurring_bookings", "users", primary_key: "user_id"
   add_foreign_key "reviews", "place_sports"
