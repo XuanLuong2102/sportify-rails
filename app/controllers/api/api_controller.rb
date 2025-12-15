@@ -32,12 +32,16 @@ module Api
 
     # ==================== Response Helpers ====================
 
-    def render_success(data = {}, message: nil, status: :ok)
-      render json: {
+    def render_success(data = {}, message: nil, status: :ok, meta: nil)
+      response = {
         success: true,
         message: message,
         data: data
-      }, status: status
+      }
+
+      response[:meta] = meta if meta.present?
+
+      render json: response, status: status
     end
 
     def render_error(status_code, message, errors: {})
@@ -48,11 +52,32 @@ module Api
       }, status: status_code
     end
 
+    def pagination_meta(collection)
+      return nil unless collection.respond_to?(:current_page)
+
+      {
+        current_page: collection.current_page,
+        per_page: collection.per_page,
+        total_pages: collection.total_pages,
+        total_count: collection.total_entries
+      }
+    end
+
     # ==================== Error Handlers ====================
 
     def handle_forbidden(exception)
       message = exception.message.presence || I18n.t('api.errors.forbidden')
       render_error(403, message)
+    end
+
+    # ==================== Serialization Helpers ====================
+    def serialize_resource(resource, serializer:, include: [])
+      serializer_key = resource.respond_to?(:to_ary) ? :each_serializer : :serializer
+      
+      options = { serializer_key => serializer }
+      options[:include] = include if include.present?
+      
+      ActiveModelSerializers::SerializableResource.new(resource, options).as_json
     end
 
     # ==================== Query Validation ====================
