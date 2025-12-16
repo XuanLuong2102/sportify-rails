@@ -82,3 +82,12 @@ en:
       deleted: Place deleted successfully
       fetched_places_success: Places information fetched successfully
       fetched_place_success: Place information fetched successfully
+
+    products:
+      not_found: Product not found
+      fetched_products_success: Products information fetched successfully
+      fetched_product_success: Product information fetched successfully
+
+    product_brands:
+      not_found: Brand not found
+      fetched_brands_success: Brands information fetched successfully

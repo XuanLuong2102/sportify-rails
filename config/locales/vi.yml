@@ -82,4 +82,13 @@ vi:
       deleted: Xóa địa điểm thành công
       fetched_places_success: Lấy thông tin danh sách địa điểm thành công
       fetched_place_success: Lấy thông tin địa điểm thành công
+
+    products:
+      not_found: Không tìm thấy sản phẩm
+      fetched_products_success: Lấy thông tin danh sách sản phẩm thành công
+      fetched_product_success: Lấy thông tin sản phẩm thành công
+
+    product_brands:
+      not_found: Không tìm thấy thương hiệu
+      fetched_brands_success: Lấy thông tin danh sách thương hiệu thành công
   
