@@ -9,10 +9,12 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
       resources :places, only: [:index, :show]
-    resources :place_sports, only: [:index]
-    get 'schedules', to: 'schedules#index'
-    resources :bookings, only: [:create, :show]
-    get 'place_managers', to: 'place_managers#index'
+      resources :place_sports, only: [:index]
+      get 'schedules', to: 'schedules#index'
+      resources :bookings, only: [:create, :show]
+      get 'place_managers', to: 'place_managers#index'
+      resources :product_brands, only: [:index]
+      resources :products, only: [:index, :show]
     end
   end
 end
