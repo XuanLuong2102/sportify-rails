@@ -1,0 +1,65 @@
+name_en,name_vi,description_en,description_vi,brand_name,category_name_en,is_active
+Running T-Shirt 1,Áo chạy bộ 1,Breathable running t-shirt,Áo thun chạy bộ thoáng khí,Nike,T-Shirts,true
+Running T-Shirt 2,Áo chạy bộ 2,Breathable running t-shirt,Áo thun chạy bộ thoáng khí,Adidas,T-Shirts,true
+Running T-Shirt 3,Áo chạy bộ 3,Breathable running t-shirt,Áo thun chạy bộ thoáng khí,Puma,T-Shirts,true
+Running T-Shirt 4,Áo chạy bộ 4,Breathable running t-shirt,Áo thun chạy bộ thoáng khí,Under Armour,T-Shirts,true
+Running T-Shirt 5,Áo chạy bộ 5,Breathable running t-shirt,Áo thun chạy bộ thoáng khí,Asics,T-Shirts,true
+Running T-Shirt 6,Áo chạy bộ 6,Breathable running t-shirt,Áo thun chạy bộ thoáng khí,New Balance,T-Shirts,true
+Running T-Shirt 7,Áo chạy bộ 7,Breathable running t-shirt,Áo thun chạy bộ thoáng khí,Decathlon,T-Shirts,true
+Running T-Shirt 8,Áo chạy bộ 8,Breathable running t-shirt,Áo thun chạy bộ thoáng khí,Reebok,T-Shirts,true
+Training Shorts 1,Quần tập 1,Lightweight training shorts,Quần short tập luyện,Adidas,Shorts,true
+Training Shorts 2,Quần tập 2,Lightweight training shorts,Quần short tập luyện,Nike,Shorts,true
+Training Shorts 3,Quần tập 3,Lightweight training shorts,Quần short tập luyện,Puma,Shorts,true
+Training Shorts 4,Quần tập 4,Lightweight training shorts,Quần short tập luyện,Under Armour,Shorts,true
+Training Shorts 5,Quần tập 5,Lightweight training shorts,Quần short tập luyện,Asics,Shorts,true
+Training Shorts 6,Quần tập 6,Lightweight training shorts,Quần short tập luyện,New Balance,Shorts,true
+Training Shorts 7,Quần tập 7,Lightweight training shorts,Quần short tập luyện,Decathlon,Shorts,true
+Training Shorts 8,Quần tập 8,Lightweight training shorts,Quần short tập luyện,Reebok,Shorts,true
+Sport Pants 1,Quần thể thao 1,Comfort sport pants,Quần dài thể thao,Puma,Pants,true
+Sport Pants 2,Quần thể thao 2,Comfort sport pants,Quần dài thể thao,Nike,Pants,true
+Sport Pants 3,Quần thể thao 3,Comfort sport pants,Quần dài thể thao,Adidas,Pants,true
+Sport Pants 4,Quần thể thao 4,Comfort sport pants,Quần dài thể thao,Under Armour,Pants,true
+Sport Pants 5,Quần thể thao 5,Comfort sport pants,Quần dài thể thao,Asics,Pants,true
+Sport Pants 6,Quần thể thao 6,Comfort sport pants,Quần dài thể thao,New Balance,Pants,true
+Sport Pants 7,Quần thể thao 7,Comfort sport pants,Quần dài thể thao,Decathlon,Pants,true
+Sport Pants 8,Quần thể thao 8,Comfort sport pants,Quần dài thể thao,Reebok,Pants,true
+Sport Jacket 1,Áo khoác thể thao 1,Warm sport jacket,Áo khoác thể thao giữ ấm,Nike,Jackets,true
+Sport Jacket 2,Áo khoác thể thao 2,Warm sport jacket,Áo khoác thể thao giữ ấm,Adidas,Jackets,true
+Sport Jacket 3,Áo khoác thể thao 3,Warm sport jacket,Áo khoác thể thao giữ ấm,Puma,Jackets,true
+Sport Jacket 4,Áo khoác thể thao 4,Warm sport jacket,Áo khoác thể thao giữ ấm,Under Armour,Jackets,true
+Sport Jacket 5,Áo khoác thể thao 5,Warm sport jacket,Áo khoác thể thao giữ ấm,Asics,Jackets,true
+Sport Jacket 6,Áo khoác thể thao 6,Warm sport jacket,Áo khoác thể thao giữ ấm,New Balance,Jackets,true
+Sport Jacket 7,Áo khoác thể thao 7,Warm sport jacket,Áo khoác thể thao giữ ấm,Decathlon,Jackets,true
+Sport Jacket 8,Áo khoác thể thao 8,Warm sport jacket,Áo khoác thể thao giữ ấm,Reebok,Jackets,true
+Running Shoes 1,Giày chạy bộ 1,Running shoes for training,Giày chạy bộ luyện tập,Nike,Shoes,true
+Running Shoes 2,Giày chạy bộ 2,Running shoes for training,Giày chạy bộ luyện tập,Adidas,Shoes,true
+Running Shoes 3,Giày chạy bộ 3,Running shoes for training,Giày chạy bộ luyện tập,Asics,Shoes,true
+Running Shoes 4,Giày chạy bộ 4,Running shoes for training,Giày chạy bộ luyện tập,New Balance,Shoes,true
+Running Shoes 5,Giày chạy bộ 5,Running shoes for training,Giày chạy bộ luyện tập,Puma,Shoes,true
+Running Shoes 6,Giày chạy bộ 6,Running shoes for training,Giày chạy bộ luyện tập,Reebok,Shoes,true
+Running Shoes 7,Giày chạy bộ 7,Running shoes for training,Giày chạy bộ luyện tập,Decathlon,Shoes,true
+Running Shoes 8,Giày chạy bộ 8,Running shoes for training,Giày chạy bộ luyện tập,Under Armour,Shoes,true
+Football 1,Bóng đá 1,Standard football,Bóng đá tiêu chuẩn,Wilson,Balls,true
+Football 2,Bóng đá 2,Standard football,Bóng đá tiêu chuẩn,Nike,Balls,true
+Football 3,Bóng đá 3,Standard football,Bóng đá tiêu chuẩn,Adidas,Balls,true
+Football 4,Bóng đá 4,Standard football,Bóng đá tiêu chuẩn,Puma,Balls,true
+Football 5,Bóng đá 5,Standard football,Bóng đá tiêu chuẩn,Decathlon,Balls,true
+Football 6,Bóng đá 6,Standard football,Bóng đá tiêu chuẩn,Reebok,Balls,true
+Football 7,Bóng đá 7,Standard football,Bóng đá tiêu chuẩn,Mizuno,Balls,true
+Football 8,Bóng đá 8,Standard football,Bóng đá tiêu chuẩn,Wilson,Balls,true
+Badminton Racket 1,Vợt cầu lông 1,Durable badminton racket,Vợt cầu lông bền,Yonex,Rackets,true
+Badminton Racket 2,Vợt cầu lông 2,Durable badminton racket,Vợt cầu lông bền,Li-Ning,Rackets,true
+Badminton Racket 3,Vợt cầu lông 3,Durable badminton racket,Vợt cầu lông bền,Mizuno,Rackets,true
+Badminton Racket 4,Vợt cầu lông 4,Durable badminton racket,Vợt cầu lông bền,Wilson,Rackets,true
+Badminton Racket 5,Vợt cầu lông 5,Durable badminton racket,Vợt cầu lông bền,Yonex,Rackets,true
+Badminton Racket 6,Vợt cầu lông 6,Durable badminton racket,Vợt cầu lông bền,Li-Ning,Rackets,true
+Badminton Racket 7,Vợt cầu lông 7,Durable badminton racket,Vợt cầu lông bền,Mizuno,Rackets,true
+Badminton Racket 8,Vợt cầu lông 8,Durable badminton racket,Vợt cầu lông bền,Wilson,Rackets,true
+Sport Bag 1,Túi thể thao 1,Large sport bag,Túi thể thao lớn,Decathlon,Bags,true
+Sport Bag 2,Túi thể thao 2,Large sport bag,Túi thể thao lớn,Nike,Bags,true
+Sport Bag 3,Túi thể thao 3,Large sport bag,Túi thể thao lớn,Adidas,Bags,true
+Sport Bag 4,Túi thể thao 4,Large sport bag,Túi thể thao lớn,Puma,Bags,true
+Sport Bag 5,Túi thể thao 5,Large sport bag,Túi thể thao lớn,Reebok,Bags,true
+Sport Bag 6,Túi thể thao 6,Large sport bag,Túi thể thao lớn,Under Armour,Bags,true
+Sport Bag 7,Túi thể thao 7,Large sport bag,Túi thể thao lớn,Asics,Bags,true
+Sport Bag 8,Túi thể thao 8,Large sport bag,Túi thể thao lớn,New Balance,Bags,true
