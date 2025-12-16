@@ -3,8 +3,4 @@ class PlaceSerializer < BaseSerializer
 
   has_many :place_sports
   has_many :place_managers
-
-  attribute :name do
-    object.name
-  end
 end
