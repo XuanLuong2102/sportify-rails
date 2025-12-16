@@ -1,4 +1,6 @@
 class Product < ApplicationRecord
+  include Localizable
+
   belongs_to :brand, class_name: 'ProductBrand', optional: true
   belongs_to :category, class_name: 'ProductCategory', optional: true
 
