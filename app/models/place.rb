@@ -17,11 +17,11 @@ class Place < ApplicationRecord
   end
 
   def self.ransackable_attributes(auth_object = nil)
-    ['address_en', 'address_vi', 'city_en', 'city_vi', 'district_en', 'district_vi', 
-     'name_en', 'name_vi', 'is_close', 'maintenance_place', 'name', 'location']
+    %w[address_en address_vi city_en city_vi district_en district_vi 
+     name_en name_vi is_close maintenance_place name location place_id]
   end
 
   def self.ransackable_associations(auth_object = nil)
-    ['place_sports']
+    ['place_sports', 'place_managers']
   end
 end
