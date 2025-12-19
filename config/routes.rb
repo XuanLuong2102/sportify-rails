@@ -15,6 +15,8 @@ Rails.application.routes.draw do
       get 'place_managers', to: 'place_managers#index'
       resources :product_brands, only: [:index]
       resources :products, only: [:index, :show]
+      resources :users, only: [:show, :update]
+      resource :sessions, only: [:create], path: 'login', controller: 'sessions'
     end
   end
 end
