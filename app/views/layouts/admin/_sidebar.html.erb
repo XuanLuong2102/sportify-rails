@@ -1,0 +1,27 @@
+<div id='layoutSidenav_nav'>
+  <nav class='sb-sidenav accordion sb-sidenav-dark' id='sidenavAccordion'>
+    <div class='sb-sidenav-menu'>
+      <div class='nav'>
+        <%= link_to admin_root_path, class: 'nav-link', active: :exact do %>
+          <div class='sb-nav-link-icon'><i class='fa-solid fa-chart-simple'></i></div>
+          <%= t('sidebar.homepage') %>
+        <% end %>
+        <div class='sb-sidenav-menu-heading text-white text-uppercase fs-heading'><%= t('sidebar.manager')%></div>
+        <%= link_to admin_users_path, class: 'nav-link', active: :exact do %>
+          <div class='sb-nav-link-icon'><i class='fas fa-user fa-fw'></i></div>
+          <%= t('sidebar.Users') %>
+        <% end %>
+        <div class='sb-sidenav-menu-heading text-white text-uppercase fs-heading'><%= t('sidebar.account')%></div>
+        <% if user_signed_in? %>
+          <%= button_to destroy_user_session_path,
+                             method: :delete,
+                             class: 'nav-link collapsed d-fle',
+                             active: false do %>
+            <div class='sb-nav-link-icon'><i class='fa-solid fa-circle-arrow-left'></i></div>
+            <%= t('sidebar.logout') %>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+  </nav>
+</div>

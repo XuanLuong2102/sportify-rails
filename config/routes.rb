@@ -1,8 +1,12 @@
 Rails.application.routes.draw do
   scope "(:locale)", locale: /en|vi/ do
     root 'home#index'
-    devise_for :users, controllers: { sessions: "sessions" }
+    devise_for :users, path: '', controllers: { sessions: 'sessions' }
     resources :users, only: [:show, :edit, :update]
+    namespace :admin do
+      root 'dashboard#index'
+      resources :users, only: [:index, :show, :edit, :update, :destroy]
+    end
     # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
   end
 

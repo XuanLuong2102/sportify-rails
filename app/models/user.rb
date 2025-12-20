@@ -16,6 +16,8 @@ class User < ApplicationRecord
 
   # enum gender: { male: 0, female: 1, other: 2 }
 
+  scope :active, -> { where(is_locked: false) }
+
   def fullname
     names = [first_name, middle_name, last_name].compact_blank
     if I18n.locale == :vi
@@ -25,8 +27,16 @@ class User < ApplicationRecord
     end
   end
 
+  def admin?
+    role&.name == 'admin'
+  end
+
+  def agency?
+    role&.name == 'agency'
+  end
+
   def self.ransackable_attributes(_auth = nil)
-    %w[email name phone_number gender date_of_birth user_id]
+    %w[email name phone_number gender date_of_birth user_id role_id]
   end
   
   def self.ransackable_associations(_auth = nil)
