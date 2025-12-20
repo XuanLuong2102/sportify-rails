@@ -1,0 +1,21 @@
+<nav class='sb-topnav navbar navbar-expand navbar-dark bg-dark '>
+  <!-- Navbar Brand-->
+  <p class=' ps-3 text-uppercase logo-team' ><span>Ruby</span>  Team</p>
+  <button class='btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0 ' id='sidebarToggle' href='#!'><i class='fas fa-bars'></i></button>
+  <!-- Sidebar Toggle-->
+  <!-- Navbar-->
+  <p class='ms-auto me-0 me-md-3 my-2 my-md-0 text-white'><%= t('navbar.hello')%> <a href="#"class=" text-decoration-none"><%= current_user.reload.username %></a></p>
+  <ul class='navbar-nav ms-auto ms-md-0 me-3 me-lg-4'>
+    <li class='nav-item dropdown'>
+      <a class='nav-link dropdown-toggle' id='navbarDropdown' href='#' role='button' data-bs-toggle='dropdown' aria-expanded='false'><i class='fas fa-user fa-fw'></i></a>
+      <ul class='dropdown-menu dropdown-menu-end' aria-labelledby='navbarDropdown'>
+        <li>
+          <%= link_to t('navbar.information'), user_path(current_user), class: 'dropdown-item' %>
+        </li>
+        <li>
+          <%= link_to t('sidebar.logout'), destroy_user_session_path, method: :delete, class: 'dropdown-item' %>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
