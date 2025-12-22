@@ -1,0 +1,19 @@
+<tr>
+  <th scope='row' class='text-start ps-1 col-1 text-truncate' title='<%= user.full_name %>'><%= user.full_name %></th>
+  <td ></td>
+  <td class='text-start ps-5 col-2 text-truncate' title='<%= user.email %>'><%= user.email %></td>
+  <td>
+    <span class='p-2 rounded-pill badge <%= user.role_name.downcase %>-role'>
+      <%= user.role_name %>
+    </span>
+  </td>
+  <td>
+    <span class='p-2 rounded-pill badge lock-<%= user.is_locked %>'>
+      <%= user.is_locked %>
+    </span>
+  </td>
+  <td><%= format_datetime(user.created_at) %></td>
+  <td><%= format_datetime(user.updated_at) %></td>
+  <td>
+  </td>
+</tr>

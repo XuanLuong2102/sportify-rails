@@ -11368,9 +11368,9 @@ body {
   }
 }
 .logo-team {
-  font-weight: 700;
-  letter-spacing: 2px;
-  color: #0a53be;
+  font-weight: 500;
+  letter-spacing: 1px;
+  color: #fff;
   font-size: 26px;
   margin-top: 20px;
 }
@@ -11436,7 +11436,11 @@ body {
 .sb-topnav.navbar-light #sidebarToggle {
   color: #212529;
 }
-
+.navbar-header {
+  display: flex;
+  align-items: center;
+  width: 225px;
+}
 .sb-sidenav {
   display: flex;
   flex-direction: column;

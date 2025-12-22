@@ -27,13 +27,17 @@ class User < ApplicationRecord
 
   scope :active, -> { where(is_locked: false) }
 
-  def fullname
+  def full_name
     names = [first_name, middle_name, last_name].compact_blank
     if I18n.locale == :vi
       names.reverse.join(' ')
     else
       names.join(' ')
     end
+  end
+
+  def role_name
+    role&.name || ''
   end
 
   def admin?
@@ -48,8 +52,13 @@ class User < ApplicationRecord
     avatar.variant(size)
   end
 
+  ransacker :full_name do |parent|
+    Arel.sql("CONCAT(first_name, ' ', middle_name, ' ', last_name)")
+  end
+
   def self.ransackable_attributes(_auth = nil)
-    %w[email name phone_number gender date_of_birth user_id role_id]
+    %w[email name phone_number gender date_of_birth user_id role_id full_name
+    created_at updated_at]
   end
   
   def self.ransackable_associations(_auth = nil)

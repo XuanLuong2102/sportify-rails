@@ -1,0 +1,52 @@
+<div>
+  <div class='row pb-5 justify-content-xl-around'>
+    <h5 class='m-2 col-2'><%= t('title.list_member')%></h5>
+    <div class='col-7'>
+      <%= render 'admin/users/search_form'%>
+    </div>
+  </div>
+  <ul class="nav nav-tabs">
+    <li class="nav-item">
+      <%= link_to admin_users_path(q: params[:q]&.to_unsafe_h&.merge(role_name_eq: 'user')),
+        class: "nav-link #{'active' if param_role_name_eq?('user')}" do %>
+        User
+      <% end %>
+    </li>
+    <li class="nav-item">
+      <%= link_to admin_users_path(q: params[:q]&.to_unsafe_h&.merge(role_name_eq: 'admin')),
+        class: "nav-link #{'active' if param_role_name_eq?('admin')}" do %>
+        Admin
+      <% end %>
+    </li>
+    <li class="nav-item">
+      <%= link_to admin_users_path(q: params[:q]&.to_unsafe_h&.merge(role_name_eq: 'agency')),
+        class: "nav-link #{'active' if param_role_name_eq?('agency')}" do %>
+        Agency
+      <% end %>
+    </li>
+  </ul>
+  <table class='table table-striped text-center align-middle'>
+    <thead>
+      <tr>
+        <th><%= sort_link(@q, :full_name, t('users.name'), default_order: :desc) %></th>
+        <th><%= t('users.avatar') %></th>
+        <th><%= sort_link(@q, :email, default_order: :desc) %></th>
+        <th><%= sort_link(@q, :role_name, t('users.role'), default_order: :desc) %></th>
+        <th><%= t('users.status') %></th>
+        <th><%= sort_link(@q, :created_at, t('users.created_at'), default_order: :desc) %></th>
+        <th><%= sort_link(@q, :updated_at, t('users.updated_at'), default_order: :desc) %></th>
+        <th><%= t('users.action') %></th>
+      </tr>
+    </thead>
+    <tbody class='table-group-divider'>
+      <% if @users.any? %>
+        <%= render @users %>
+      <% else %>
+        <tr>
+          <td class='text-center' colspan='9'><%= t('users.no_users') %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+  <%= render 'layouts/admin/pagination', paging_collection: @users %>
+</div>
