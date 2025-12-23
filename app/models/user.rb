@@ -13,6 +13,8 @@ class User < ApplicationRecord
   has_many :posts
   has_many :reviews
   has_many :place_managers
+  has_many :shipping_addresses
+  has_many :orders
 
   # enum gender: { male: 0, female: 1, other: 2 }
 

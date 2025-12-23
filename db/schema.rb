@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2025_12_11_083003) do
+ActiveRecord::Schema[8.1].define(version: 2025_12_23_170611) do
   create_table "api_clients", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "api_key"
     t.datetime "created_at", null: false
@@ -58,11 +58,54 @@ ActiveRecord::Schema[8.1].define(version: 2025_12_11_083003) do
     t.index ["user_id"], name: "fk_rails_b080fb4855"
   end
 
+  create_table "order_items", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.bigint "order_id", null: false
+    t.bigint "product_id", null: false
+    t.string "product_name", null: false
+    t.bigint "product_variant_id"
+    t.integer "quantity", default: 1, null: false
+    t.decimal "total_price_usd", precision: 10, scale: 2, null: false
+    t.decimal "total_price_vnd", precision: 10, scale: 2, null: false
+    t.decimal "unit_price_usd", precision: 10, scale: 2, null: false
+    t.decimal "unit_price_vnd", precision: 10, scale: 2, null: false
+    t.datetime "updated_at", null: false
+    t.string "variant_name"
+    t.index ["order_id"], name: "index_order_items_on_order_id"
+    t.index ["product_id"], name: "index_order_items_on_product_id"
+    t.index ["product_variant_id"], name: "index_order_items_on_product_variant_id"
+  end
+
+  create_table "orders", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+    t.datetime "cancelled_at"
+    t.datetime "created_at", null: false
+    t.string "order_code", null: false
+    t.datetime "ordered_at"
+    t.datetime "paid_at"
+    t.integer "place_id", null: false
+    t.text "shipping_address", null: false
+    t.decimal "shipping_fee_usd", precision: 10, scale: 2, default: "0.0", null: false
+    t.decimal "shipping_fee_vnd", precision: 10, scale: 2, default: "0.0", null: false
+    t.string "shipping_phone", null: false
+    t.string "shipping_receiver_name", null: false
+    t.string "status", limit: 50, default: "pending", null: false
+    t.decimal "subtotal_amount_usd", precision: 10, scale: 2, null: false
+    t.decimal "subtotal_amount_vnd", precision: 10, scale: 2, null: false
+    t.decimal "total_amount_usd", precision: 10, scale: 2, null: false
+    t.decimal "total_amount_vnd", precision: 10, scale: 2, null: false
+    t.datetime "updated_at", null: false
+    t.integer "user_id", null: false
+    t.index ["order_code"], name: "index_orders_on_order_code", unique: true
+    t.index ["place_id"], name: "index_orders_on_place_id"
+    t.index ["user_id"], name: "index_orders_on_user_id"
+  end
+
   create_table "payments", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.decimal "amount", precision: 10, scale: 2
     t.bigint "booking_id"
     t.datetime "created_at", null: false
     t.string "currency", limit: 10
+    t.bigint "order_id"
     t.datetime "paid_at"
     t.integer "payment_option", default: 0, null: false
     t.bigint "recurring_booking_id"
@@ -71,6 +114,7 @@ ActiveRecord::Schema[8.1].define(version: 2025_12_11_083003) do
     t.datetime "updated_at", null: false
     t.integer "user_id", null: false
     t.index ["booking_id"], name: "fk_rails_6679f2064a"
+    t.index ["order_id"], name: "index_payments_on_order_id"
     t.index ["recurring_booking_id"], name: "fk_rails_6aeb3f4926"
     t.index ["user_id"], name: "fk_rails_081dc04a02"
   end
@@ -271,6 +315,20 @@ ActiveRecord::Schema[8.1].define(version: 2025_12_11_083003) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "shipping_addresses", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+    t.string "address_line", null: false
+    t.string "city_province", null: false
+    t.string "country", default: "VN", null: false
+    t.datetime "created_at", null: false
+    t.boolean "is_default", default: false, null: false
+    t.string "phone", null: false
+    t.string "receiver_name", null: false
+    t.datetime "updated_at", null: false
+    t.integer "user_id", null: false
+    t.string "ward", null: false
+    t.index ["user_id"], name: "index_shipping_addresses_on_user_id"
+  end
+
   create_table "sportfields", primary_key: "sportfield_id", id: :integer, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.text "description_en"
@@ -307,7 +365,13 @@ ActiveRecord::Schema[8.1].define(version: 2025_12_11_083003) do
   add_foreign_key "bookings", "users", primary_key: "user_id"
   add_foreign_key "field_schedules", "place_sports"
   add_foreign_key "notifications", "users", primary_key: "user_id"
+  add_foreign_key "order_items", "orders"
+  add_foreign_key "order_items", "product_variants"
+  add_foreign_key "order_items", "products"
+  add_foreign_key "orders", "places", primary_key: "place_id"
+  add_foreign_key "orders", "users", primary_key: "user_id"
   add_foreign_key "payments", "bookings"
+  add_foreign_key "payments", "orders"
   add_foreign_key "payments", "recurring_bookings"
   add_foreign_key "payments", "users", primary_key: "user_id"
   add_foreign_key "place_managers", "places", primary_key: "place_id"
@@ -332,5 +396,6 @@ ActiveRecord::Schema[8.1].define(version: 2025_12_11_083003) do
   add_foreign_key "recurring_bookings", "users", primary_key: "user_id"
   add_foreign_key "reviews", "place_sports"
   add_foreign_key "reviews", "users", primary_key: "user_id"
+  add_foreign_key "shipping_addresses", "users", primary_key: "user_id"
   add_foreign_key "users", "roles", primary_key: "role_id"
 end
