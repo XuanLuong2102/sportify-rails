@@ -1,26 +1,75 @@
-<div id='layoutSidenav_nav'>
-  <nav class='sb-sidenav accordion sb-sidenav-dark' id='sidenavAccordion'>
-    <div class='sb-sidenav-menu'>
-      <div class='nav'>
-        <%= link_to admin_root_path, class: 'nav-link', active: :exact do %>
-          <div class='sb-nav-link-icon'><i class='fa-solid fa-chart-simple'></i></div>
+<div id="layoutSidenav_nav">
+  <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
+    <div class="sb-sidenav-menu">
+      <div class="nav">
+
+        <!-- Dashboard -->
+        <%= link_to admin_root_path,
+              class: "nav-link #{'active' if current_page?(admin_root_path)}" do %>
+          <div class="sb-nav-link-icon">
+            <i class="fa-solid fa-chart-simple"></i>
+          </div>
           <%= t('sidebar.homepage') %>
         <% end %>
-        <div class='sb-sidenav-menu-heading text-white text-uppercase fs-heading'><%= t('sidebar.manager')%></div>
-        <%= link_to admin_users_path, class: 'nav-link', active: :exact do %>
-          <div class='sb-nav-link-icon'><i class='fas fa-user fa-fw'></i></div>
+
+        <div class="sb-sidenav-menu-heading text-white text-uppercase fs-heading">
+          <%= t('sidebar.manager') %>
+        </div>
+
+        <!-- Users parent -->
+        <a class="nav-link <%= 'collapsed' unless controller_name == 'users' %> <%= 'active' if controller_name == 'users' %>"
+           data-bs-toggle="collapse"
+           data-bs-target="#collapseUsers"
+           aria-expanded="<%= controller_name == 'users' %>"
+           aria-controls="collapseUsers">
+          <div class="sb-nav-link-icon">
+            <i class="fas fa-user fa-fw"></i>
+          </div>
           <%= t('sidebar.Users') %>
-        <% end %>
-        <div class='sb-sidenav-menu-heading text-white text-uppercase fs-heading'><%= t('sidebar.account')%></div>
+          <div class="sb-sidenav-collapse-arrow">
+            <i class="fas fa-angle-down sb-sidenav-collapse-arrow"></i>
+          </div>
+        </a>
+
+        <!-- Users submenu -->
+        <div class="collapse <%= 'show' if controller_name == 'users' %>"
+             id="collapseUsers"
+             data-bs-parent="#sidenavAccordion">
+          <nav class="sb-sidenav-menu-nested nav">
+
+            <%= link_to admin_users_path,
+                  class: "nav-link #{'active' if action_name == 'index'}" do %>
+              <%= t('sidebar.users.list') %>
+            <% end %>
+
+            <%= link_to new_admin_user_path,
+                  class: "nav-link #{'active' if action_name == 'new'}" do %>
+              <%= t('sidebar.users.new') %>
+            <% end %>
+
+            <%= link_to '#',
+                  class: "nav-link" do %>
+              <%= t('sidebar.users.update_role') %>
+            <% end %>
+          </nav>
+        </div>
+
+        <div class="sb-sidenav-menu-heading text-white text-uppercase fs-heading">
+          <%= t('sidebar.account') %>
+        </div>
+
+        <!-- Logout -->
         <% if user_signed_in? %>
           <%= button_to destroy_user_session_path,
-                             method: :delete,
-                             class: 'nav-link collapsed d-fle',
-                             active: false do %>
-            <div class='sb-nav-link-icon'><i class='fa-solid fa-circle-arrow-left'></i></div>
+                method: :delete,
+                class: 'nav-link btn btn-link text-start' do %>
+            <div class="sb-nav-link-icon">
+              <i class="fa-solid fa-circle-arrow-left"></i>
+            </div>
             <%= t('sidebar.logout') %>
           <% end %>
         <% end %>
+
       </div>
     </div>
   </nav>

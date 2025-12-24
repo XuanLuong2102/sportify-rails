@@ -57,8 +57,8 @@ class User < ApplicationRecord
   end
 
   def self.ransackable_attributes(_auth = nil)
-    %w[email name phone_number gender date_of_birth user_id role_id full_name
-    created_at updated_at]
+    %w[email name phone gender date_of_birth user_id role_id full_name
+    username created_at updated_at]
   end
   
   def self.ransackable_associations(_auth = nil)

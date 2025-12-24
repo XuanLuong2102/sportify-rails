@@ -11719,3 +11719,20 @@ body {
   background-color: aliceblue;
 }
 
+.header-table {
+  background-color: var(--bs-cyan);
+}
+
+.sb-sidenav-collapse-arrow {
+  transition: transform 0.2s ease;
+}
+
+.nav-link:not(.collapsed) .sb-sidenav-collapse-arrow {
+  transform: rotate(180deg);
+}
+
+input[readonly]:focus {
+  outline: none !important;
+  box-shadow: none !important;
+  border-color: #ced4da !important;
+}

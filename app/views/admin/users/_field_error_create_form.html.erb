@@ -1,0 +1,11 @@
+<% if object.errors[field].any? %>
+  <div class='row mb-3 mt-2'>
+    <div class='text-danger error-message'>
+      <ul class='mb-0 no-padding'>
+        <% object.errors[field].each do |msg| %>
+          <li><%= msg.capitalize %></li>
+        <% end %>
+      </ul>
+    </div>
+  </div>
+<% end %>
