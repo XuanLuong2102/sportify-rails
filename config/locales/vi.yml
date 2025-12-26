@@ -3,16 +3,20 @@ vi:
     language: Tiếng Việt
     english: Tiếng Anh
     vietnamese: Tiếng Việt
-  login:
-    login: Đăng nhập
-    email: Email
-    password: Mật khẩu
-    password_confirm: Nhập lại mật khẩu
-    remember_me: Ghi nhớ đăng nhập
-    forgot_password: Quên mật khẩu?
-    sign_up: Đăng ký
-    have_account: Đã có tài khoản?
-    logout: Đăng xuất
+
+  common:
+    back: Quay lại
+    save: Lưu
+    cancel: Hủy
+    search: Tìm kiếm...
+    delete: Xóa
+    confirm: Xác nhận
+
+  buttons:
+    edit: Chỉnh sửa
+    update: Cập nhật
+    cancel: Hủy
+
   navbar:
     account: Tài khoản
     my_account: Tài khoản của tôi
@@ -23,52 +27,118 @@ vi:
     about: Giới thiệu
     notifications: Thông báo
     booking_history: Lịch sử đặt sân
+    logout: Đăng xuất
+
+  login:
+    login: Đăng nhập
+    email: Địa chỉ email
+    password: Mật khẩu
+    password_confirm: Nhập lại mật khẩu
+    remember_me: Ghi nhớ đăng nhập
+    forgot_password: Quên mật khẩu?
+    sign_up: Đăng ký
+    have_account: Đã có tài khoản?
+
   home:
     categories:
       sport: Danh mục thể thao
       location: Danh mục địa điểm
+
+  admin:
+    users:
+      created: Tạo người dùng thành công
+      updated: Cập nhật người dùng thành công
+      role_updated: Cập nhật vai trò thành công
+      search_placeholder: Tìm theo tên, username, email hoặc số điện thoại
+      deleted: Đã xóa người dùng
+      delete_failed: Xóa người dùng thất bại
+      cannot_delete_yourself: Bạn không thể tự xóa chính mình
+      confirm_delete: Bạn có muốn xóa người dùng này?
+      restored: Khôi phục người dùng thành công
+      restore_failed: Khôi phục người dùng thất bại
+
   users:
-    detail:
-      infor: Thông tin cá nhân
-      locked: Đã khóa
+    avatar: Ảnh đại diện
+    name: Tên
+    username: Tên đăng nhập
+    email: Email
+    role: Vai trò
+    phone: Số điện thoại
+    gender: Giới tính
+    birthday: Ngày sinh
+    created_at: Ngày tạo
+    updated_at: Ngày cập nhật
+    action: Thao tác
+
+    no_users: Không có người dùng
+    deleted_list: Danh sách đã xóa
+
+    title:
+      create: Tạo người dùng
+      edit: Chỉnh sửa người dùng
+      show: Chi tiết người dùng
+      list: Danh sách thành viên
+      deleted: Danh sách người dùng đã xóa
+
+    buttons:
+      create: Tạo người dùng
+      update: Cập nhật
+      change_role: Đổi vai trò
+
+    roles:
+      admin: Quản trị viên
+      agency: Đại lý
+      user: Người dùng
+
+    genders:
+      male: Nam
+      female: Nữ
+      other: Khác
+
+    status:
       active: Hoạt động
+      locked: Đã khóa
+
+    placeholders:
+      email: Nhập email
+      username: Nhập tên đăng nhập
+      password: Nhập mật khẩu
+      password_confirm: Xác nhận mật khẩu
+      phone: Nhập số điện thoại
+
+    detail:
+      info: Thông tin người dùng
       fullname: Họ và tên
-      first_name: Tên
-      middle_name: Tên đệm
-      last_name: Họ
-      mail: Địa chỉ email
+      email: Email
       phone: Số điện thoại
       gender: Giới tính
       role: Vai trò
-      male: Nam
-      female: Nữ
-  buttons:
-    edit: Chỉnh sửa
-    update: Cập nhật
-    cancel: Hủy
+      birthday: Ngày sinh
+      created_at: Ngày tạo
+      updated_at: Ngày cập nhật
+
   messages:
     users:
+      create:
+        success: Tạo người dùng thành công
+        failed: Tạo người dùng thất bại
       update:
         success: Cập nhật thông tin thành công
         failed: Cập nhật thông tin thất bại
+
   api:
     errors:
-      # Authentication errors
       missing_token: Thiếu mã xác thực
       invalid_token: Mã xác thực không hợp lệ hoặc sai định dạng
       token_expired: Mã xác thực đã hết hạn
       user_not_found: Không tìm thấy người dùng
       unauthorized: Bạn không được phép thực hiện hành động này
       forbidden: Bạn không có quyền truy cập tài nguyên này
-
-      # Validation errors
       validation_failed: Xác thực thất bại
       invalid_fields: "Các trường không hợp lệ: %{fields}"
-
-      # General errors
       not_found: "%{model} không tồn tại"
-      internal_server_error: Đã xảy ra lỗi không xác định
       bad_request: Yêu cầu không hợp lệ
+      internal_server_error: Đã xảy ra lỗi không xác định
 
     success:
       created: Tạo dữ liệu thành công
@@ -80,15 +150,14 @@ vi:
       created: Tạo địa điểm thành công
       updated: Cập nhật địa điểm thành công
       deleted: Xóa địa điểm thành công
-      fetched_places_success: Lấy thông tin danh sách địa điểm thành công
+      fetched_places_success: Lấy danh sách địa điểm thành công
       fetched_place_success: Lấy thông tin địa điểm thành công
 
     products:
       not_found: Không tìm thấy sản phẩm
-      fetched_products_success: Lấy thông tin danh sách sản phẩm thành công
+      fetched_products_success: Lấy danh sách sản phẩm thành công
       fetched_product_success: Lấy thông tin sản phẩm thành công
 
     product_brands:
       not_found: Không tìm thấy thương hiệu
-      fetched_brands_success: Lấy thông tin danh sách thương hiệu thành công
-  
+      fetched_brands_success: Lấy danh sách thương hiệu thành công

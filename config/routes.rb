@@ -5,7 +5,14 @@ Rails.application.routes.draw do
     resources :users, only: [:show, :edit, :update]
     namespace :admin do
       root 'dashboard#index'
-      resources :users, only: [:index, :new, :create, :show, :edit, :update]
+      resources :users, only: [:index, :new, :create, :show, :edit, :update] do
+        member do
+          patch :soft_delete
+          patch :update_role
+          patch :restore
+        end
+        get :deleted, on: :collection
+      end
     end
     # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
   end

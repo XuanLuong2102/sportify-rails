@@ -1,20 +1,41 @@
 <tr class="align-items-center">
   <td >
-    <%= image_tag 'default-avatar.png', class: 'img-fluid rounded-circle mb-2', width: 30, height: 30 %>
+    <%= image_tag user.avatar_url(:avatar_30), class: 'img-fluid rounded-circle mb-2', width: 30, height: 30 %>
   </td>
   <td scope="row" class="text-start ps-1 col-1 text-truncate" title="<%= user.full_name %>"><%= user.full_name %></td>
   <td scope="row" class="text-start ps-1 col-1 text-truncate" title="<%= user.username %>"><%= user.username %></td>
   <td class="text-start col-2 text-truncate" title="<%= user.email %>"><%= user.email %></td>
   <td><%= user.role_name %></td>
   <td><%= user.phone %></td>
+  <td><%= user.gender %></td>
   <td><%= format_datetime(user.created_at) %></td>
   <td><%= format_datetime(user.updated_at) %></td>
   <td>
-    <%= link_to admin_user_path(user), class: 'btn' do %>
-      <i class="fa fa-info-circle" aria-hidden="true"></i>
-    <% end %>
-    <% unless user.admin? || user == current_user %>
-      <div class="btn"><i class="fa fa-trash text-danger" aria-hidden="true"></i></div>
-    <% end %>
+    <div class="d-inline-flex align-items-center gap-2">
+      <%= link_to admin_user_path(user, return_to: request.fullpath), class: 'btn' do %>
+        <i class="fa fa-info-circle"></i>
+      <% end %>
+      <% unless user == current_user %>
+        <% if user.is_locked? %>
+          <!-- Restore button -->
+          <%= button_to restore_admin_user_path(user),
+                method: :patch,
+                params: { return_to: request.fullpath },
+                class: 'btn text-success' do %>
+            <i class="fa fa-rotate-left"></i>
+          <% end %>
+        <% else %>
+          <!-- Delete button -->
+          <button type="button"
+                  class="btn text-danger"
+                  data-bs-toggle="modal"
+                  data-bs-target="#deleteUserModal-<%= user.id %>">
+            <i class="fa fa-trash"></i>
+          </button>
+        <% end %>
+      <% end %>
+    </div>
   </td>
 </tr>
+
+<%= render 'admin/users/confirm_delete_modal', user: user %>

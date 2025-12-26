@@ -284,7 +284,7 @@ sup {
 
 a {
   color: var(--bs-link-color);
-  text-decoration: underline;
+  text-decoration: none;
 }
 a:hover {
   color: var(--bs-link-hover-color);
@@ -3925,6 +3925,17 @@ fieldset:disabled .btn {
   margin-top: calc(-1 * var(--bs-nav-tabs-border-width));
   border-top-left-radius: 0;
   border-top-right-radius: 0;
+}
+.nav-tab {
+  color: var(--bs-gray-700);
+
+  &:hover {
+    color: var(--bs-black);
+  }
+
+  &.active {
+    font-weight: 800; 
+  }
 }
 
 .nav-pills {
@@ -11735,4 +11746,11 @@ input[readonly]:focus {
   outline: none !important;
   box-shadow: none !important;
   border-color: #ced4da !important;
+}
+
+.sort_link {
+  color: var(--bs-black);
+  &:hover {
+    color: var(--bs-gray-600);
+  }
 }

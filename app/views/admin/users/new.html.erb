@@ -1,71 +1,50 @@
 <div class="card shadow-sm border-0 w-50 d-flex flex-column mx-auto">
   <div class="card-header d-flex justify-content-start align-items-center bg-light text-dark p-3">
-    <h2 class="mb-0 text-center"><%= t('users.title_create')%></h2>
+    <%= link_to back_to_list, class: 'btn' do %>
+      <i class="fas fa-arrow-left"></i>
+    <% end %>
+    <h5 class="mb-0 text-center"><%= t('users.title.create')%></h5>
   </div>
 
   <div class="card-body p-4 bg-light">
-    <%= form_for @user,
-                  method: :post,
-                  url: new_admin_user_path,
-                  data: { controller: 'create-form' },
-                  html: { class: 'needs-validation' } do |form| %>
-      <div class="d-flex flex-column align-items-center text-center">
-        <%= image_tag 'default-avatar.png',
-              class: 'rounded-circle p-1 bg-primary avatar',
-              alt: 'avatar',
-              data: { action: 'click->create-form#triggerFileInput',
-                      create_form_target: 'avatarPreview',
-                      default_url: image_path('default-avatar.png') }
-        %>
-        <%= form.file_field :avatar,
-              id: 'avatar-upload',
-              class: 'd-none',
-              data: { action: 'create-form#preview',
-                      create_form_target: 'avatarInput' }
-        %>
-        <div class="invalid-feedback d-block text-danger mt-2 mb-3" data-create-form-target="avatarError"></div>
-        <%= form.label :avatar, t('users.avatar'), class: 'form-label fw-bold' %>
-      </div>
-
-      <div class="mb-3">
+    <%= form_for [:admin, @user] do |form| %>
+      <div class="mb-3 mt-3">
         <%= form.label :email, t('users.email'), class: 'form-label fw-bold' %>
-        <%= form.text_field :email, class: 'form-control', placeholder:t('placeholder.email') %>
+        <%= form.text_field :email, class: 'form-control', placeholder: t('users.placeholders.email') %>
         <%= render 'admin/users/field_error_create_form', object: @user, field: :email %>
       </div>
 
       <div class="mb-3">
         <%= form.label :username, t('users.username'), class: 'form-label fw-bold' %>
-        <%= form.text_field :username, class: 'form-control', placeholder:t('placeholder.username') %>
+        <%= form.text_field :username, class: 'form-control', placeholder: t('users.placeholders.username') %>
         <%= render 'admin/users/field_error_create_form', object: @user, field: :username %>
+      </div>
+      <div class="mb-3">
+        <%= form.label :password, t('users.password'), class: 'form-label fw-bold' %>
+        <%= form.password_field :password, class: 'form-control', placeholder: t('users.placeholders.password') %>
+        <%= render 'admin/users/field_error_create_form', object: @user, field: :password %>
+      </div>
+      <div class="mb-3">
+        <%= form.label :password_confirmation, t('users.password_confirmation'), class: 'form-label fw-bold' %>
+        <%= form.password_field :password_confirmation, class: 'form-control', placeholder: t('users.placeholders.password_confirm') %>
+        <%= render 'admin/users/field_error_create_form', object: @user, field: :password_confirmation %>
       </div>
 
       <div class="row">
         <div class="col-md-6 mb-3">
-          <%= form.label :first_name, t('users.firstname'), class: 'form-label fw-bold' %>
-          <%= form.text_field :first_name, class: 'form-control', placeholder:t('placeholder.firstname') %>
-          <%= render 'admin/users/field_error_create_form', object: @user, field: :first_name %>
-        </div>
-        <div class="col-md-6 mb-3">
-          <%= form.label :middle_name, t('users.middle_name'), class: 'form-label fw-bold' %>
-          <%= form.text_field :middle_name, class: 'form-control', placeholder:t('placeholder.middle_name') %>
-          <%= render 'admin/users/field_error_create_form', object: @user, field: :middle_name %>
+          <%= form.label :phone, t('users.phone'), class: 'form-label fw-bold' %>
+          <%= form.text_field :phone, class: 'form-control', placeholder: t('users.placeholders.phone') %>
+          <%= render 'admin/users/field_error_create_form', object: @user, field: :phone %>
         </div>
 
-        <div class="col-md-6 mb-3">
-          <%= form.label :last_name, t('users.lastname'), class: 'form-label fw-bold' %>
-          <%= form.text_field :last_name, class: 'form-control', placeholder:t('placeholder.lastname') %>
-          <%= render 'admin/users/field_error_create_form', object: @user, field: :last_name %>
+        <div class="col-md-6">
+          <%= form.label :role_id, t('users.role'), class: 'form-label fw-bold w-100' %>
+          <%= form.select :role_id, @roles, {}, class: 'form-select'%>
         </div>
       </div>
 
-      <div class="row mb-3 align-items-center">
-        <div class="col-md-6 mt-4">
-          <%= form.label :role_id, t('users.role'), class: 'form-label fw-bold' %>
-          <%= form.select :role_id, options_for_select(@roles, @user.role_id), class: 'form-select h-38'%>
-        </div>
-
-      <div class="text-center">
-        <%= form.submit t('users.btn_create'), class: 'btn btn-primary w-100 px-4 py-2 mt-3' %>
+      <div class="text-center mt-4">
+        <%= form.submit t('users.buttons.create'), class: 'btn btn-primary w-100 px-4 py-2 mt-3' %>
       </div>
     <% end %>
   </div>
