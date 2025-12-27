@@ -139,6 +139,9 @@ GEM
       activesupport (>= 6.1)
     i18n (1.14.7)
       concurrent-ruby (~> 1.0)
+    image_processing (1.14.0)
+      mini_magick (>= 4.9.5, < 6)
+      ruby-vips (>= 2.0.17, < 3)
     importmap-rails (2.2.2)
       actionpack (>= 6.0.0)
       activesupport (>= 6.0.0)
@@ -171,6 +174,8 @@ GEM
     marcel (1.1.0)
     matrix (0.4.3)
     method_source (1.1.0)
+    mini_magick (5.3.1)
+      logger
     mini_mime (1.1.5)
     minitest (5.26.0)
     msgpack (1.8.0)
@@ -299,6 +304,9 @@ GEM
       rspec-mocks (~> 3.13)
       rspec-support (~> 3.13)
     rspec-support (3.13.6)
+    ruby-vips (2.3.0)
+      ffi (~> 1.12)
+      logger
     rubyzip (3.2.1)
     sass-rails (6.0.0)
       sassc-rails (~> 2.1, >= 2.1.1)
@@ -330,6 +338,7 @@ GEM
     stringio (3.1.7)
     thor (1.4.0)
     tilt (2.6.1)
+    timeliness (0.5.3)
     timeout (0.4.3)
     tsort (0.2.0)
     turbolinks (5.2.1)
@@ -339,6 +348,9 @@ GEM
       concurrent-ruby (~> 1.0)
     uri (1.0.4)
     useragent (0.16.11)
+    validates_timeliness (8.0.0)
+      activemodel (>= 8.0.0, < 9)
+      timeliness (>= 0.3.10, < 1)
     warden (1.2.9)
       rack (>= 2.0.9)
     web-console (4.2.1)
@@ -378,6 +390,7 @@ DEPENDENCIES
   devise
   dotenv-rails
   factory_bot_rails
+  image_processing
   importmap-rails
   jbuilder (~> 2.7)
   jwt
@@ -398,6 +411,7 @@ DEPENDENCIES
   spring-watcher-listen (~> 2.0.0)
   turbolinks (~> 5)
   tzinfo-data
+  validates_timeliness
   web-console (>= 3.3.0)
   webdrivers
   will_paginate (~> 3.3)

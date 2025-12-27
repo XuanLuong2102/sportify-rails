@@ -4,9 +4,9 @@
 import "@hotwired/turbo-rails" 
 import "bootstrap"
 
-window.addEventListener("DOMContentLoaded", (event) => {
-  // Toggle the side navigation
+document.addEventListener("turbo:load", () => {
   const sidebarToggle = document.body.querySelector("#sidebarToggle");
+
   if (sidebarToggle) {
     sidebarToggle.addEventListener("click", (event) => {
       event.preventDefault();

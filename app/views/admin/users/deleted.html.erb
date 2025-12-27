@@ -1,0 +1,40 @@
+<div>
+  <div class="row pb-5 align-items-center">
+    <div class="col-4 d-flex justify-content-start align-items-center">
+      <%= link_to back_to_list, class: 'btn' do %>
+        <i class="fas fa-arrow-left"></i>
+      <% end %>
+     <h5 class="mb-0"><%= t('users.title.deleted')%></h5>
+    </div>
+    <div class='col-8 pe-4'>
+      <%= render 'admin/users/search_form'%>
+    </div>
+  </div>
+  
+  <table class='table table-striped text-center align-middle'>
+    <thead>
+      <tr>
+        <th><%= t('users.avatar') %></th>
+        <th class="text-start"><%= sort_link(@q, :full_name, t('users.name'), default_order: :desc) %></th>
+        <th class="text-start"><%= sort_link(@q, :username, t('users.username'), default_order: :desc) %></th>
+        <th class="text-start"><%= sort_link(@q, :email, default_order: :desc) %></th>
+        <th><%= sort_link(@q, :role_name, t('users.role'), default_order: :desc) %></th>
+        <th><%= t('users.phone') %></th>
+        <th><%= t('users.gender') %></th>
+        <th><%= sort_link(@q, :created_at, t('users.created_at'), default_order: :desc) %></th>
+        <th><%= sort_link(@q, :updated_at, t('users.updated_at'), default_order: :desc) %></th>
+        <th><%= t('users.action') %></th>
+      </tr>
+    </thead>
+    <tbody class='table-group-divider'>
+      <% if @users.any? %>
+        <%= render @users %>
+      <% else %>
+        <tr>
+          <td class='text-center' colspan='9'><%= t('users.no_users') %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+  <%= render 'layouts/admin/pagination', paging_collection: @users %>
+</div>

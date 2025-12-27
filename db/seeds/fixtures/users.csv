@@ -1,6 +1,6 @@
 email,username,first_name,middle_name,last_name,phone,gender,is_locked,role_name,password
-admin@example.com,admin,admin,,,"0900000000",1,false,admin,@Abc12345
-agency1@example.com,agency,agency,,,"0900000000",1,false,agency,@Abc12345
-agency2@example.com,agency,agency,,,"0900000000",1,false,agency,@Abc12345
-agency3@example.com,agency,agency,,,"0900000000",1,false,agency,@Abc12345
-user@example.com,user,user,,,"0900000000",1,false,user,@Abc12345
+admin@example.com,admin,admin,,,"0900000000",male,false,admin,@Abc12345
+agency1@example.com,agency,agency,,,"0900000000",male,false,agency,@Abc12345
+agency2@example.com,agency,agency,,,"0900000000",female,false,agency,@Abc12345
+agency3@example.com,agency,agency,,,"0900000000",female,false,agency,@Abc12345
+user@example.com,user,user,,,"0900000000",male,false,user,@Abc12345
