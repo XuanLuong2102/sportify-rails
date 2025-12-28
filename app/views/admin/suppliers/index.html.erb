@@ -1,0 +1,41 @@
+<div>
+  <div class='row pb-5 align-items-center'>
+    <h5 class='col-4'><%= t('suppliers.title.list')%></h5>
+    <div class='col-8 pe-4'>
+      <%= render 'admin/suppliers/search_form'%>
+    </div>
+  </div>
+  <div class="d-flex justify-content-end pe-5 me-1">
+    <%= link_to new_admin_supplier_path, class: 'btn btn-outline-primary me-3' do %>
+      <i class="fa fa-plus" aria-hidden="true"></i>
+      <%= t('suppliers.buttons.create_supplier') %>
+    <% end %>
+    <%= link_to deleted_admin_suppliers_path, class: 'btn btn-outline-danger' do %>
+      <i class="fa fa-trash" aria-hidden="true"></i>
+      <%= t('suppliers.title.deleted') %>
+    <% end %>
+  </div>
+  <table class='table table-striped text-center align-middle'>
+    <thead>
+      <tr>
+        <th class="text-start"><%= sort_link(@q, :name, t('suppliers.name'), default_order: :desc) %></th>
+        <th class="text-start"><%= sort_link(@q, :code, t('suppliers.code'), default_order: :desc) %></th>
+        <th class="text-start"><%= sort_link(@q, :email, t('suppliers.email'), default_order: :desc) %></th>
+        <th><%= t('suppliers.phone') %></th>
+        <th><%= sort_link(@q, :created_at, t('suppliers.created_at'), default_order: :desc) %></th>
+        <th><%= sort_link(@q, :updated_at, t('suppliers.updated_at'), default_order: :desc) %></th>
+        <th><%= t('suppliers.action') %></th>
+      </tr>
+    </thead>
+    <tbody class='table-group-divider'>
+      <% if @suppliers.any? %>
+        <%= render @suppliers %>
+      <% else %>
+        <tr>
+          <td class='text-center' colspan='10'><%= t('suppliers.no_suppliers') %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+  <%= render 'layouts/admin/pagination', paging_collection: @suppliers %>
+</div>

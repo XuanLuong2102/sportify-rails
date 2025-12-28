@@ -57,6 +57,14 @@ vi:
       restored: Khôi phục người dùng thành công
       restore_failed: Khôi phục người dùng thất bại
 
+    suppliers:
+      created: Tạo nhà cung cấp thành công.
+      deleted: Nhà cung cấp đã được vô hiệu hoá.
+      restored: Khôi phục nhà cung cấp thành công.
+      delete_failed: Không thể vô hiệu hoá nhà cung cấp.
+      restore_failed: Không thể khôi phục nhà cung cấp.
+      confirm_delete: Bạn có chắc chắn muốn vô hiệu hoá nhà cung cấp này không?
+
   users:
     avatar: Ảnh đại diện
     name: Tên
@@ -116,6 +124,45 @@ vi:
       birthday: Ngày sinh
       created_at: Ngày tạo
       updated_at: Ngày cập nhật
+
+  suppliers:
+    # ===== Titles =====
+    title:
+      list: Danh sách nhà cung cấp
+      create: Tạo nhà cung cấp
+      deleted: Danh sách nhà cung cấp đã xoá
+
+    # ===== Columns / Fields =====
+    name: Tên nhà cung cấp
+    code: Mã nhà cung cấp
+    contact_name: Người liên hệ
+    phone: Số điện thoại
+    email: Email
+    address: Địa chỉ
+    note: Ghi chú
+    created_at: Ngày tạo
+    updated_at: Ngày cập nhật
+    action: Thao tác
+
+    # ===== Buttons =====
+    buttons:
+      create: Tạo nhà cung cấp
+      create_supplier: Thêm nhà cung cấp
+      restore: Khôi phục
+      delete: Xoá
+
+    # ===== Placeholders =====
+    placeholders:
+      name: Nhập tên nhà cung cấp
+      code: Nhập mã nhà cung cấp
+      contact_name: Nhập tên người liên hệ
+      phone: Nhập số điện thoại
+      email: Nhập địa chỉ email
+      address: Nhập địa chỉ
+      note: Ghi chú thêm
+
+    # ===== Messages =====
+    no_suppliers: Không có nhà cung cấp nào
 
   messages:
     users:

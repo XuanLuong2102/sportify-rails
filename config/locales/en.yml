@@ -56,6 +56,14 @@ en:
       restored: User restored successfully
       restore_failed: Failed to restore user
 
+    suppliers:
+      created: Supplier created successfully.
+      deleted: Supplier was deactivated successfully.
+      restored: Supplier was restored successfully.
+      delete_failed: Failed to deactivate supplier.
+      restore_failed: Failed to restore supplier.
+      confirm_delete: Are you sure you want to deactivate this supplier?
+
   users:
     avatar: Avatar
     name: Name
@@ -115,6 +123,45 @@ en:
       birthday: Birthday
       created_at: Created at
       updated_at: Updated at
+
+  suppliers:
+    # ===== Titles =====
+    title:
+      list: Suppliers List
+      create: Create Supplier
+      deleted: Deleted Suppliers List
+
+    # ===== Columns / Fields =====
+    name: Supplier Name
+    code: Supplier Code
+    contact_name: Contact Person
+    phone: Phone
+    email: Email
+    address: Address
+    note: Note
+    created_at: Created At
+    updated_at: Updated At
+    action: Action
+
+    # ===== Buttons =====
+    buttons:
+      create: Create Supplier
+      create_supplier: New Supplier
+      restore: Restore
+      delete: Delete
+
+    # ===== Placeholders =====
+    placeholders:
+      name: Enter supplier name
+      code: Enter supplier code
+      contact_name: Enter contact person name
+      phone: Enter phone number
+      email: Enter email address
+      address: Enter address
+      note: Additional notes
+
+    # ===== Messages =====
+    no_suppliers: No suppliers found
 
   messages:
     users:
