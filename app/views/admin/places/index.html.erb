@@ -1,0 +1,21 @@
+<div>
+  <div class='row pb-5 align-items-center'>
+    <h5 class='col-4'><%= t('places.title.list')%></h5>
+    <div class='col-8 pe-4'>
+      <%= render 'admin/places/search_form'%>
+    </div>
+  </div>
+  <div class="d-flex justify-content-end pe-5 me-1">
+    <%= link_to new_admin_place_path, class: 'btn btn-outline-primary me-3' do %>
+      <i class="fa fa-plus" aria-hidden="true"></i>
+      <%= t('places.buttons.create_place') %>
+    <% end %>
+    <%= link_to deleted_admin_places_path, class: 'btn btn-outline-danger' do %>
+      <i class="fa fa-trash" aria-hidden="true"></i>
+      <%= t('places.title.deleted') %>
+    <% end %>
+  </div>
+
+  <%= render 'table_places', places: @places, q: @q %>
+  <%= render 'layouts/admin/pagination', paging_collection: @places %>
+</div>

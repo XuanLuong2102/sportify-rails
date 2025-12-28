@@ -1,0 +1,36 @@
+<tr class="align-items-center">
+  <td scope="row" class="text-start ps-1 col-1 text-truncate" title="<%= place.name %>"><%= place.name %></td>
+  <td scope="row" class="text-start ps-1 col-1 text-truncate" title="<%= place.full_address %>"><%= place.full_address %></td>
+  <td><%= place_status(place) %></td>
+  <td><%= format_datetime(place.created_at) %></td>
+  <td><%= format_datetime(place.updated_at) %></td>
+  <td>
+    <div class="d-inline-flex align-items-center gap-2">
+
+      <% if place.is_close %>
+        <!-- Restore button -->
+        <%= button_to restore_admin_place_path(place),
+              method: :patch,
+              class: 'btn text-success' do %>
+          <i class="fa fa-rotate-left"></i>
+        <% end %>
+      <% else %>
+        <!-- Edit button -->
+        <%= link_to edit_admin_place_path(place),
+                    class: 'btn text-primary' do %>
+          <i class="fa fa-pen"></i>
+        <% end %>
+
+        <!-- Delete button -->
+        <button type="button"
+                class="btn text-danger"
+                data-bs-toggle="modal"
+                data-bs-target="#deletePlaceModal-<%= place.id %>">
+          <i class="fa fa-trash"></i>
+        </button>
+      <% end %>
+    </div>
+  </td>
+</tr>
+
+<%= render 'admin/places/confirm_delete_modal', place: place %>

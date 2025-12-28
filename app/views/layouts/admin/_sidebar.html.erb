@@ -23,6 +23,13 @@
           <%= t('sidebar.suppliers') %>
         <% end %>
 
+        <!-- Places tab side bar -->
+        <%= link_to admin_places_path,
+              class: "nav-link #{'active' if controller_name == 'places'}" do %>
+          <i class="fas fa-map-marker-alt me-2"></i>
+          <%= t('sidebar.places') %>
+        <% end %>
+
         <!-- Users tab side bar -->
         <%= link_to admin_users_path,
               class: "nav-link #{'active' if controller_name == 'users'}" do %>

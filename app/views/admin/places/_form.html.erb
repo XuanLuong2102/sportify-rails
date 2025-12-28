@@ -1,0 +1,46 @@
+<%= form_for [:admin, @place] do |form| %>
+
+  <div class="mb-3">
+    <%= form.label :name_vi, t('places.name'), class: 'form-label fw-bold' %>
+    <%= form.text_field :name_vi, class: 'form-control', placeholder: t('suppliers.placeholders.name') %>
+    <%= render 'layouts/admin/field_error_create_form', object: @place, field: :name_vi %>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label :address_vi, t('suppliers.address'), class: 'form-label fw-bold' %>
+    <%= form.text_field :address_vi, class: 'form-control', placeholder: t('suppliers.placeholders.address') %>
+    <%= render 'layouts/admin/field_error_create_form', object: @place, field: :address_vi %>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label :district_vi, t('suppliers.district'), class: 'form-label fw-bold' %>
+    <%= form.text_field :district_vi, class: 'form-control', placeholder: t('suppliers.placeholders.district') %>
+    <%= render 'layouts/admin/field_error_create_form', object: @place, field: :district_vi %>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label :city_vi, t('suppliers.city'), class: 'form-label fw-bold' %>
+    <%= form.text_field :city_vi, class: 'form-control', placeholder: t('suppliers.placeholders.city') %>
+    <%= render 'layouts/admin/field_error_create_form', object: @place, field: :city_vi %>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label :email, t('suppliers.email'), class: 'form-label fw-bold' %>
+    <%= form.email_field :email, class: 'form-control', placeholder: t('suppliers.placeholders.email') %>
+    <%= render 'layouts/admin/field_error_create_form', object: @supplier, field: :email %>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label :address, t('suppliers.address'), class: 'form-label fw-bold' %>
+    <%= form.text_field :address, class: 'form-control', placeholder: t('suppliers.placeholders.address') %>
+    <%= render 'layouts/admin/field_error_create_form', object: @supplier, field: :address %>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label :note, t('suppliers.note'), class: 'form-label fw-bold' %>
+    <%= form.text_area :note, class: 'form-control', rows: 3, placeholder: t('suppliers.placeholders.note') %>
+    <%= render 'layouts/admin/field_error_create_form', object: @supplier, field: :note %>
+  </div>
+
+  <%= form.submit class: 'btn btn-primary w-100' %>
+<% end %>

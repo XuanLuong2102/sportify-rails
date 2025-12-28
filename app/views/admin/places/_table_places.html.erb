@@ -1,0 +1,21 @@
+<table class='table table-striped text-center align-middle'>
+  <thead>
+    <tr>
+      <th class="text-start"><%= sort_link(q, :name, t('places.name'), default_order: :desc) %></th>
+      <th class="text-start"><%= sort_link(q, :location, t('places.address'), default_order: :desc) %></th>
+      <th><%= t('places.status') %></th>
+      <th><%= sort_link(q, :created_at, t('places.created_at'), default_order: :desc) %></th>
+      <th><%= sort_link(q, :updated_at, t('places.updated_at'), default_order: :desc) %></th>
+      <th><%= t('places.action') %></th>
+    </tr>
+  </thead>
+  <tbody class='table-group-divider'>
+    <% if places.any? %>
+      <%= render places %>
+    <% else %>
+      <tr>
+        <td class='text-center' colspan='6'><%= t('places.no_places') %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
