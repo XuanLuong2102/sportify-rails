@@ -16,10 +16,17 @@
           <%= t('sidebar.manager') %>
         </div>
 
+        <!-- Suppliers tab side bar -->
+        <%= link_to admin_suppliers_path,
+              class: "nav-link #{'active' if controller_name == 'suppliers'}" do %>
+          <i class="fas fa-truck me-1"></i>
+          <%= t('sidebar.suppliers') %>
+        <% end %>
+
         <!-- Users tab side bar -->
         <%= link_to admin_users_path,
               class: "nav-link #{'active' if controller_name == 'users'}" do %>
-          <i class="fas fa-user fa-fw"></i>
+          <i class="fas fa-user fa-fw me-1"></i>
           <%= t('sidebar.Users') %>
         <% end %>
 

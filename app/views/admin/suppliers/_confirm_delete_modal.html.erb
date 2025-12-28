@@ -1,0 +1,32 @@
+<div class="modal fade" id="deleteSupplierModal-<%= supplier.id %>" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h5 class="modal-title"><%= t('common.confirm') %></h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <div class="modal-body">
+        <p class="mb-0 text-center">
+          <%= t('admin.suppliers.confirm_delete') %>
+        </p>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button"
+                class="btn btn-outline-secondary"
+                data-bs-dismiss="modal">
+          <%= t('common.cancel') %>
+        </button>
+
+        <%= button_to soft_delete_admin_supplier_path(supplier),
+              method: :patch,
+              class: 'btn btn-danger' do %>
+          <%= t('common.delete') %>
+        <% end %>
+      </div>
+
+    </div>
+  </div>
+</div>
