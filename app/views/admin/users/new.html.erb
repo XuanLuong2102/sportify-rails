@@ -11,30 +11,30 @@
       <div class="mb-3 mt-3">
         <%= form.label :email, t('users.email'), class: 'form-label fw-bold' %>
         <%= form.text_field :email, class: 'form-control', placeholder: t('users.placeholders.email') %>
-        <%= render 'admin/users/field_error_create_form', object: @user, field: :email %>
+        <%= render 'layouts/admin/field_error_create_form', object: @user, field: :email %>
       </div>
 
       <div class="mb-3">
         <%= form.label :username, t('users.username'), class: 'form-label fw-bold' %>
         <%= form.text_field :username, class: 'form-control', placeholder: t('users.placeholders.username') %>
-        <%= render 'admin/users/field_error_create_form', object: @user, field: :username %>
+        <%= render 'layouts/admin/field_error_create_form', object: @user, field: :username %>
       </div>
       <div class="mb-3">
         <%= form.label :password, t('users.password'), class: 'form-label fw-bold' %>
         <%= form.password_field :password, class: 'form-control', placeholder: t('users.placeholders.password') %>
-        <%= render 'admin/users/field_error_create_form', object: @user, field: :password %>
+        <%= render 'layouts/admin/field_error_create_form', object: @user, field: :password %>
       </div>
       <div class="mb-3">
         <%= form.label :password_confirmation, t('users.password_confirmation'), class: 'form-label fw-bold' %>
         <%= form.password_field :password_confirmation, class: 'form-control', placeholder: t('users.placeholders.password_confirm') %>
-        <%= render 'admin/users/field_error_create_form', object: @user, field: :password_confirmation %>
+        <%= render 'layouts/admin/field_error_create_form', object: @user, field: :password_confirmation %>
       </div>
 
       <div class="row">
         <div class="col-md-6 mb-3">
           <%= form.label :phone, t('users.phone'), class: 'form-label fw-bold' %>
           <%= form.text_field :phone, class: 'form-control', placeholder: t('users.placeholders.phone') %>
-          <%= render 'admin/users/field_error_create_form', object: @user, field: :phone %>
+          <%= render 'layouts/admin/field_error_create_form', object: @user, field: :phone %>
         </div>
 
         <div class="col-md-6">

@@ -11,8 +11,6 @@
             url: update_role_admin_user_path(@user),
             method: :patch do |form| %>
 
-        <%= hidden_field_tag :return_to, params[:return_to] %>
-
         <div class="modal-body">
           <div class="mb-3">
             <%= form.label :role_id, t('users.role'), class: 'form-label fw-bold' %>
@@ -26,7 +24,6 @@
           </button>
           <%= form.submit t('common.save'), class: 'btn btn-primary' %>
         </div>
-
       <% end %>
     </div>
   </div>
