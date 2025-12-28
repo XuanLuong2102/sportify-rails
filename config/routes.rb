@@ -20,6 +20,13 @@ Rails.application.routes.draw do
         end
         get :deleted, on: :collection
       end
+      resources :places, only: [:index, :new, :create, :show, :edit, :update] do
+        member do
+          patch :soft_delete
+          patch :restore
+        end
+        get :deleted, on: :collection
+      end
     end
     # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
   end
