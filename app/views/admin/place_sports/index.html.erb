@@ -1,0 +1,26 @@
+<%= link_to admin_places_path, class: 'btn btn-outline-secondary border-0 ps-2' do %>
+  <i class="fas fa-arrow-left"></i>
+  <%= t('common.back_to_list') %>
+<% end %>
+<div class="ms-4 me-5">
+  <%= render 'place_header', place: @place %>
+</div>
+
+<%= render 'place_tabs',
+  place: @place,
+  active: :sportfields %>
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h3 class="mb-0"><%= t('place_sports.title.list') %></h3>
+
+  <%= link_to new_admin_place_place_sport_path(@place), class: 'btn btn-outline-primary me-3' do %>
+    <i class="fa fa-plus" aria-hidden="true"></i>
+    <%= t('place_sports.buttons.create') %>
+  <% end %>
+</div>
+
+<%= render 'table', place_sports: @place_sports, place: @place %>
+
+<div class="d-flex justify-content-center mt-4">
+  <%= paginate @place_sports if @place_sports.respond_to?(:current_page) %>
+</div>

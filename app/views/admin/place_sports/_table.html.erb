@@ -1,0 +1,25 @@
+<div class="table-responsive">
+  <table class="table table-bordered align-middle">
+    <thead class="table-light">
+      <tr>
+        <th>Name</th>
+        <th class="text-center">Price / Hour</th>
+        <th class="text-center">Status</th>
+        <th class="text-center">Actions</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% if place_sports.any? %>
+        <%= render place_sports, place: place %>
+      <% else %>
+        <tr>
+          <td colspan="4"
+              class="text-center text-muted py-4">
+            No sportfields added yet.
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

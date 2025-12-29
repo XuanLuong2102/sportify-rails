@@ -1,0 +1,32 @@
+<div class="d-flex justify-content-between align-items-start mb-3">
+  <div>
+    <div class="d-flex align-items-center">
+      <h3 class="mb-1">
+        <%= place.name %>
+      </h3>
+      <span class="ms-5 d-flex align-items-center badge bg-<%= badge_status_place(place) %>">
+        <%= place_status(place) %>
+      </span>
+    </div>
+
+    <p class="text-muted mb-0">
+      <%= place.full_address %>
+    </p>
+
+    <%= place.description %>
+  </div>
+
+  <div class="d-flex gap-2 me-3">
+    <%= link_to edit_admin_place_path(place),
+                class: 'btn btn-outline-primary' do %>
+      <i class="fa fa-pen"></i>
+      <%= t('places.title.edit') %>
+    <% end %>
+
+    <!-- <%= link_to 'Delete Place',
+      admin_place_path(place),
+      method: :delete,
+      data: { confirm: 'Are you sure?' },
+      class: 'btn btn-danger' %> -->
+  </div>
+</div>

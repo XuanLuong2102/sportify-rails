@@ -1,0 +1,19 @@
+<ul class="nav nav-tabs mb-4">
+  <li class="nav-item">
+    <%= link_to 'Sportfields',
+      admin_place_place_sports_path(place),
+      class: "nav-link #{'active' if active == :sportfields}" %>
+  </li>
+
+  <li class="nav-item">
+    <%= link_to 'Managers',
+      admin_place_place_sports_path(place),
+      class: "nav-link #{'active' if active == :managers}" %>
+  </li>
+
+  <li class="nav-item">
+    <%= link_to 'Products',
+      admin_place_place_sports_path(place),
+      class: "nav-link #{'active' if active == :products}" %>
+  </li>
+</ul>
