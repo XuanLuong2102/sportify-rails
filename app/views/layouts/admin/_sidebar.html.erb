@@ -48,9 +48,40 @@
           <%= t('sidebar.account') %>
         </div>
 
+        <!-- Language menu -->
+        <a class="nav-link collapsed"
+          href="#"
+          data-bs-toggle="collapse"
+          data-bs-target="#collapseLanguage"
+          aria-expanded="false"
+          aria-controls="collapseLanguage">
+          <div class="sb-nav-link-icon">
+            <i class="fas fa-globe"></i>
+          </div>
+          <%= t('language.title') %>
+        </a>
+
+        <div class="collapse"
+            id="collapseLanguage"
+            data-bs-parent="#sidenavAccordion">
+          <nav class="sb-sidenav-menu-nested nav">
+
+            <%= link_to url_for(locale: :en),
+                  class: "nav-link #{'active' if I18n.locale == :en}" do %>
+              🇺🇸 <%= t('language.english') %>
+            <% end %>
+
+            <%= link_to url_for(locale: :vi),
+                  class: "nav-link #{'active' if I18n.locale == :vi}" do %>
+              🇻🇳 <%= t('language.vietnamese') %>
+            <% end %>
+
+          </nav>
+        </div>
+
         <!-- Logout -->
-        <% if user_signed_in? %>
-          <%= button_to destroy_user_session_path,
+        <% if admin_user_signed_in? %>
+          <%= button_to destroy_admin_user_session_path,
                 method: :delete,
                 class: 'nav-link btn btn-link text-start' do %>
             <div class="sb-nav-link-icon">

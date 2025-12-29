@@ -4,15 +4,18 @@ class Admin::AdminController < ApplicationController
   layout 'admin'
 
   before_action :authorize_admin!
+  helper_method :current_user, :present_user?, :admin?
 
   private
 
   def authorize_admin!
-    return if present_user? && admin?
+    unless current_admin_user.present? && (current_admin_user.admin?)
+      redirect_to new_admin_user_session_path, alert: I18n.t('admin.errors.forbidden')
+    end
+  end
 
-    raise ForbiddenError.new(
-      I18n.t('api.admin.errors.forbidden', default: 'Admin permission required')
-    )
+  def current_user
+    current_admin_user
   end
   
   def present_user?
