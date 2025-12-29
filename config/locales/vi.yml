@@ -53,6 +53,7 @@ vi:
     Users: Người dùng
     account: Tài khoản
     logout: Đăng xuất
+    place_managers: Quản lý Sân
 
   admin:
     users:
@@ -224,6 +225,26 @@ vi:
       update_place: Cập nhật sân
 
     no_places: Không có sân nào
+
+  place_managers:
+    title:
+      list: Danh sách Quản lý Sân
+      new: Gán quản lý cho sân
+      edit: Chỉnh sửa phân công
+      show: Chi tiết phân công
+    place: Địa điểm
+    user: Quản lý
+    action: Thao tác
+    no_place_managers: Không có phân công
+    place_placeholder: Chọn địa điểm
+    user_placeholder: Chọn quản lý
+    buttons:
+      create: Thêm phân công
+      update: Cập nhật phân công
+    notices:
+      created: Gán quản lý thành công
+      updated: Cập nhật phân công thành công
+      deleted: Đã xóa phân công
 
   sportfields:
     title:

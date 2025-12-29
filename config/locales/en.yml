@@ -53,6 +53,7 @@ en:
     Users: Users
     account: Account
     logout: Logout
+    place_managers: Place Managers
 
   admin:
     users:
@@ -223,6 +224,26 @@ en:
       update_place: Update Place
 
     no_places: No places found
+
+  place_managers:
+    title:
+      list: Place Managers
+      new: Assign Manager to Place
+      edit: Edit Assignment
+      show: Assignment Detail
+    place: Place
+    user: Manager
+    action: Action
+    no_place_managers: No assignments found
+    place_placeholder: Select a place
+    user_placeholder: Select a manager
+    buttons:
+      create: New Assignment
+      update: Update Assignment
+    notices:
+      created: Assignment created successfully
+      updated: Assignment updated successfully
+      deleted: Assignment removed
 
   sportfields:
     title:

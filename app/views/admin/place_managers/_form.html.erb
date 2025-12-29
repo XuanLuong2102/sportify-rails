@@ -1,0 +1,22 @@
+<%= form_for [:admin, @place_manager] do |form| %>
+
+  <!-- Place -->
+  <div class="mb-3">
+    <%= form.label :place_id, t('place_managers.place'), class: 'form-label fw-bold' %>
+    <%= form.collection_select :place_id, @places, :place_id, :name,
+                              { prompt: t('place_managers.place_placeholder') },
+                              { class: 'form-select' } %>
+    <%= render 'layouts/admin/field_error_create_form', object: @place_manager, field: :place_id %>
+  </div>
+
+  <!-- User -->
+  <div class="mb-3">
+    <%= form.label :user_id, t('place_managers.user'), class: 'form-label fw-bold' %>
+    <%= form.collection_select :user_id, @users, :user_id, :full_name,
+                              { prompt: t('place_managers.user_placeholder') },
+                              { class: 'form-select' } %>
+    <%= render 'layouts/admin/field_error_create_form', object: @place_manager, field: :user_id %>
+  </div>
+
+  <%= form.submit t("place_managers.buttons.#{@place_manager.persisted? ? 'update' : 'create'}"), class: 'btn btn-primary w-100' %>
+<% end %>

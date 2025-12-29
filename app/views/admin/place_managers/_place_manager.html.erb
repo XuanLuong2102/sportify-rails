@@ -1,0 +1,22 @@
+<tr class="align-items-center">
+  <td><%= place_manager.place.name %></td>
+  <td><%= place_manager.place.address %></td>
+  <td><%= place_manager.user.full_name %></td>
+  <td><%= place_manager.user.email %></td>
+  <td><%= place_manager.user.phone %></td>
+  <td>
+    <div class="d-inline-flex align-items-center gap-2">
+      <%= link_to edit_admin_place_manager_path(place_manager),
+                  class: 'btn text-primary' do %>
+          <i class="fa fa-pen"></i>
+      <% end %>
+      <button type="button"
+              class="btn text-danger"
+              data-bs-toggle="modal"
+              data-bs-target="#deletePlaceManagerModal-<%= place_manager.id %>">
+        <i class="fa fa-trash"></i>
+      </button>
+    </div>
+  </td>
+</tr>
+<%= render 'admin/place_managers/confirm_delete_modal', place_manager: place_manager %>
