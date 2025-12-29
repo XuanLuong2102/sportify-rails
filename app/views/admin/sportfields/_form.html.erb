@@ -1,0 +1,15 @@
+<%= form_with(model: [:admin, @sportfield], local: true) do |f| %>
+  <div class="mb-3">
+    <%= f.label :name_vi, t('sportfields.name'), class: 'form-label' %>
+    <%= f.text_field :name_vi, class: 'form-control', placeholder: t('sportfields.placeholders.name') %>
+  </div>
+
+  <div class="mb-3">
+    <%= f.label :description_vi, t('sportfields.description'), class: 'form-label' %>
+    <%= f.text_area :description_vi, rows: 4, class: 'form-control', placeholder: t('sportfields.placeholders.description') %>
+  </div>
+
+  <div class="d-flex justify-content-center mt-5">
+    <%= f.submit t("sportfields.buttons.#{@sportfield.persisted? ? 'update' : 'create'}"), class: 'btn btn-primary' %>
+  </div>
+<% end %>

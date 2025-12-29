@@ -44,6 +44,16 @@ vi:
       sport: Danh mục thể thao
       location: Danh mục địa điểm
 
+  sidebar:
+    homepage: Trang tổng quan
+    manager: Quản lý
+    suppliers: Nhà cung cấp
+    places: Địa điểm
+    sportfields: Sân thể thao
+    Users: Người dùng
+    account: Tài khoản
+    logout: Đăng xuất
+
   admin:
     users:
       created: Tạo người dùng thành công
@@ -78,6 +88,11 @@ vi:
         cannot_edit_closed_place: Không thể chỉnh sửa sân đã đóng.
 
       confirm_delete: Bạn có chắc chắn muốn đóng sân này không?
+
+    sportfields:
+      notices:
+        created: Tạo loại sân thành công.
+        updated: Cập nhật loại sân thành công.
 
   users:
     avatar: Ảnh đại diện
@@ -209,6 +224,26 @@ vi:
       update_place: Cập nhật sân
 
     no_places: Không có sân nào
+
+  sportfields:
+    title:
+      list: Danh sách loại sân
+      new: Tạo loại sân
+      edit: Chỉnh sửa loại sân
+    name: Tên
+    description: Mô tả
+    created_at: Ngày tạo
+    updated_at: Ngày cập nhật
+    action: Thao tác
+    no_sportfields: Không có loại sân nào
+    buttons:
+      create_sportfield: Thêm loại sân
+      create: Tạo
+      update: Cập nhật
+
+    placeholders:
+      name: Nhập tên loại sân
+      description: Nhập mô tả loại sân
 
   messages:
     users:

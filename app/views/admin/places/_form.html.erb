@@ -50,11 +50,6 @@
     <%= form.label :maintenance_place, t('places.maintenance'), class: 'form-check-label' %>
   </div>
 
-  <div class="mb-3 form-check">
-    <%= form.check_box :is_close, class: 'form-check-input' %>
-    <%= form.label :is_close, t('places.is_close'), class: 'form-check-label' %>
-  </div>
-
   <%= form.submit t("places.buttons.#{@place.persisted? ? 'update_place' : 'create_place'}"), class: 'btn btn-primary w-100' %>
 
 <% end %>

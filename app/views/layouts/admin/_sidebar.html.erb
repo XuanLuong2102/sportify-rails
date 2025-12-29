@@ -16,18 +16,25 @@
           <%= t('sidebar.manager') %>
         </div>
 
-        <!-- Suppliers tab side bar -->
-        <%= link_to admin_suppliers_path,
-              class: "nav-link #{'active' if controller_name == 'suppliers'}" do %>
-          <i class="fas fa-truck me-1"></i>
-          <%= t('sidebar.suppliers') %>
-        <% end %>
-
         <!-- Places tab side bar -->
         <%= link_to admin_places_path,
               class: "nav-link #{'active' if controller_name == 'places'}" do %>
           <i class="fas fa-map-marker-alt me-2"></i>
           <%= t('sidebar.places') %>
+        <% end %>
+
+        <!-- Sportfields tab side bar -->
+        <%= link_to admin_sportfields_path,
+              class: "nav-link #{'active' if controller_name == 'sportfields'}" do %>
+          <i class="fas fa-futbol me-2"></i>
+          <%= t('sidebar.sportfields') %>
+        <% end %>
+
+        <!-- Suppliers tab side bar -->
+        <%= link_to admin_suppliers_path,
+              class: "nav-link #{'active' if controller_name == 'suppliers'}" do %>
+          <i class="fas fa-truck me-1"></i>
+          <%= t('sidebar.suppliers') %>
         <% end %>
 
         <!-- Users tab side bar -->
