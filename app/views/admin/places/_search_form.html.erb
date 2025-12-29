@@ -1,0 +1,10 @@
+<%= search_form_for @q, url: admin_places_path, class: 'row align-items-center w-100 justify-content-end' do |f| %>
+  <div class='col-5 mt-auto'>
+    <%= f.search_field :name_or_address_or_district_or_city_cont, class: 'form-control', placeholder: t('common.search') %>
+  </div>
+  <div class='col-1 mt-auto'>
+    <%= button_tag type: 'submit', class: 'btn btn-outline-primary', id:'btn-search' do %>
+      <i class='fa-solid fa-magnifying-glass'></i>
+    <% end %>
+  </div>
+<% end %>

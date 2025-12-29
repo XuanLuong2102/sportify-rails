@@ -1,0 +1,60 @@
+<%= form_for [:admin, @place] do |form| %>
+
+  <!-- Name -->
+  <div class="mb-3">
+    <%= form.label :name_vi, t('places.name'), class: 'form-label fw-bold' %>
+    <%= form.text_field :name_vi, class: 'form-control' %>
+    <%= render 'layouts/admin/field_error_create_form', object: @place, field: :name_vi %>
+  </div>
+
+  <!-- Address -->
+  <div class="mb-3">
+    <%= form.label :address_vi, t('places.address'), class: 'form-label fw-bold' %>
+    <%= form.text_field :address_vi, class: 'form-control' %>
+    <%= render 'layouts/admin/field_error_create_form', object: @place, field: :address_vi %>
+  </div>
+
+  <!-- District & City -->
+  <div class="row">
+    <div class="col-md-6 mb-3">
+      <%= form.label :district_vi, t('places.district'), class: 'form-label fw-bold' %>
+      <%= form.text_field :district_vi, class: 'form-control' %>
+      <%= render 'layouts/admin/field_error_create_form', object: @place, field: :district_vi %>
+    </div>
+
+    <div class="col-md-6 mb-3">
+      <%= form.label :city_vi, t('places.city'), class: 'form-label fw-bold' %>
+      <%= form.text_field :city_vi, class: 'form-control' %>
+      <%= render 'layouts/admin/field_error_create_form', object: @place, field: :city_vi %>
+    </div>
+  </div>
+
+  <!-- Open / Close time -->
+  <div class="row">
+    <div class="col-md-6 mb-3">
+      <%= form.label :open_time, t('places.open_time'), class: 'form-label fw-bold' %>
+      <%= form.time_field :open_time, class: 'form-control' %>
+      <%= render 'layouts/admin/field_error_create_form', object: @place, field: :open_time %>
+    </div>
+
+    <div class="col-md-6 mb-3">
+      <%= form.label :close_time, t('places.close_time'), class: 'form-label fw-bold' %>
+      <%= form.time_field :close_time, class: 'form-control' %>
+      <%= render 'layouts/admin/field_error_create_form', object: @place, field: :close_time %>
+    </div>
+  </div>
+
+  <!-- Flags -->
+  <div class="mb-3 form-check">
+    <%= form.check_box :maintenance_place, class: 'form-check-input' %>
+    <%= form.label :maintenance_place, t('places.maintenance'), class: 'form-check-label' %>
+  </div>
+
+  <div class="mb-3 form-check">
+    <%= form.check_box :is_close, class: 'form-check-input' %>
+    <%= form.label :is_close, t('places.is_close'), class: 'form-check-label' %>
+  </div>
+
+  <%= form.submit t("places.buttons.#{@place.persisted? ? 'update_place' : 'create_place'}"), class: 'btn btn-primary w-100' %>
+
+<% end %>
