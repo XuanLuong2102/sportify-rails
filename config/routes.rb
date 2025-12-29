@@ -1,9 +1,15 @@
 Rails.application.routes.draw do
   scope "(:locale)", locale: /en|vi/ do
-    root 'home#index'
-    devise_for :users, path: '', controllers: { sessions: 'sessions' }
-    resources :users, only: [:show, :edit, :update]
+    root to: redirect('/admin/sign_in')
+    # devise_for :users, path: '', controllers: { sessions: 'sessions' }
+    # resources :users, only: [:show, :edit, :update]
     namespace :admin do
+      devise_for :users,
+        path: '',
+        path_names: {
+          sign_in: 'sign_in',
+          sign_out: 'sign_out'
+        }, controllers: { sessions: 'admin/sessions' }
       root 'dashboard#index'
       resources :users, only: [:index, :new, :create, :show, :edit, :update] do
         member do
