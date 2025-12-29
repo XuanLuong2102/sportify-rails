@@ -1,0 +1,17 @@
+<div>
+  <div class='row pb-5 align-items-center'>
+    <h5 class='col-4'><%= t('place_managers.title.list')%></h5>
+    <div class='col-8 pe-4'>
+      <%= render 'admin/place_managers/search_form'%>
+    </div>
+  </div>
+  <div class="d-flex justify-content-end pe-5 me-1">
+    <%= link_to new_admin_place_manager_path, class: 'btn btn-outline-primary me-3' do %>
+      <i class="fa fa-plus" aria-hidden="true"></i>
+      <%= t('place_managers.buttons.create_place_manager') %>
+    <% end %>
+  </div>
+
+  <%= render partial: 'table_place_managers', locals: { place_managers: @place_managers, q: @q } %>
+  <%= render 'layouts/admin/pagination', paging_collection: @place_managers %>
+</div>

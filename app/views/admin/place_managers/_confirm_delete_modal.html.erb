@@ -1,0 +1,33 @@
+<div class="modal fade" id="deletePlaceManagerModal-<%= place_manager.id %>" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h5 class="modal-title"><%= t('common.confirm') %></h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <div class="modal-body">
+        <p class="mb-0 text-center">
+          <%= t('admin.place_managers.confirm_delete') %>
+        </p>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button"
+                class="btn btn-outline-secondary"
+                data-bs-dismiss="modal">
+          <%= t('common.cancel') %>
+        </button>
+
+        <%= button_to admin_place_manager_path(place_manager),
+              method: :delete,
+              params: { return_to: request.fullpath },
+              class: 'btn btn-danger',
+              data: { turbo: false } do %>
+          <%= t('common.delete') %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

@@ -29,6 +29,9 @@ class User < ApplicationRecord
 
   scope :active, -> { where(is_locked: false) }
   scope :deleted, -> { where(is_locked: true) }
+  scope :by_role_agency, -> {
+    joins(:role).where(roles: { name: 'agency' })
+  }
 
   def full_name
     names = [first_name, middle_name, last_name].compact_blank

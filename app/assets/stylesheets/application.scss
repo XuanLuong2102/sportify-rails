@@ -11474,8 +11474,8 @@ body {
 .sb-sidenav .sb-sidenav-menu .nav .nav-link {
   display: flex;
   align-items: center;
-  padding-top: 0.75rem;
-  padding-bottom: 0.75rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
   position: relative;
 }
 .sb-sidenav .sb-sidenav-menu .nav .nav-link .sb-nav-link-icon {
@@ -11738,8 +11738,8 @@ body {
   transition: transform 0.2s ease;
 }
 
-.nav-link:not(.collapsed) .sb-sidenav-collapse-arrow {
-  transform: rotate(180deg);
+.nav-link.collapsed .sb-sidenav-collapse-arrow {
+  transform: rotate(-45deg) !important;
 }
 
 input[readonly]:focus {
@@ -11753,4 +11753,17 @@ input[readonly]:focus {
   &:hover {
     color: var(--bs-gray-600);
   }
+}
+
+.dropdown-submenu > .dropdown-menu {
+  display: none;
+}
+
+.dropdown-submenu:hover > .dropdown-menu {
+  display: block;
+}
+
+/* Optional: highlight parent when open */
+.dropdown-submenu:hover > a {
+  background-color: rgba(0, 0, 0, 0.05);
 }
