@@ -42,7 +42,7 @@ class Place < ApplicationRecord
   end
 
   def self.ransackable_attributes(auth_object = nil)
-    %w[name address city district is_close maintenance_place name location place_id]
+    %w[name address city district is_close maintenance_place location place_id]
   end
 
   def self.ransackable_associations(auth_object = nil)
@@ -52,12 +52,6 @@ class Place < ApplicationRecord
   private
 
   def schedule_translation
-    should_translate = TRANSLATABLE_FIELDS.any? do |field|
-      saved_change_to_attribute?("#{field}_vi") || send("#{field}_en").blank?
-    end
-
-    if should_translate
-      TranslatePlaceJob.perform_later(self.id)
-    end
+    AutoTranslationJob.perform_now(self.class.name, self.place_id)
   end
 end
