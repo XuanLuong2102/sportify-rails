@@ -1,0 +1,15 @@
+<tr class="align-items-center">
+  <td scope="row" class="text-start ps-1 col-1 text-truncate" title="<%= sportfield.name %>"><%= sportfield.name %></td>
+  <td class="text-start ps-1 col-5 text-truncate" style="max-width: 320px;" title="<%= sportfield.description %>"><%= sportfield.description %></td>
+  <td><%= format_datetime(sportfield.created_at) %></td>
+  <td><%= format_datetime(sportfield.updated_at) %></td>
+  <td>
+    <div class="d-inline-flex align-items-center gap-2">
+      <!-- Edit button -->
+      <%= link_to edit_admin_sportfield_path(sportfield),
+                  class: 'btn text-primary' do %>
+        <i class="fa fa-pen"></i>
+      <% end %>
+    </div>
+  </td>
+</tr>

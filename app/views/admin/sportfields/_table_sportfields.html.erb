@@ -1,0 +1,20 @@
+<table class='table table-striped text-center align-middle'>
+  <thead>
+    <tr>
+      <th class="text-start"><%= sort_link(q, :name, t('sportfields.name'), default_order: :desc) %></th>
+      <th class="text-start"><%= t('sportfields.description') %></th>
+      <th><%= sort_link(q, :created_at, t('sportfields.created_at'), default_order: :desc) %></th>
+      <th><%= sort_link(q, :updated_at, t('sportfields.updated_at'), default_order: :desc) %></th>
+      <th><%= t('sportfields.action') %></th>
+    </tr>
+  </thead>
+  <tbody class='table-group-divider'>
+    <% if sportfields.any? %>
+      <%= render sportfields %>
+    <% else %>
+      <tr>
+        <td class='text-center' colspan='5'><%= t('sportfields.no_sportfields') %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

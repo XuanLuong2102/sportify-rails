@@ -44,6 +44,16 @@ en:
       sport: Sport categories
       location: Location category
 
+  sidebar:
+    homepage: Dashboard
+    manager: Management
+    suppliers: Suppliers
+    places: Places
+    sportfields: Sportfields
+    Users: Users
+    account: Account
+    logout: Logout
+
   admin:
     users:
       created: User created successfully
@@ -77,6 +87,11 @@ en:
         cannot_edit_closed_place: Cannot edit a closed place.
 
       confirm_delete: Are you sure you want to close this place?
+
+    sportfields:
+      notices:
+        created: Sportfield created successfully.
+        updated: Sportfield updated successfully.
 
   users:
     avatar: Avatar
@@ -208,6 +223,27 @@ en:
       update_place: Update Place
 
     no_places: No places found
+
+  sportfields:
+    title:
+      list: Sportfields List
+      new: Create Sportfield
+      edit: Edit Sportfield
+    name: Name
+    description: Description
+    created_at: Created At
+    updated_at: Updated At
+    action: Action
+    no_sportfields: No sportfields found
+
+    buttons:
+      create_sportfield: New Sportfield
+      create: Create
+      update: Update
+
+    placeholders:
+      name: Enter sportfield name
+      description: Enter sportfield description
 
   messages:
     users:
