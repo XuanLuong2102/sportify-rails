@@ -65,6 +65,20 @@ vi:
       restore_failed: Không thể khôi phục nhà cung cấp.
       confirm_delete: Bạn có chắc chắn muốn vô hiệu hoá nhà cung cấp này không?
 
+    places:
+      notices:
+        created: Tạo sân thành công.
+        updated: Cập nhật sân thành công.
+        closed: Sân đã được đóng.
+        restored: Khôi phục sân thành công.
+
+      alerts:
+        failed_to_close: Không thể đóng sân.
+        failed_to_restore: Không thể khôi phục sân.
+        cannot_edit_closed_place: Không thể chỉnh sửa sân đã đóng.
+
+      confirm_delete: Bạn có chắc chắn muốn đóng sân này không?
+
   users:
     avatar: Ảnh đại diện
     name: Tên
@@ -163,6 +177,38 @@ vi:
 
     # ===== Messages =====
     no_suppliers: Không có nhà cung cấp nào
+
+  places:
+    title:
+      list: Danh sách sân
+      deleted: Danh sách sân đã đóng
+      new: Tạo sân
+      edit: Chỉnh sửa sân
+
+    name: Tên sân
+    address: Địa chỉ
+    district: Quận / Huyện
+    city: Thành phố
+    open_time: Giờ mở cửa
+    close_time: Giờ đóng cửa
+    opening_hours: Giờ hoạt động
+    status: Trạng thái
+    status_active: Đang hoạt động
+    status_closed: Đã đóng
+    status_under_maintenance: Đang bảo trì
+
+    maintenance: Đang bảo trì
+    is_close: Đóng sân
+
+    created_at: Ngày tạo
+    updated_at: Ngày cập nhật
+    action: Thao tác
+
+    buttons:
+      create_place: Thêm sân
+      update_place: Cập nhật sân
+
+    no_places: Không có sân nào
 
   messages:
     users:

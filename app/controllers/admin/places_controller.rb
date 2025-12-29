@@ -6,18 +6,16 @@ class Admin::PlacesController < Admin::AdminController
   before_action :ensure_active_place, only: %i[edit update]
 
   def index
-    @q = Place.where(is_close: false).ransack(params[:q])
+    @q = Place.active.ransack(params[:q])
     @places = @q.result(distinct: true)
     @places = @places.paginate(page: params[:page], per_page: params[:per_page])
   end
 
   def deleted
-    @q = Place.where(is_close: true).ransack(params[:q])
+    @q = Place.closed.ransack(params[:q])
     @places = @q.result(distinct: true)
     @places = @places.paginate(page: params[:page], per_page: params[:per_page])
   end
-
-  def show; end
 
   def new
     @place = Place.new
@@ -27,7 +25,7 @@ class Admin::PlacesController < Admin::AdminController
     @place = Place.new(place_params)
 
     if @place.save
-      redirect_to admin_places_path, notice: 'Place created successfully.'
+      redirect_to admin_places_path, notice: t('admin.places.notices.created')
     else
       render :new, status: :unprocessable_entity
     end
@@ -37,7 +35,7 @@ class Admin::PlacesController < Admin::AdminController
 
   def update
     if @place.update(place_params)
-      redirect_to helpers.back_to_list(admin_places_path), notice: 'Place updated.'
+      redirect_to helpers.back_to_list(admin_places_path), notice: t('admin.places.notices.updated')
     else
       render :edit, status: :unprocessable_entity
     end
@@ -45,17 +43,17 @@ class Admin::PlacesController < Admin::AdminController
 
   def soft_delete
     if @place.update(is_close: true)
-      redirect_to helpers.back_to_list(admin_places_path), notice: 'Place closed.'
+      redirect_to helpers.back_to_list(admin_places_path), notice: t('admin.places.notices.closed')
     else
-      redirect_to helpers.back_to_list(admin_places_path), alert: 'Failed to close place.'
+      redirect_to helpers.back_to_list(admin_places_path), alert: t('admin.places.alerts.failed_to_close')
     end
   end
 
   def restore
     if @place.update(is_close: false)
-      redirect_to deleted_admin_places_path, notice: 'Place restored.'
+      redirect_to deleted_admin_places_path, notice: t('admin.places.notices.restored')
     else
-      redirect_to helpers.back_to_list(deleted_admin_places_path), alert: 'Failed to restore place.'
+      redirect_to helpers.back_to_list(deleted_admin_places_path), alert: t('admin.places.alerts.failed_to_restore')
     end
   end
 
@@ -66,9 +64,9 @@ class Admin::PlacesController < Admin::AdminController
   end
 
   def ensure_active_place
-    return if !@place.is_close?
+    return unless @place.is_close
 
-    redirect_to helpers.back_to_list(admin_places_path), alert: 'Cannot edit a closed place.'
+    redirect_to helpers.back_to_list(admin_places_path), alert: t('admin.places.alerts.cannot_edit_closed_place')
   end
 
   def place_params

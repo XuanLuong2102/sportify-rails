@@ -2,6 +2,7 @@
   <td scope="row" class="text-start ps-1 col-1 text-truncate" title="<%= place.name %>"><%= place.name %></td>
   <td scope="row" class="text-start ps-1 col-1 text-truncate" title="<%= place.full_address %>"><%= place.full_address %></td>
   <td><%= place_status(place) %></td>
+  <td><%= place.opening_hours %></td>
   <td><%= format_datetime(place.created_at) %></td>
   <td><%= format_datetime(place.updated_at) %></td>
   <td>
@@ -26,7 +27,7 @@
                 class="btn text-danger"
                 data-bs-toggle="modal"
                 data-bs-target="#deletePlaceModal-<%= place.id %>">
-          <i class="fa fa-trash"></i>
+          <i class="fa fa-lock"></i>
         </button>
       <% end %>
     </div>

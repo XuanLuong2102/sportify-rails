@@ -64,6 +64,20 @@ en:
       restore_failed: Failed to restore supplier.
       confirm_delete: Are you sure you want to deactivate this supplier?
 
+    places:
+      notices:
+        created: Place created successfully.
+        updated: Place updated successfully.
+        closed: Place has been closed.
+        restored: Place has been restored.
+
+      alerts:
+        failed_to_close: Failed to close the place.
+        failed_to_restore: Failed to restore the place.
+        cannot_edit_closed_place: Cannot edit a closed place.
+
+      confirm_delete: Are you sure you want to close this place?
+
   users:
     avatar: Avatar
     name: Name
@@ -162,6 +176,38 @@ en:
 
     # ===== Messages =====
     no_suppliers: No suppliers found
+
+  places:
+    title:
+      list: Places List
+      deleted: Closed Places
+      new: Create Place
+      edit: Edit Place
+
+    name: Place Name
+    address: Address
+    district: District
+    city: City
+    open_time: Open Time
+    close_time: Close Time
+    opening_hours: Opening Hours
+
+    status: Status
+    status_active: Active
+    status_closed: Closed
+    status_under_maintenance: Under Maintenance
+
+    maintenance: Under Maintenance
+    is_close: Closed
+
+    created_at: Created At
+    updated_at: Updated At
+    action: Action
+    buttons:
+      create_place: Create Place
+      update_place: Update Place
+
+    no_places: No places found
 
   messages:
     users:

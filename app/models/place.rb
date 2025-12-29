@@ -12,12 +12,17 @@ class Place < ApplicationRecord
 
   after_commit :schedule_translation, on: [:create, :update]
 
+  scope :active, -> { where(is_close: false) }
+  scope :closed, -> { where(is_close: true) }
+
   def full_address
     [address, district, city].compact_blank.join(', ')
   end
 
-  def agency
-    place_managers.first&.user
+  def opening_hours
+    return '-' if open_time.blank? || close_time.blank?
+  
+    "#{open_time.strftime('%-I:%M %p')} - #{close_time.strftime('%-I:%M %p')}"
   end
 
   ransacker :name do |parent|
