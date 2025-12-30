@@ -1,4 +1,4 @@
-<div class="modal fade" id="deleteUserModal-<%= user.id %>" tabindex="-1">
+<div class="modal fade" id="deletePlaceSportModal-<%= place_sport.id %>" tabindex="-1">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
 
@@ -9,7 +9,7 @@
 
       <div class="modal-body">
         <p class="mb-0 text-center">
-          <%= t('admin.users.confirm_delete') %>
+          <%= t('admin.place_sports.confirm_delete') %>
         </p>
       </div>
 
@@ -20,14 +20,13 @@
           <%= t('common.cancel') %>
         </button>
 
-        <%= button_to soft_delete_admin_user_path(user),
+        <%= button_to soft_delete_admin_place_place_sport_path(place, place_sport),
               method: :patch,
-              class: 'btn btn-danger',
-              params: { return_to: request.fullpath } do %>
+              params: { return_to: request.fullpath },
+              class: 'btn btn-danger' do %>
           <%= t('common.delete') %>
         <% end %>
       </div>
-
     </div>
   </div>
 </div>

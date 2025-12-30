@@ -33,6 +33,13 @@ Rails.application.routes.draw do
           patch :restore
         end
         get :deleted, on: :collection
+
+        resources :place_sports, only: [:index, :new, :create, :edit, :update] do
+          member do
+            patch :soft_delete
+            patch :restore
+          end
+        end
       end
       resources :sportfields, only: [:index, :new, :create, :edit, :update]
     end

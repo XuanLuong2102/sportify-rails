@@ -1,0 +1,26 @@
+<%= form_for [:admin, place, @place_sport] do |form| %>
+
+  <!-- sportfield -->
+  <div class="mb-3">
+    <%= form.label :sportfield_id, t('place_sports.sportfield'), class: 'form-label fw-bold' %>
+    <%= form.collection_select :sportfield_id, @sportfields, :sportfield_id, :name,
+                              { prompt: t('place_sports.sportfield_placeholder') },
+                              { class: 'form-select' } %>
+    <%= render 'layouts/admin/field_error_create_form', object: @place_sport, field: :sportfield_id %>
+  </div>
+
+  <!-- price -->
+  <div class="mb-3">
+    <%= form.label :price_per_hour_vnd, t('place_sports.price'), class: 'form-label fw-bold' %>
+    <%= form.number_field :price_per_hour_vnd, class: 'form-control', placeholder:  t('place_sports.price_placeholder') %>
+    <%= render 'layouts/admin/field_error_create_form', object: @place_sport, field: :price_per_hour_vnd %>
+  </div>
+
+  <!-- maintenance_sport -->
+  <div class="mb-3 form-check">
+    <%= form.check_box :maintenance_sport, class: 'form-check-input' %>
+    <%= form.label :maintenance_sport, t('place_sports.maintenance'), class: 'form-check-label' %>
+  </div>
+
+  <%= form.submit t("place_sports.buttons.#{@place_sport.persisted? ? 'update' : 'create'}"), class: 'btn btn-primary w-100' %>
+<% end %>

@@ -6,6 +6,7 @@ vi:
 
   common:
     back: Quay lại
+    back_to_list: Quay lại danh sách
     save: Lưu
     cancel: Hủy
     search: Tìm kiếm...
@@ -94,6 +95,9 @@ vi:
       notices:
         created: Tạo loại sân thành công.
         updated: Cập nhật loại sân thành công.
+
+    place_sports:
+      confirm_delete: Bạn có chắc chắn muốn xóa sân này không?
 
   users:
     avatar: Ảnh đại diện
@@ -226,6 +230,11 @@ vi:
 
     no_places: Không có sân nào
 
+    tabs:
+      products: Sản phẩm
+      managers: Quản lý
+      sports: Sân thể thao
+
   place_managers:
     title:
       list: Danh sách Quản lý Sân
@@ -265,6 +274,35 @@ vi:
     placeholders:
       name: Nhập tên loại sân
       description: Nhập mô tả loại sân
+
+  place_sports:
+    title:
+      list: Danh sách sân
+      new: Thêm sân mới
+      edit: Chỉnh sửa sân
+
+    sportfield: Sân
+    sportfield_placeholder: Chọn sân
+
+    name: Sân
+    price_per_hour: Giá / giờ
+    status: Trạng thái
+    actions: Hành động
+    price: Giá (VND / giờ)
+    price_placeholder: Nhập giá mỗi giờ (VND)
+
+    maintenance: Đang bảo trì
+
+    status_active: Đang hoạt động
+    status_close: Đã đóng
+    status_under_maintenance: Đang bảo trì
+
+    buttons:
+      create: Tạo
+      update: Cập nhật
+      restore: Khôi phục
+      edit: Chỉnh sửa
+      delete: Xóa
 
   messages:
     users:

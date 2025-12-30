@@ -8,4 +8,14 @@ module Admin::PlacesHelper
       t('places.status_active')
     end
   end
+
+  def badge_status_place(place)
+    if place.is_close
+      'danger'
+    elsif place.maintenance_place
+      'warning'
+    else
+      'success'
+    end
+  end
 end

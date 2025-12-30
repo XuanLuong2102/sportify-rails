@@ -1,0 +1,25 @@
+<div class="table-responsive">
+  <table class="table table-bordered align-middle">
+    <thead class="table-light">
+      <tr>
+        <th><%= t('place_sports.name') %></th>
+        <th class="text-center"><%= t('place_sports.price_per_hour') %></th>
+        <th class="text-center"><%= t('place_sports.status') %></th>
+        <th class="text-center"><%= t('place_sports.actions') %></th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% if place_sports.any? %>
+        <%= render place_sports, place: place %>
+      <% else %>
+        <tr>
+          <td colspan="4"
+              class="text-center text-muted py-4">
+            No sportfields added yet.
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

@@ -16,6 +16,12 @@
           <i class="fa fa-rotate-left"></i>
         <% end %>
       <% else %>
+        <!-- Infor button -->
+        <%= link_to admin_place_place_sports_path(place),
+                    class: 'btn text-primary' do %>
+          <i class="fa fa-info"></i>
+        <% end %>
+
         <!-- Edit button -->
         <%= link_to edit_admin_place_path(place),
                     class: 'btn text-primary' do %>

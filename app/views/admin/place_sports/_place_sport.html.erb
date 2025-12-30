@@ -1,0 +1,49 @@
+<tr>
+  <td>
+    <%= place_sport.sportfield.name %>
+  </td>
+
+  <td class="text-center">
+    <div>
+      <%= number_to_currency(
+        place_sport.price_per_hour,
+        unit: I18n.locale == :en ? 'USD' : '₫',
+        precision: 0, format: "%n %u"
+        ) %>
+    </div>
+  </td>
+
+  <td class="text-center">
+    <span class="badge bg-<%= badge_status_place_sport(place_sport) %>">
+      <%= t("place_sports.status_#{place_sport_status(place_sport)}") %>
+    </span>
+  </td>
+
+  <td class="text-center">
+    <div class="d-inline-flex gap-1">
+      <% if place_sport.is_close %>
+        <%= button_to restore_admin_place_place_sport_path(place, place_sport),
+              method: :patch,
+              class: 'btn btn-success' do %>
+          <i class="fa fa-rotate-left"></i>
+          <%= t('place_sports.buttons.restore') %>
+        <% end %>
+      <% else %>
+        <%= link_to edit_admin_place_place_sport_path(place, place_sport),
+                    class: 'btn btn-primary' do %>
+          <i class="fa fa-pen"></i>
+          <%= t('place_sports.buttons.edit') %>
+        <% end %>
+
+        <button type="button"
+                class="btn btn-danger"
+                data-bs-toggle="modal"
+                data-bs-target="#deletePlaceSportModal-<%= place_sport.id %>">
+          <i class="fa fa-trash"></i>
+          <%= t('place_sports.buttons.delete') %>
+        </button>
+      <% end %>
+   </div>
+  </td>
+</tr>
+<%= render 'admin/place_sports/confirm_delete_modal', place: place, place_sport: place_sport %>
