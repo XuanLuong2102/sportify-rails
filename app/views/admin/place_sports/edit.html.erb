@@ -3,17 +3,17 @@
   <%= t('common.back_to_list') %>
 <% end %>
 <div class="ms-4 me-5">
-  <%= render 'place_header', place: @place %>
+  <%= render 'admin/places/place_header', place: @place %>
 </div>
 
-<%= render 'place_tabs',
+<%= render 'admin/places/place_tabs',
   place: @place,
   active: :sportfields %>
 
 <div class="d-flex justify-content-between align-items-center mb-3">
   <div class="card shadow-sm border-0 w-50 mx-auto">
     <div class="card-header bg-light d-flex align-items-center">
-      <%= link_to back_to_list, class: 'btn' do %>
+      <%= link_to back_to_list, class: 'btn', data: { turbo: false } do %>
         <i class="fas fa-arrow-left"></i>
       <% end %>
       <h5 class="mb-0"><%= t('place_sports.title.edit') %></h5>
@@ -24,4 +24,3 @@
     </div>
   </div>
 </div>
-

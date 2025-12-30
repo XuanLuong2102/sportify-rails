@@ -1,10 +1,14 @@
 class Admin::PlaceSportsController < Admin::AdminController
+  include PaginatableConcern
+
   before_action :set_place
   before_action :set_place_sport, only: %i[edit update destroy soft_delete restore]
   before_action :load_sport_fields, only: %i[new edit create update]
+  before_action :per_page_default, only: [:index]
 
   def index
     @place_sports = @place.place_sports.includes(:sportfield)
+                          .paginate(page: params[:page], per_page: params[:per_page])
   end
 
   def new
@@ -59,6 +63,10 @@ class Admin::PlaceSportsController < Admin::AdminController
 
   def load_sport_fields
     @sportfields = Sportfield.all
+  end
+
+  def per_page_default
+    params[:per_page] = 5
   end
 
   def place_sport_params
