@@ -1,17 +1,23 @@
-<div>
-  <div class='row pb-5 align-items-center'>
-    <h5 class='col-4'><%= t('place_managers.title.list')%></h5>
-    <div class='col-8 pe-4'>
-      <%= render 'admin/place_managers/search_form'%>
-    </div>
-  </div>
-  <div class="d-flex justify-content-end pe-5 me-1">
-    <%= link_to new_admin_place_manager_path, class: 'btn btn-outline-primary me-3' do %>
-      <i class="fa fa-plus" aria-hidden="true"></i>
-      <%= t('place_managers.buttons.create_place_manager') %>
-    <% end %>
-  </div>
-
-  <%= render partial: 'table_place_managers', locals: { place_managers: @place_managers, q: @q } %>
-  <%= render 'layouts/admin/pagination', paging_collection: @place_managers %>
+<%= link_to admin_places_path, class: 'btn btn-outline-secondary border-0 ps-2' do %>
+  <i class="fas fa-arrow-left"></i>
+  <%= t('common.back_to_list') %>
+<% end %>
+<div class="ms-4 me-5">
+  <%= render 'admin/places/place_header', place: @place %>
 </div>
+
+<%= render 'admin/places/place_tabs',
+  place: @place,
+  active: :managers %>
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h3 class="mb-0"><%= t('place_managers.title.list') %></h3>
+
+  <%= link_to new_admin_place_place_manager_path(@place), class: 'btn btn-outline-primary me-3' do %>
+    <i class="fa fa-plus" aria-hidden="true"></i>
+    <%= t('place_managers.buttons.create') %>
+  <% end %>
+</div>
+
+<%= render 'table_place_managers', place_managers: @place_managers, place: @place %>
+<%= render 'layouts/admin/pagination', paging_collection: @place_managers %>
