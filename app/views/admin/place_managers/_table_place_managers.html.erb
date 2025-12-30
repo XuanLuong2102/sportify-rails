@@ -1,17 +1,15 @@
 <table class="table table-striped">
   <thead>
     <tr>
-      <th><%= t('place_managers.place') %></th>
-      <th><%= t('place_managers.adress') %></th>
       <th><%= t('place_managers.user') %></th>
-      <th><%= t('place_managers.user_email') %></th>
-      <th><%= t('place_managers.user_contact') %></th>
+      <th><%= t('place_managers.email') %></th>
+      <th><%= t('place_managers.contact') %></th>
       <th><%= t('place_managers.action') %></th>
     </tr>
   </thead>
   <tbody class='table-group-divider'>
     <% if place_managers.any? %>
-      <%= render place_managers %>
+      <%= render place_managers, place: place %>
     <% else %>
       <tr>
         <td class='text-center' colspan='6'><%= t('places.no_place_managers') %></td>

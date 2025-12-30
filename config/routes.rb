@@ -26,7 +26,6 @@ Rails.application.routes.draw do
         end
         get :deleted, on: :collection
       end
-      resources :place_managers, only: [:index, :new, :create, :show, :edit, :update, :destroy]
       resources :places, only: [:index, :new, :create, :show, :edit, :update] do
         member do
           patch :soft_delete
@@ -34,6 +33,7 @@ Rails.application.routes.draw do
         end
         get :deleted, on: :collection
 
+        resources :place_managers, only: [:index, :new, :create, :edit, :update, :destroy]
         resources :place_sports, only: [:index, :new, :create, :edit, :update] do
           member do
             patch :soft_delete

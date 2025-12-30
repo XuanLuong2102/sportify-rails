@@ -237,12 +237,14 @@ vi:
 
   place_managers:
     title:
-      list: Danh sách Quản lý Sân
+      list: Danh sách Quản lý
       new: Gán quản lý cho sân
       edit: Chỉnh sửa phân công
       show: Chi tiết phân công
     place: Địa điểm
     user: Quản lý
+    email: Địa chỉ Email
+    contact: Liên hệ
     action: Thao tác
     no_place_managers: Không có phân công
     place_placeholder: Chọn địa điểm

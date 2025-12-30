@@ -1,12 +1,12 @@
-<%= form_for [:admin, @place_manager] do |form| %>
+<%= form_for [:admin, @place, @place_manager] do |form| %>
 
   <!-- Place -->
   <div class="mb-3">
-    <%= form.label :place_id, t('place_managers.place'), class: 'form-label fw-bold' %>
-    <%= form.collection_select :place_id, @places, :place_id, :name,
-                              { prompt: t('place_managers.place_placeholder') },
-                              { class: 'form-select' } %>
-    <%= render 'layouts/admin/field_error_create_form', object: @place_manager, field: :place_id %>
+    <%= label_tag :place_name, t('place_managers.place'), class: 'form-label fw-bold' %>
+    <%= text_field_tag :place_name,
+          @place.name,
+          class: 'form-control',
+          readonly: true %>
   </div>
 
   <!-- User -->

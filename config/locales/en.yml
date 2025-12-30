@@ -242,6 +242,8 @@ en:
       show: Assignment Detail
     place: Place
     user: Manager
+    email: Email Address
+    contact: Contact
     action: Action
     no_place_managers: No assignments found
     place_placeholder: Select a place

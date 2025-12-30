@@ -20,7 +20,7 @@
           <%= t('common.cancel') %>
         </button>
 
-        <%= button_to admin_place_manager_path(place_manager),
+        <%= button_to admin_place_place_manager_path(place, place_manager),
               method: :delete,
               params: { return_to: request.fullpath },
               class: 'btn btn-danger',

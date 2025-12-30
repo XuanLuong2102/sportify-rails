@@ -1,12 +1,10 @@
 <tr class="align-items-center">
-  <td><%= place_manager.place.name %></td>
-  <td><%= place_manager.place.address %></td>
   <td><%= place_manager.user.full_name %></td>
   <td><%= place_manager.user.email %></td>
   <td><%= place_manager.user.phone %></td>
   <td>
     <div class="d-inline-flex align-items-center gap-2">
-      <%= link_to edit_admin_place_manager_path(place_manager),
+      <%= link_to edit_admin_place_place_manager_path(place, place_manager),
                   class: 'btn text-primary' do %>
           <i class="fa fa-pen"></i>
       <% end %>
@@ -19,4 +17,4 @@
     </div>
   </td>
 </tr>
-<%= render 'admin/place_managers/confirm_delete_modal', place_manager: place_manager %>
+<%= render 'admin/place_managers/confirm_delete_modal', place_manager: place_manager, place: place %>

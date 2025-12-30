@@ -17,37 +17,11 @@
         </div>
 
         <!-- Places tab side bar -->
-        <a class="nav-link <%= 'collapsed' unless controller_place_relate? %> <%= 'active' if controller_place_relate? %>"
-           data-bs-toggle="collapse"
-           data-bs-target="#collapsePlaces"
-           aria-expanded="<%= controller_name == 'places' %>"
-           aria-controls="collapsePlaces">
-          <div class="sb-nav-link-icon">
-            <i class="fas fa-map-marker-alt"></i>
-          </div>
+        <%= link_to admin_places_path,
+              class: "nav-link #{'active' if controller_name == 'places'}" do %>
+          <i class="fas fa-map-marker-alt ms-1 me-2"></i>
           <%= t('sidebar.places') %>
-          <div class="sb-sidenav-collapse-arrow">
-            <i class="fas fa-angle-down sb-sidenav-collapse-arrow"></i>
-          </div>
-        </a>
-
-        <!-- Places submenu -->
-        <div class="collapse <%= 'show' if controller_place_relate? %>"
-             id="collapsePlaces"
-             data-bs-parent="#sidenavAccordion">
-          <nav class="sb-sidenav-menu-nested nav">
-
-            <%= link_to admin_places_path,
-                  class: "nav-link #{'active' if controller_name == 'places'}" do %>
-              <%= t('sidebar.places') %>
-            <% end %>
-
-            <%= link_to admin_place_managers_path,
-                  class: "nav-link #{'active' if controller_name == 'place_managers'}" do %>
-              <%= t('sidebar.place_managers') %>
-            <% end %>
-          </nav>
-        </div>
+        <% end %>
 
         <!-- Sportfields tab side bar -->
         <%= link_to admin_sportfields_path,
