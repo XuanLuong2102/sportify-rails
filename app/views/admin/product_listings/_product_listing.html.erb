@@ -1,0 +1,23 @@
+<tr>
+  <td>
+    <%= product_listing.product.name %>
+  </td>
+
+  <td class="text-center">
+    <span class="badge bg-info"><%= product_listing.sold_count %></span>
+  </td>
+
+  <td class="text-center">
+    <span class="badge bg-<%= product_listing.is_active ? 'success' : 'danger' %>">
+      <%= t("product_listings.status_#{product_listing.is_active ? 'active' : 'inactive'}") %>
+    </span>
+  </td>
+
+  <td class="text-center">
+    <%= format_datetime(product_listing.created_at) %>
+  </td>
+
+  <td class="text-center">
+    <%= format_datetime(product_listing.updated_at) %>
+  </td>
+</tr>

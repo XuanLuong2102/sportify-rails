@@ -40,6 +40,7 @@ Rails.application.routes.draw do
             patch :restore
           end
         end
+        resources :product_listings, only: [:index]
       end
       resources :sportfields, only: [:index, :new, :create, :edit, :update]
     end
