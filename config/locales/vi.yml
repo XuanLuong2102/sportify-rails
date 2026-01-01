@@ -309,6 +309,8 @@ vi:
   product_listings:
     title:
       list: Danh sách sản phẩm đang kinh doanh
+      new: Thêm sản phẩm
+      edit: Chỉnh sửa sản phẩm
 
     product_name: Tên sản phẩm
     sold_count: Số sản phẩm đã bán
@@ -321,6 +323,18 @@ vi:
     status_inactive: Ngưng bán
 
     no_products: Không có sản phẩm nào
+
+    buttons:
+      create: Thêm
+      update: Cập nhật
+      delete: Xóa
+
+    notices:
+      created: Tạo sản phẩm thành công
+      updated: Cập nhật sản phẩm thành công
+      deleted: Xóa sản phẩm thành công
+
+    confirm_delete: Bạn có chắc chắn muốn xóa sản phẩm này?
 
   messages:
     users:

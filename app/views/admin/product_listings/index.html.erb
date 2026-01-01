@@ -12,6 +12,10 @@
 
 <div class="d-flex justify-content-between align-items-center mb-3">
   <h3 class="mb-0"><%= t('product_listings.title.list') %></h3>
+  <%= link_to new_admin_place_product_listing_path(@place), class: 'btn btn-outline-primary me-3' do %>
+    <i class="fa fa-plus" aria-hidden="true"></i>
+    <%= t('place_sports.buttons.create') %>
+  <% end %>
 </div>
 
 <%= render 'table', product_listings: @product_listings, place: @place %>

@@ -22,6 +22,7 @@
 
         <%= button_to soft_delete_admin_place_place_sport_path(place, place_sport),
               method: :patch,
+              data: { turbo: false },
               params: { return_to: request.fullpath },
               class: 'btn btn-danger' do %>
           <%= t('common.delete') %>

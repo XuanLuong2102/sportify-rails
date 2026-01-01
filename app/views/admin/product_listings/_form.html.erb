@@ -1,0 +1,24 @@
+<%= form_with(model: [ :admin, @place, @product_listing ], local: true) do |f| %>
+  <div class="mb-3">
+    <%= label_tag :place_name, t('product_listings.place'), class: 'form-label fw-bold' %>
+    <%= text_field_tag :place_name,
+          @place.name,
+          class: 'form-control',
+          readonly: true %>
+  </div>
+
+  <div class="mb-3">
+    <%= f.label :product_id, t('product_listings.product_name'), class: 'form-label' %>
+    <%= f.select :product_id, options_from_collection_for_select(@products, :id, :name, @product_listing.product_id), { include_blank: true }, class: 'form-select' %>
+  </div>
+
+  <div class="form-check mb-3">
+    <%= f.check_box :is_active, class: 'form-check-input' %>
+    <%= f.label :is_active, t('product_listings.status_active'), class: 'form-check-label' %>
+  </div>
+
+  <div class="d-flex gap-2">
+    <%= f.submit t('common.save'), class: 'btn btn-primary' %>
+    <%= link_to t('common.cancel'), back_to_list(admin_place_product_listings_path(@place)), class: 'btn btn-outline-secondary' %>
+  </div>
+<% end %>

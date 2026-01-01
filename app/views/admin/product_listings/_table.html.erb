@@ -13,7 +13,7 @@
 
     <tbody>
       <% if product_listings.any? %>
-        <%= render product_listings %>
+        <%= render product_listings, place: place %>
       <% else %>
         <tr>
           <td colspan="6"
