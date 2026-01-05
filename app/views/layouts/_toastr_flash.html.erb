@@ -1,0 +1,23 @@
+<% if flash.any? %>
+  <script type="text/javascript">
+    toastr.options = {
+      "closeButton": true,
+      "progressBar": true,
+      "positionClass": "toast-top-right",
+      "timeOut": "5000",
+    };
+
+    <% flash.each do |type, message| %>
+      <% case type %>
+      <% when 'notice', 'success' %>
+        toastr.success("<%= j message %>");
+      <% when 'alert', 'error', 'danger' %>
+        toastr.error("<%= j message %>");
+      <% when 'warning' %>
+        toastr.warning("<%= j message %>");
+      <% else %>
+        toastr.info("<%= j message %>");
+      <% end %>
+    <% end %>
+  </script>
+<% end %>

@@ -1,0 +1,39 @@
+<tr class="align-items-center">
+  <td scope="row" class="ps-1 col-1">
+    <% if product.thumbnail.attached? %>
+      <%= image_tag url_for(product.thumbnail.variant(:thumbnail_50)), class: 'rounded', alt: product.name %>
+    <% else %>
+      <i class="fa fa-image text-muted"></i>
+    <% end %>
+  </td>
+  <td scope="row" class="text-start ps-1 col-3 text-truncate" title="<%= product.name %>"><%= product.name %></td>
+  
+  <td><%= product.brand&.name %></td>
+  <td><%= product.category&.name_en %></td>
+  
+  <td>
+    <% stock = product.product_variants.sum { |v| v.product_stocks.sum(&:stock_quantity) } %>
+    <%= stock %>
+  </td>
+
+  <td><%= format_datetime(product.created_at) %></td>
+  <td><%= format_datetime(product.updated_at) %></td>
+  <td>
+    <div class="d-inline-flex align-items-center gap-2">
+      <% if product.is_active? %>
+        <%= link_to edit_admin_product_path(product), class: 'btn text-primary' do %>
+          <i class="fa fa-pen"></i>
+        <% end %>
+        <button type="button" class="btn text-danger" data-bs-toggle="modal" data-bs-target="#deleteProductModal-<%= product.id %>">
+          <i class="fa fa-trash"></i>
+        </button>
+      <% else %>
+        <%= button_to restore_admin_product_path(product), method: :patch, params: { return_to: request.fullpath }, class: 'btn text-success' do %>
+          <i class="fa fa-rotate-left"></i>
+        <% end %>
+      <% end %>
+    </div>
+  </td>
+</tr>
+
+<%= render 'admin/products/confirm_delete_modal', product: product %>

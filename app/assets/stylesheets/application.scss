@@ -11410,6 +11410,22 @@ body {
   top: 56px;
 }
 
+@media (min-width: 1220px) {
+  body {
+    font-size: 14px;
+  }
+  .sb-nav-fixed #layoutSidenav #layoutSidenav_content {
+    padding-left: 190px;
+  }
+  .sb-nav-fixed #layoutSidenav #layoutSidenav_nav {
+    width: 190px;
+  }
+
+  .nav-link {
+    font-size: 14px;
+  }
+}
+
 #layoutError {
   display: flex;
   flex-direction: column;
@@ -11767,3 +11783,24 @@ input[readonly]:focus {
 .dropdown-submenu:hover > a {
   background-color: rgba(0, 0, 0, 0.05);
 }
+
+@media (min-width: 1220px) {
+  .navbar-header {
+    width: 190px;
+  }
+}
+
+#toast-container { 
+  top: 65px !important;
+}
+
+#toast-container > .toast {
+  // background-image: none !important; /* Bỏ icon mặc định nếu bị lỗi */
+  opacity: 1 !important;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.toast-success { background-color: #198754 !important; } /* Bootstrap Success */
+.toast-error { background-color: #dc3545 !important; }   /* Bootstrap Danger */
+.toast-warning { background-color: #ffc107 !important; color: #000 !important; }
+.toast-info { background-color: #0dcaf0 !important; }

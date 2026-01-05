@@ -20,6 +20,10 @@ class Product < ApplicationRecord
 
   localize_attr :name, :description
 
+  TRANSLATABLE_FIELDS = %w[name description].freeze
+
+  after_commit :schedule_translation, on: [:create, :update]
+
   scope :active, -> { where(is_active: true) }
 
   ransacker :name do |parent|
@@ -32,5 +36,11 @@ class Product < ApplicationRecord
 
   def self.ransackable_associations(auth_object = nil)
     ['brand', 'category', 'product_variants', 'product_colors', 'product_sizes', 'product_listings', 'places']
+  end
+  
+  private
+
+  def schedule_translation
+    AutoTranslationJob.perform_now(self.class.name, self.id)
   end
 end

@@ -1,0 +1,40 @@
+<div>
+  <div class='row pb-5 align-items-center'>
+    <h5 class='col-4'><%= t('products.title.list')%></h5>
+    <div class='col-8 pe-4'>
+      <%= render 'admin/products/search_form'%>
+    </div>
+  </div>
+
+  <div class="d-flex justify-content-end pe-5 me-1">
+    <%= link_to deleted_admin_products_path, class: 'btn btn-outline-danger' do %>
+      <i class="fa fa-trash" aria-hidden="true"></i>
+      <%= t('products.title.deleted') %>
+    <% end %>
+  </div>
+
+  <table class='table table-striped text-center align-middle'>
+    <thead>
+      <tr>
+        <th></th>
+        <th class="text-start"><%= sort_link(@q, :name, t('products.name'), default_order: :desc) %></th>
+        <th><%= t('products.brand') %></th>
+        <th><%= t('products.category') %></th>
+        <th><%= t('products.stock') %></th>
+        <th><%= sort_link(@q, :created_at, t('products.created_at'), default_order: :desc) %></th>
+        <th><%= sort_link(@q, :updated_at, t('products.updated_at'), default_order: :desc) %></th>
+        <th><%= t('products.action') %></th>
+      </tr>
+    </thead>
+    <tbody class='table-group-divider'>
+      <% if @products.any? %>
+        <%= render @products %>
+      <% else %>
+        <tr>
+          <td class='text-center' colspan='8'><%= t('products.no_products') %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+  <%= render 'layouts/admin/pagination', paging_collection: @products %>
+</div>

@@ -1,0 +1,39 @@
+<div class="row">
+  <div class="col-8">
+    <h5><%= @product.name %></h5>
+    <p><strong><%= t('products.brand') %>:</strong> <%= @product.brand&.name %></p>
+    <p><strong><%= t('products.category') %>:</strong> <%= @product.category&.name_en %></p>
+    
+    <p><strong><%= t('products.stock') %>:</strong>
+      <%= @product.product_variants.sum { |v| v.product_stocks.sum(&:stock_quantity) } %>
+    </p>
+
+    <p><strong><%= t('products.description') %>:</strong></p>
+    <div><%= simple_format(@product.description) %></div>
+
+    <h6 class="mt-4"><%= t('products.variants') %></h6>
+    <table class="table">
+      <thead>
+        <tr>
+          <th><%= t('products.sku') %></th>
+          <th><%= t('products.color') %></th>
+          <th><%= t('products.size') %></th>
+          <th><%= t('products.price') %></th>
+          <th><%= t('products.stock') %></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @product.product_variants.each do |v| %>
+          <tr>
+            <td><%= v.sku %></td>
+            <td><%= v.product_color&.name %></td>
+            <td><%= v.product_size&.name %></td>
+            <td><%= number_to_currency(v.price_vnd, unit: '₫') rescue v.price_vnd %></td>
+            
+            <td><%= v.product_stocks.sum(&:stock_quantity) %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
