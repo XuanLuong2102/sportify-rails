@@ -305,7 +305,39 @@ en:
       restore: Restore
       edit: Edit
       delete: Delete
-    
+
+  product_listings:
+    title:
+      list: List of products for sale
+      new: New product
+      edit: Edit product
+
+    product_name: Product name
+    sold_count: Quantity Sold
+    status: Status
+    created_at: Created at
+    updated_at: Updated at
+    action: Action
+
+    status_active: Active
+    status_inactive: Inactive
+
+    no_products: No products found
+
+    buttons:
+      create: Create
+      update: Update
+      delete: Delete
+
+    notices:
+      created: Product created
+      updated: Product updated
+      deleted: Product deleted
+
+    confirm_delete: Are you sure you want to delete this product?
+    status_inactive: Inactive
+
+    no_products: No products found
 
   messages:
     users:

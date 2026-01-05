@@ -306,6 +306,36 @@ vi:
       edit: Chỉnh sửa
       delete: Xóa
 
+  product_listings:
+    title:
+      list: Danh sách sản phẩm đang kinh doanh
+      new: Thêm sản phẩm
+      edit: Chỉnh sửa sản phẩm
+
+    product_name: Tên sản phẩm
+    sold_count: Số sản phẩm đã bán
+    status: Trạng thái
+    created_at: Ngày tạo
+    updated_at: Ngày cập nhật
+    action: Thao tác
+
+    status_active: Đang bán
+    status_inactive: Ngưng bán
+
+    no_products: Không có sản phẩm nào
+
+    buttons:
+      create: Thêm
+      update: Cập nhật
+      delete: Xóa
+
+    notices:
+      created: Tạo sản phẩm thành công
+      updated: Cập nhật sản phẩm thành công
+      deleted: Xóa sản phẩm thành công
+
+    confirm_delete: Bạn có chắc chắn muốn xóa sản phẩm này?
+
   messages:
     users:
       create:

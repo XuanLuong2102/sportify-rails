@@ -1,0 +1,27 @@
+<div class="table-responsive">
+  <table class="table table-bordered align-middle">
+    <thead class="table-light">
+      <tr>
+        <th><%= t('product_listings.product_name') %></th>
+        <th class="text-center"><%= t('product_listings.sold_count') %></th>
+        <th class="text-center"><%= t('product_listings.status') %></th>
+        <th class="text-center"><%= t('product_listings.created_at') %></th>
+        <th class="text-center"><%= t('product_listings.updated_at') %></th>
+        <th class="text-center"><%= t('product_listings.action') %></th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% if product_listings.any? %>
+        <%= render product_listings, place: place %>
+      <% else %>
+        <tr>
+          <td colspan="6"
+              class="text-center text-muted py-4">
+            <%= t('product_listings.no_products') %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

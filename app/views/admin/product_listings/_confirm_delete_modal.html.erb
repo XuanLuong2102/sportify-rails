@@ -1,0 +1,23 @@
+<div class="modal fade" id="deleteProductListingModal-<%= product_listing.id %>" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><%= t('product_listings.confirm_delete') %></h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p><%= t('product_listings.confirm_delete') %></p>
+      </div>
+      <div class="modal-footer">
+        <%= button_to soft_delete_admin_place_product_listing_path(place, product_listing),
+              method: :patch,
+              data: { turbo: false },
+              params: { return_to: request.fullpath },
+              class: 'btn btn-danger' do %>
+          <%= t('common.delete') %>
+        <% end %>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><%= t('common.cancel') %></button>
+      </div>
+    </div>
+  </div>
+</div>

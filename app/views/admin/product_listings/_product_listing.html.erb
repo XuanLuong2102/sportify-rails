@@ -1,0 +1,51 @@
+<tr>
+  <td>
+    <%= product_listing.product.name %>
+  </td>
+
+  <td class="text-center">
+    <span class="badge bg-info"><%= product_listing.sold_count %></span>
+  </td>
+
+  <td class="text-center">
+    <span class="badge bg-<%= product_listing.is_active ? 'success' : 'danger' %>">
+      <%= t("product_listings.status_#{product_listing.is_active ? 'active' : 'inactive'}") %>
+    </span>
+  </td>
+
+  <td class="text-center">
+    <%= format_datetime(product_listing.created_at) %>
+  </td>
+
+  <td class="text-center">
+    <%= format_datetime(product_listing.updated_at) %>
+  </td>
+  <td class="text-center">
+    <div class="d-inline-flex gap-1">
+      <% if product_listing.is_active %>
+        <%= link_to edit_admin_place_product_listing_path(place, product_listing),
+                    class: 'btn btn-primary' do %>
+          <i class="fa fa-pen"></i>
+          <%= t('product_listings.buttons.edit') %>
+        <% end %>
+
+        <button type="button"
+                class="btn btn-danger js-delete-product-listing"
+                data-bs-toggle="modal"
+                data-bs-target="#deleteProductListingModal"
+                data-url="<%= soft_delete_admin_place_product_listing_path(place, product_listing) %>">
+          <i class="fa fa-trash"></i>
+          <%= t('product_listings.buttons.delete') %>
+        </button>
+      <% else %>
+        <%= button_to restore_admin_place_product_listing_path(place, product_listing),
+              method: :patch,
+              class: 'btn btn-success' do %>
+          <i class="fa fa-rotate-left"></i>
+          <%= t('product_listings.buttons.restore') %>
+        <% end %>
+      <% end %>
+   </div>
+  </td>
+</tr>
+<%= render 'admin/product_listings/confirm_delete_modal', place: place, product_listing: product_listing %>

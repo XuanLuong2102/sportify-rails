@@ -22,6 +22,7 @@
 
         <%= button_to soft_delete_admin_user_path(user),
               method: :patch,
+              data: { turbo: false },
               class: 'btn btn-danger',
               params: { return_to: request.fullpath } do %>
           <%= t('common.delete') %>

@@ -5,6 +5,7 @@ class Place < ApplicationRecord
 
   has_many :place_sports
   has_many :place_managers
+  has_many :product_listings
 
   localize_attr :name, :address, :city, :district, :description
 
@@ -46,7 +47,7 @@ class Place < ApplicationRecord
   end
 
   def self.ransackable_associations(auth_object = nil)
-    ['place_sports', 'place_managers']
+    ['place_sports', 'place_managers', 'product_listings']
   end
 
   private
