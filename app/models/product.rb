@@ -13,6 +13,9 @@ class Product < ApplicationRecord
   has_many :places, through: :product_listings
   has_many :product_reviews, -> { distinct }, through: :product_listings
 
+  accepts_nested_attributes_for :product_variants, allow_destroy: true, reject_if: :all_blank
+  accepts_nested_attributes_for :product_images, allow_destroy: true, reject_if: :all_blank
+
   has_one_attached :thumbnail do |attachable|
     attachable.variant :thumbnail_50, resize_to_limit: [50, 50]
     attachable.variant :thumbnail_300, resize_to_limit: [300, 300]

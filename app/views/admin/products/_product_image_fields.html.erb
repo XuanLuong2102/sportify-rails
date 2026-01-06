@@ -1,0 +1,28 @@
+<div class="nested-fields col-md-3 mb-4 text-center">
+  <div class="card h-100 shadow-sm">
+    <div class="card-body p-2">
+      <div class="mb-2 border d-flex align-items-center justify-content-center bg-light" style="height: 150px; overflow: hidden;">
+        <% if f.object.image.attached? %>
+          <%= image_tag f.object.image, class: "img-fluid preview-img" %>
+        <% else %>
+          <img src="" class="img-fluid preview-img d-none" style="max-height: 100%;">
+          <div class="placeholder-text text-muted small">No image selected</div>
+        <% end %>
+      </div>
+
+      <%= f.file_field :image, class: 'form-control form-control-sm' %>
+      
+      <div class="mt-2">
+        <%= f.label :product_color_id, "Màu sắc", class: "small fw-bold" %>
+        <%= f.select :product_color_id, @colors, { include_blank: "Tất cả" }, class: "form-select form-select-sm" %>
+      </div>
+    </div>
+    
+    <div class="card-footer p-1">
+      <%= f.hidden_field :_destroy, class: "destroy-field" %>
+      <button type="button" class="btn btn-danger btn-sm w-100 remove_fields">
+        <i class="fa fa-trash"></i> Remove
+      </button>
+    </div>
+  </div>
+</div>

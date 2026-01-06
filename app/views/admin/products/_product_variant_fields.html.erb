@@ -1,0 +1,28 @@
+<div class="nested-fields row g-3 align-items-end mb-3 border p-2 rounded">
+  <div class="col-md-3">
+    <%= f.label :product_color_id, "Color", class: "form-label small fw-bold" %>
+    <%= f.select :product_color_id, ProductColor.all.pluck(:name, :id), { prompt: "Select Color" }, class: 'form-select form-select-sm' %>
+  </div>
+
+  <div class="col-md-3">
+    <%= f.label :product_size_id, "Size", class: "form-label small fw-bold" %>
+    <%= f.select :product_size_id, ProductSize.all.pluck(:name, :id), { prompt: "Select Size" }, class: 'form-select form-select-sm' %>
+  </div>
+
+  <div class="col-md-3">
+    <%= f.label :price_vnd, "Price (VND)", class: "form-label small fw-bold" %>
+    <%= f.number_field :price_vnd, class: 'form-control form-control-sm' %>
+  </div>
+  
+  <div class="col-md-2">
+    <%= f.label :sku, "SKU", class: "form-label small fw-bold" %>
+    <%= f.text_field :sku, class: 'form-control form-control-sm' %>
+  </div>
+
+  <div class="col-md-1 text-end">
+    <%= f.hidden_field :_destroy, class: "destroy-field" %>
+    <button type="button" class="btn btn-danger btn-sm remove_fields">
+      <i class="fa fa-trash"></i>
+    </button>
+  </div>
+</div>

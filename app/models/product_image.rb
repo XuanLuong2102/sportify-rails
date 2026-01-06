@@ -6,5 +6,4 @@ class ProductImage < ApplicationRecord
     attachable.variant :image_50, resize_to_limit: [50, 50]
     attachable.variant :image_300, resize_to_limit: [300, 300]
   end
-  validates :image_url, presence: true
 end

@@ -28,6 +28,8 @@ class Admin::ProductsController < Admin::AdminController
 
   def edit
     load_brands_and_categories
+    @colors = ProductColor.all.pluck(:name, :id)
+    @sizes = ProductSize.all.pluck(:name, :id)
   end
 
   def update
@@ -80,6 +82,10 @@ class Admin::ProductsController < Admin::AdminController
   end
 
   def product_params
-    params.require(:product).permit(:name_en, :name_vi, :brand_id, :category_id, :description_en, :description_vi, :thumbnail)
+    params.require(:product).permit(
+      :name_en, :name_vi, :brand_id, :category_id, :description_en, :description_vi, :thumbnail,
+      product_variants_attributes: [:id, :product_color_id, :product_size_id, :price_vnd, :sku, :_destroy],
+      product_images_attributes: [:id, :product_color_id, :image, :sort_order, :_destroy]
+    )
   end
 end

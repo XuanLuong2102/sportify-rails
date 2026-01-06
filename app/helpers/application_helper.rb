@@ -12,4 +12,18 @@ module ApplicationHelper
     
     session[history_key] || request.referer || default_path
   end
+
+  def link_to_add_fields(name, f, association)
+    new_object = f.object.send(association).klass.new
+    id = new_object.object_id
+    
+    # Render partial _product_variant_fields.html.erb
+    fields = f.fields_for(association, new_object, child_index: id) do |builder|
+      render(association.to_s.singularize + "_fields", f: builder)
+    end
+    
+    # Tạo nút bấm gọi Javascript
+    link_to(name, '#', class: "btn btn-outline-primary btn-sm add_fields", 
+      data: { id: id, fields: fields.gsub("\n", "") })
+  end
 end

@@ -339,6 +339,39 @@ en:
 
     no_products: No products found
 
+  products:
+    title:
+      list: Products List
+      deleted: Deleted Products
+      new: New Product
+      edit: Edit Product
+      show: Product Detail
+
+    name: Name
+    brand: Brand
+    category: Category
+    stock: Stock
+    description: Description
+    variants: Variants
+    sku: SKU
+    color: Color
+    size: Size
+    price: Price
+
+    created_at: Created At
+    updated_at: Updated At
+
+    no_products: No products found
+
+    buttons:
+      create: Create
+      update: Update
+
+    notices:
+      created: Product created
+      updated: Product updated
+      deleted: Product deleted
+
   messages:
     users:
       create:
