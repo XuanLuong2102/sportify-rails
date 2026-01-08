@@ -7,6 +7,10 @@
   </div>
 
   <div class="d-flex justify-content-end pe-5 me-1">
+    <%= link_to new_admin_product_path, class: 'btn btn-outline-primary me-3' do %>
+      <i class="fa fa-plus" aria-hidden="true"></i>
+      <%= t('products.buttons.create_product') %>
+    <% end %>
     <%= link_to deleted_admin_products_path, class: 'btn btn-outline-danger' do %>
       <i class="fa fa-trash" aria-hidden="true"></i>
       <%= t('products.title.deleted') %>

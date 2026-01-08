@@ -13,6 +13,26 @@ module ApplicationHelper
     session[history_key] || request.referer || default_path
   end
 
+  def hex_contrast_color(hex_color)
+    return '#000000' if hex_color.blank?
+    
+    # Remove # if present
+    hex = hex_color.gsub('#', '')
+    
+    # Convert hex to RGB
+    r = hex[0..1].to_i(16)
+    g = hex[2..3].to_i(16)
+    b = hex[4..5].to_i(16)
+    
+    # Calculate luminance
+    luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255
+    
+    # Return white text for dark colors, black for light colors
+    luminance > 0.5 ? '#000000' : '#FFFFFF'
+  rescue
+    '#000000'
+  end
+
   def link_to_add_fields(name, f, association)
     new_object = f.object.send(association).klass.new
     id = new_object.object_id

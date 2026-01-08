@@ -11410,7 +11410,7 @@ body {
   top: 56px;
 }
 
-@media (min-width: 1220px) {
+@media (max-width: 1400px) {
   body {
     font-size: 14px;
   }
@@ -11784,7 +11784,7 @@ input[readonly]:focus {
   background-color: rgba(0, 0, 0, 0.05);
 }
 
-@media (min-width: 1220px) {
+@media (max-width: 1400px) {
   .navbar-header {
     width: 190px;
   }

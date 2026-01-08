@@ -23,7 +23,7 @@
         <%= button_to soft_delete_admin_supplier_path(supplier),
               method: :patch,
               data: { turbo: false },
-              params: { return_to: request.fullpath }
+              params: { return_to: request.fullpath },
               class: 'btn btn-danger' do %>
           <%= t('common.delete') %>
         <% end %>

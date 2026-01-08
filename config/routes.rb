@@ -48,13 +48,19 @@ Rails.application.routes.draw do
         end
       end
       resources :sportfields, only: [:index, :new, :create, :edit, :update]
-      resources :products, only: %i[index new create show edit update] do
+      resources :products, only: %i[index new create show edit update destroy] do
         member do
           patch :soft_delete
           patch :restore
         end
         get :deleted, on: :collection
-      end 
+      end
+      resources :distributions, only: [:index] do
+        member do
+          patch :approve
+          patch :reject
+        end
+      end
     end
     # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
   end

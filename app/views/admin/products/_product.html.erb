@@ -21,6 +21,9 @@
   <td>
     <div class="d-inline-flex align-items-center gap-2">
       <% if product.is_active? %>
+        <%= link_to admin_product_path(product), class: 'btn text-primary' do %>
+          <i class="fa fa-info"></i>
+        <% end %>
         <%= link_to edit_admin_product_path(product), class: 'btn text-primary' do %>
           <i class="fa fa-pen"></i>
         <% end %>

@@ -1,0 +1,70 @@
+<div>
+  <div class='row pb-5 align-items-center'>
+    <h5 class='col-4'><%= t('products.title.deleted')%></h5>
+    <div class='col-8 pe-4'>
+      <%= render 'admin/products/search_form'%>
+    </div>
+  </div>
+
+  <div class="d-flex justify-content-end pe-5 me-1">
+    <%= link_to admin_products_path, class: 'btn btn-outline-primary' do %>
+      <i class="fa fa-arrow-left" aria-hidden="true"></i>
+      <%= t('products.buttons.back_to_products') %>
+    <% end %>
+  </div>
+
+  <% if @products.any? %>
+    <table class='table table-striped text-center align-middle'>
+      <thead>
+        <tr>
+          <th></th>
+          <th class="text-start"><%= sort_link(@q, :name, t('products.name'), default_order: :desc) %></th>
+          <th><%= t('products.brand') %></th>
+          <th><%= t('products.category') %></th>
+          <th><%= sort_link(@q, :created_at, t('products.created_at'), default_order: :desc) %></th>
+          <th><%= sort_link(@q, :updated_at, t('products.updated_at'), default_order: :desc) %></th>
+          <th><%= t('products.action') %></th>
+        </tr>
+      </thead>
+      <tbody class='table-group-divider'>
+        <% @products.each do |product| %>
+          <tr>
+            <td>
+              <% if product.thumbnail.attached? %>
+                <%= image_tag product.thumbnail.variant(:thumbnail_50), class: "img-thumbnail" %>
+              <% else %>
+                <span class="badge bg-secondary">No Image</span>
+              <% end %>
+            </td>
+            <td class="text-start"><strong><%= product.name %></strong></td>
+            <td><%= product.brand&.name %></td>
+            <td><%= product.category&.name %></td>
+            <td>
+              <small><%= l product.created_at, format: :short %></small>
+            </td>
+            <td>
+              <small><%= l product.updated_at, format: :short %></small>
+            </td>
+            <td>
+              <div class="btn-group" role="group">
+                <%= link_to admin_product_path(product, action: 'restore'), method: :patch, class: 'btn btn-sm btn-success', title: t('common.restore') do %>
+                  <i class="fa fa-undo"></i>
+                <% end %>
+                
+                <%= button_to admin_product_path(product), method: :delete, data: { confirm: t('common.are_you_sure') }, class: 'btn btn-sm btn-danger', title: t('common.delete') do %>
+                  <i class="fa fa-trash"></i>
+                <% end %>
+              </div>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+    <%= render 'layouts/admin/pagination', paging_collection: @products %>
+  <% else %>
+    <div class="alert alert-info text-center">
+      <i class="fa fa-info-circle"></i>
+      <%= t('products.no_deleted_products') %>
+    </div>
+  <% end %>
+</div>

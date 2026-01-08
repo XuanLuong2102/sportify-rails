@@ -1,0 +1,233 @@
+<div>
+  <% request_info_label = t('distribution.request_info') %>
+  <% approval_confirm_text = t('distribution.approval_confirmation_text') %>
+
+  <!-- Header Section -->
+  <div class='row pb-5 align-items-center'>
+    <h5 class='col-12'>
+      <i class="fas fa-boxes"></i> <%= t('distribution.title') %>
+    </h5>
+  </div>
+
+  <!-- Tabs Navigation -->
+  <div class="nav nav-tabs mb-3" role="tablist">
+    <button 
+      class="nav-link <%= 'active' if @tab == 'transfers' %>" 
+      id="transfers-tab" 
+      data-bs-toggle="tab" 
+      data-bs-target="#transfers-content" 
+      type="button" 
+      role="tab"
+      onclick="changeTab('transfers')">
+      <i class="fas fa-dolly"></i> <%= t('distribution.stock_transfers_title') %>
+    </button>
+    <button 
+      class="nav-link <%= 'active' if @tab == 'requests' %>" 
+      id="requests-tab" 
+      data-bs-toggle="tab" 
+      data-bs-target="#requests-content" 
+      type="button" 
+      role="tab"
+      onclick="changeTab('requests')">
+      <i class="fas fa-list"></i> <%= t('distribution.stock_requests_title') %>
+    </button>
+  </div>
+
+  <!-- Tab Content -->
+  <div class="tab-content">
+    <!-- Stock Transfers Tab -->
+    <div 
+      class="tab-pane fade <%= 'show active' if @tab == 'transfers' %>" 
+      id="transfers-content" 
+      role="tabpanel">
+      <%= render 'stock_transfers' %>
+    </div>
+
+    <!-- Stock Requests Tab -->
+    <div 
+      class="tab-pane fade <%= 'show active' if @tab == 'requests' %>" 
+      id="requests-content" 
+      role="tabpanel">
+      <%= render 'stock_requests' %>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Approval Confirmation -->
+<div class="modal fade" id="approvalModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header bg-info text-white">
+        <h5 class="modal-title">
+          <i class="fas fa-check-circle"></i> <%= t('distribution.confirm_approval') %>
+        </h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <div id="approvalModalContent">
+          <!-- Content will be filled by JavaScript -->
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          <%= t('common.cancel') %>
+        </button>
+        <button type="button" class="btn btn-primary" id="confirmApprovalBtn">
+          <i class="fas fa-check"></i> <%= t('common.confirm') %>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Rejection Confirmation -->
+<div class="modal fade" id="rejectionModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header bg-danger text-white">
+        <h5 class="modal-title">
+          <i class="fas fa-times-circle"></i> <%= t('distribution.confirm_rejection') %>
+        </h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <p><strong><%= t('distribution.request_info') %>:</strong></p>
+        <p id="rejectionRequestInfo"></p>
+        <p class="text-warning">
+          <i class="fas fa-exclamation-triangle"></i> 
+          <%= t('distribution.rejection_warning') %>
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          <%= t('common.cancel') %>
+        </button>
+        <button type="button" class="btn btn-danger" id="confirmRejectionBtn">
+          <i class="fas fa-times"></i> <%= t('distribution.confirm_rejection_btn') %>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<% request_info_label = t('distribution.request_info') %>
+<% approval_confirm_text = t('distribution.approval_confirmation_text') %>
+
+<style>
+  .nav-tabs .nav-link {
+    color: #666;
+    border: none;
+    border-bottom: 3px solid transparent;
+    padding: 12px 20px;
+    font-weight: 500;
+  }
+
+  .nav-tabs .nav-link:hover {
+    color: #0d6efd;
+    border-bottom-color: #0d6efd;
+  }
+
+  .nav-tabs .nav-link.active {
+    color: #0d6efd;
+    border-bottom-color: #0d6efd;
+    background: transparent;
+  }
+
+  .table-hover tbody tr:hover {
+    background-color: #f8f9fa;
+  }
+
+  .badge {
+    padding: 6px 12px;
+    font-weight: 500;
+  }
+
+  .status-badge {
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 500;
+  }
+
+  .status-pending {
+    background-color: #fff3cd;
+    color: #856404;
+  }
+
+  .status-approved {
+    background-color: #d4edda;
+    color: #155724;
+  }
+
+  .status-rejected {
+    background-color: #f8d7da;
+    color: #721c24;
+  }
+</style>
+
+<script>
+  function changeTab(tab) {
+    const currentUrl = new URL(window.location);
+    currentUrl.searchParams.set('tab', tab);
+    window.history.replaceState({}, document.title, currentUrl.toString());
+  }
+
+  let currentRequestId = null;
+  let currentRequestInfo = null;
+
+  function showApprovalModal(requestId, requestInfo) {
+    currentRequestId = requestId;
+    currentRequestInfo = requestInfo;
+    
+    const modalContent = '<p><strong><%= request_info_label %>:</strong></p>' +
+      '<p>' + requestInfo + '</p>' +
+      '<div class="alert alert-info">' +
+      '<i class="fas fa-info-circle"></i>' +
+      '<%= approval_confirm_text %>' +
+      '</div>';
+    
+    document.getElementById('approvalModalContent').innerHTML = modalContent;
+    new bootstrap.Modal(document.getElementById('approvalModal')).show();
+  }
+
+  function showRejectionModal(requestId, requestInfo) {
+    currentRequestId = requestId;
+    currentRequestInfo = requestInfo;
+    document.getElementById('rejectionRequestInfo').textContent = requestInfo;
+    new bootstrap.Modal(document.getElementById('rejectionModal')).show();
+  }
+
+  document.getElementById('confirmApprovalBtn').addEventListener('click', function() {
+    if (currentRequestId) {
+      submitForm('/admin/distributions/' + currentRequestId + '/approve', 'POST');
+    }
+  });
+
+  document.getElementById('confirmRejectionBtn').addEventListener('click', function() {
+    if (currentRequestId) {
+      submitForm('/admin/distributions/' + currentRequestId + '/reject', 'POST');
+    }
+  });
+
+  function submitForm(url, method) {
+    const form = document.createElement('form');
+    form.method = 'POST';
+    form.action = url;
+    form.style.display = 'none';
+
+    const csrfInput = document.createElement('input');
+    csrfInput.type = 'hidden';
+    csrfInput.name = '_method';
+    csrfInput.value = method === 'POST' ? 'PATCH' : method;
+
+    const tokenInput = document.createElement('input');
+    tokenInput.type = 'hidden';
+    tokenInput.name = 'authenticity_token';
+    tokenInput.value = document.querySelector('meta[name="csrf-token"]').content;
+
+    form.appendChild(csrfInput);
+    form.appendChild(tokenInput);
+    document.body.appendChild(form);
+    form.submit();
+  }
+</script>

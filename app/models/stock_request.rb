@@ -14,5 +14,5 @@ class StockRequest < ApplicationRecord
 
   has_many :stock_request_items, dependent: :destroy
 
-  enum status: { pending: 0, approved: 1, rejected: 2, cancelled: 3 }
+  enum :status, { pending: 0, approved: 1, rejected: 2, cancelled: 3 }
 end

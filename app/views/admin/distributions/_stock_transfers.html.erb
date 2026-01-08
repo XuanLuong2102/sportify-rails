@@ -1,0 +1,210 @@
+<div class="card">
+  <div class="card-header bg-white">
+    <h5 class="mb-0">
+      <i class="fas fa-dolly"></i> <%= t('distribution.stock_transfers_list') %>
+    </h5>
+  </div>
+  <div class="card-body p-0">
+    <%# Ensure grouped hash is present, remove empty groups and sort by latest transfer */ %>
+    <% grouped = (@grouped_stock_transfers || {}).reject { |_, v| v.blank? } %>
+    <% grouped = grouped.sort_by { |_, transfers| transfers.first&.transferred_at || Time.at(0) }.reverse %>
+
+    <% if grouped.any? %>
+      <div class="accordion" id="transfersAccordion">
+        <% grouped.each_with_index do |(request_id, transfers), index| %>
+          <% request = transfers.first&.stock_request %>
+          <div class="accordion-item">
+            <h2 class="accordion-header">
+              <button 
+                class="accordion-button <%= 'collapsed' if index > 0 %>" 
+                type="button" 
+                data-bs-toggle="collapse" 
+                data-bs-target="#request-<%= request_id %>"
+                aria-expanded="<%= index == 0 ? 'true' : 'false' %>"
+                aria-controls="request-<%= request_id %>">
+                <div class="w-100">
+                  <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                      <strong><i class="fas fa-cube"></i> <%= t('distribution.request') %> #<%= request_id %></strong>
+                      <% if request %>
+                        <br/>
+                        <small class="text-muted">
+                          <%= request.place&.name_en %> - <%= request.requester&.full_name %>
+                        </small>
+                      <% end %>
+                    </div>
+                    <div class="text-end">
+                      <span class="badge bg-primary"><%= transfers.count %> <%= t('distribution.items') %></span>
+                      <br/>
+                      <small class="text-muted"><%= l(transfers.first.transferred_at, format: :short) %></small>
+                    </div>
+                  </div>
+                </div>
+              </button>
+            </h2>
+            <div 
+              id="request-<%= request_id %>" 
+              class="accordion-collapse collapse <%= 'show' if index == 0 %>" 
+              data-bs-parent="#transfersAccordion">
+              <div class="accordion-body p-0">
+                <div class="table-responsive">
+                  <table class="table table-hover mb-0">
+                    <thead class="table-light">
+                      <tr>
+                        <th><%= t('distribution.col_place_name') %></th>
+                        <th><%= t('distribution.col_product') %></th>
+                        <th><%= t('distribution.col_quantity') %></th>
+                        <th><%= t('distribution.col_transferred_date') %></th>
+                        <th><%= t('distribution.col_transferred_by') %></th>
+                        <th><%= t('common.action') %></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <% transfers.each do |transfer| %>
+                        <tr>
+                          <td>
+                            <strong><%= transfer.place&.name_en || 'N/A' %></strong>
+                            <br/>
+                            <small class="text-muted"><%= transfer.place&.name_vi %></small>
+                          </td>
+                          <td>
+                            <% if transfer.product_variant&.product %>
+                              <div class="product-info">
+                                <strong><%= transfer.product_variant.product.name_en %></strong>
+                                <br/>
+                                <small class="text-muted">
+                                  <% if transfer.product_variant.product_color %>
+                                    <%= transfer.product_variant.product_color.name %>
+                                  <% end %>
+                                  <% if transfer.product_variant.product_size %>
+                                    / <%= transfer.product_variant.product_size.name %>
+                                  <% end %>
+                                </small>
+                              </div>
+                            <% else %>
+                              N/A
+                            <% end %>
+                          </td>
+                          <td>
+                            <span class="badge bg-primary"><%= transfer.quantity %> <%= t('common.units') %></span>
+                          </td>
+                          <td>
+                            <div class="text-nowrap">
+                              <strong><%= l(transfer.transferred_at, format: :short) %></strong>
+                              <br/>
+                              <small class="text-muted"><%= time_ago_in_words(transfer.transferred_at) %> <%= t('common.ago') %></small>
+                            </div>
+                          </td>
+                          <td>
+                            <% if transfer.transferred_by %>
+                              <strong><%= transfer.transferred_by.first_name %> <%= transfer.transferred_by.last_name %></strong>
+                              <br/>
+                              <small class="text-muted"><%= transfer.transferred_by.email %></small>
+                            <% else %>
+                              N/A
+                            <% end %>
+                          </td>
+                          <td>
+                            <div class="btn-group btn-group-sm" role="group">
+                              <button 
+                                type="button" 
+                                class="btn btn-outline-primary"
+                                data-bs-toggle="collapse"
+                                data-bs-target="#details-<%= transfer.id %>"
+                                title="<%= t('common.view_details') %>">
+                                <i class="fas fa-eye"></i>
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                        <!-- Details Row -->
+                        <tr>
+                          <td colspan="6" class="p-0">
+                            <div class="collapse" id="details-<%= transfer.id %>">
+                              <div class="card card-body border-0 bg-light">
+                                <div class="row">
+                                  <div class="col-md-6">
+                                    <h6><strong><%= t('distribution.transfer_details') %></strong></h6>
+                                    <dl class="row small">
+                                      <dt class="col-sm-4"><%= t('distribution.warehouse') %>:</dt>
+                                      <dd class="col-sm-8">
+                                        <strong><%= transfer.warehouse&.name || 'N/A' %></strong>
+                                        <% if transfer.warehouse&.location %>
+                                          <br/><small class="text-muted"><%= transfer.warehouse.location %></small>
+                                        <% end %>
+                                      </dd>
+                                      
+                                      <dt class="col-sm-4"><%= t('distribution.note') %>:</dt>
+                                      <dd class="col-sm-8">
+                                        <% if transfer.note.present? %>
+                                          <%= simple_format(transfer.note) %>
+                                        <% else %>
+                                          <span class="text-muted">-</span>
+                                        <% end %>
+                                      </dd>
+                                    </dl>
+                                  </div>
+                                  <div class="col-md-6">
+                                    <h6><strong><%= t('distribution.product_details') %></strong></h6>
+                                    <dl class="row small">
+                                      <dt class="col-sm-4"><%= t('distribution.sku') %>:</dt>
+                                      <dd class="col-sm-8">
+                                        <strong><%= transfer.product_variant&.sku || 'N/A' %></strong>
+                                      </dd>
+
+                                      <dt class="col-sm-4"><%= t('distribution.transferred_by') %>:</dt>
+                                      <dd class="col-sm-8">
+                                        <strong><%= transfer.transferred_by&.full_name || 'N/A' %></strong>
+                                        <br/>
+                                        <small class="text-muted"><%= transfer.transferred_by&.email %></small>
+                                      </dd>
+
+                                      <dt class="col-sm-4"><%= t('distribution.transfer_time') %>:</dt>
+                                      <dd class="col-sm-8">
+                                        <strong><%= l(transfer.transferred_at, format: :long) %></strong>
+                                      </dd>
+                                    </dl>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </td>
+                        </tr>
+                      <% end %>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    <% else %>
+      <div class="alert alert-info m-4" role="alert">
+        <i class="fas fa-info-circle"></i> <%= t('distribution.no_stock_transfers') %>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<style>
+  .accordion-button:not(.collapsed) {
+    background-color: #e7f3ff;
+    color: #0d6efd;
+  }
+
+  .accordion-button:focus {
+    box-shadow: none;
+    border-color: #0d6efd;
+  }
+
+  .table-hover tbody tr:hover {
+    background-color: #f8f9fa;
+  }
+
+  .badge {
+    padding: 6px 12px;
+    font-weight: 500;
+  }
+</style>
+

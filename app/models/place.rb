@@ -6,6 +6,8 @@ class Place < ApplicationRecord
   has_many :place_sports
   has_many :place_managers
   has_many :product_listings
+  has_many :stock_requests
+  has_many :stock_transfers
 
   localize_attr :name, :address, :city, :district, :description
 

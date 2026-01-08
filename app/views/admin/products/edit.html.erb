@@ -1,6 +1,95 @@
-<div class="row">
-  <div class="col-8">
-    <h5><%= t('products.title.edit') %></h5>
-    <%= render 'form' %>
+<!-- Header with back button -->
+<div class="row mb-4 align-items-center">
+  <div class="col">
+    <h5 class="mb-0">
+      <i class="fa fa-pen"></i> <%= t('products.title.edit') %>
+    </h5>
+  </div>
+  <div class="col-auto">
+    <%= link_to admin_products_path, class: 'btn btn-outline-secondary btn-sm' do %>
+      <i class="fa fa-arrow-left"></i> <%= t('common.back_to_list') %>
+    <% end %>
+    <%= link_to admin_product_path(@product), class: 'btn btn-outline-info btn-sm' do %>
+      <i class="fa fa-eye"></i> <%= t('common.view') %>
+    <% end %>
   </div>
 </div>
+
+<div class="row">
+  <div class="col-lg-8">
+    <div class="card">
+      <div class="card-header fw-bold bg-light">
+        <i class="fa fa-edit"></i> <%= t('products.title.edit') %>
+      </div>
+      <div class="card-body">
+        <%= render 'form' %>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-4">
+    <!-- Product Info Card -->
+    <div class="card mb-3">
+      <div class="card-header fw-bold bg-light">
+        <i class="fa fa-info-circle"></i> <%= t('common.information') %>
+      </div>
+      <div class="card-body">
+        <p class="mb-2">
+          <strong><%= t('products.name') %>:</strong><br>
+          <span class="text-muted"><%= @product.name %></span>
+        </p>
+        <p class="mb-2">
+          <strong><%= t('products.brand') %>:</strong><br>
+          <span class="text-muted"><%= @product.brand&.name || t('common.not_set') %></span>
+        </p>
+        <p class="mb-2">
+          <strong><%= t('products.category') %>:</strong><br>
+          <span class="text-muted"><%= @product.category&.name || t('common.not_set') %></span>
+        </p>
+        <p class="mb-2">
+          <strong><%= t('products.stock') %>:</strong><br>
+          <span class="badge bg-success">
+            <%= @product.product_variants.sum { |v| v.product_stocks.sum(&:stock_quantity) } %> <%= t('common.units') %>
+          </span>
+        </p>
+        <p class="mb-0">
+          <strong><%= t('products.variants') %>:</strong><br>
+          <span class="badge bg-info"><%= @product.product_variants.count %></span>
+        </p>
+      </div>
+    </div>
+
+    <!-- Thumbnail Card -->
+    <div class="card">
+      <div class="card-header fw-bold bg-light">
+        <i class="fa fa-image"></i> <%= t('products.thumbnail') %>
+      </div>
+      <div class="card-body text-center">
+        <% if @product.thumbnail.attached? %>
+          <%= image_tag @product.thumbnail.variant(:thumbnail_300), class: 'img-fluid rounded border', alt: @product.name %>
+        <% else %>
+          <div class="bg-light p-5 rounded text-muted">
+            <i class="fa fa-image fa-3x"></i>
+            <p class="mt-2"><small><%= t('products.no_image') %></small></p>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .card {
+    border: 1px solid #e0e0e0;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    transition: box-shadow 0.3s ease;
+  }
+
+  .card:hover {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .card-header {
+    border-bottom: 1px solid #e0e0e0;
+  }
+</style>

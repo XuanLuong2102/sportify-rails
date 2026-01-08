@@ -15,6 +15,9 @@ class User < ApplicationRecord
   has_many :place_managers
   has_many :shipping_addresses
   has_many :orders
+  has_many :requested_stock_requests, class_name: 'StockRequest', foreign_key: 'requested_by_id'
+  has_many :approved_stock_requests, class_name: 'StockRequest', foreign_key: 'approved_by_id'
+  has_many :stock_transfers, foreign_key: 'transferred_by_id'
 
   enum :gender, { male: 0, female: 1, other: 2 }
 

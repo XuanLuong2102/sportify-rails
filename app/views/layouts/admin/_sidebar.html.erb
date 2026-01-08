@@ -30,11 +30,61 @@
           <%= t('sidebar.sportfields') %>
         <% end %>
 
+        <!-- Products tab side bar -->
+        <a class="nav-link <%= 'collapsed' unless controller_products_relate? %> <%= 'active' if controller_products_relate? %>"
+           data-bs-toggle="collapse"
+           data-bs-target="#collapseProducts"
+           aria-expanded="<%= controller_products_relate? %>"
+           aria-controls="collapseProducts">
+          <div class="sb-nav-link-icon">
+            <i class="fa fa-archive" aria-hidden="true"></i>
+          </div>
+          <%= t('sidebar.Products') %>
+          <div class="sb-sidenav-collapse-arrow">
+            <i class="fas fa-angle-down sb-sidenav-collapse-arrow"></i>
+          </div>
+        </a>
+
+        <!-- Products submenu -->
+        <div class="collapse <%= 'show' if controller_products_relate? %>"
+             id="collapseProducts"
+             data-bs-parent="#sidenavAccordion">
+          <nav class="sb-sidenav-menu-nested nav">
+
+            <%= link_to admin_products_path,
+                  class: "nav-link #{'active' if action_name == 'index'}" do %>
+              <%= t('sidebar.products.list') %>
+            <% end %>
+
+            <%= link_to admin_products_path,
+                  class: "nav-link #{'active' if action_name == 'new'}" do %>
+              <%= t('sidebar.products.sizes') %>
+            <% end %>
+
+            <%= link_to '#',
+                  class: "nav-link" do %>
+              <%= t('sidebar.products.colors') %>
+            <% end %>
+
+            <%= link_to '#',
+                  class: "nav-link" do %>
+              <%= t('sidebar.products.import_product') %>
+            <% end %>
+          </nav>
+        </div>
+
         <!-- Suppliers tab side bar -->
         <%= link_to admin_suppliers_path,
               class: "nav-link #{'active' if controller_name == 'suppliers'}" do %>
           <i class="fas fa-truck me-1"></i>
           <%= t('sidebar.suppliers') %>
+        <% end %>
+
+        <!-- Distributions tab side bar -->
+        <%= link_to admin_distributions_path,
+              class: "nav-link #{'active' if controller_name == 'distributions'}" do %>
+          <i class="fas fa-boxes me-1"></i>
+          <%= t('sidebar.distributions') %>
         <% end %>
 
         <!-- Users tab side bar -->
