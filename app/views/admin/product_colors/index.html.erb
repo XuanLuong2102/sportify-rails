@@ -1,0 +1,90 @@
+<div class="container-fluid mt-5">
+  <div class="row mb-4">
+    <div class="col">
+      <h5><%= t('products.title.list') %> - Colors</h5>
+    </div>
+    <div class="col-auto">
+      <%= link_to new_admin_product_color_path, class: 'btn btn-outline-primary' do %>
+        <i class="fa fa-plus"></i> Add Color
+      <% end %>
+      <% if params[:deleted].blank? %>
+        <%= link_to deleted_admin_product_colors_path, class: 'btn btn-outline-danger' do %>
+          <i class="fa fa-trash"></i> Deleted
+        <% end %>
+      <% else %>
+        <%= link_to admin_product_colors_path, class: 'btn btn-outline-secondary' do %>
+          <i class="fa fa-arrow-left"></i> Back
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-hover align-middle">
+          <thead class="table-light">
+            <tr>
+              <th>Color</th>
+              <th>
+                <%= sort_link(@q, :name, 'Name', default_order: :asc) %>
+              </th>
+              <th>RGB Code</th>
+              <th class="text-end">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% if @colors.any? %>
+              <% @colors.each do |color| %>
+                <tr>
+                  <td>
+                    <% if color.code_rgb.present? %>
+                      <div class="d-inline-block" style="width: 30px; height: 30px; background-color: <%= color.code_rgb %>; border: 1px solid #ddd; border-radius: 4px;"></div>
+                    <% else %>
+                      <span class="text-muted">-</span>
+                    <% end %>
+                  </td>
+                  <td><%= color.name %></td>
+                  <td>
+                    <code><%= color.code_rgb || '-' %></code>
+                  </td>
+                  <td class="text-end">
+                    <div class="btn-group" role="group">
+                      <%= link_to edit_admin_product_color_path(color), class: 'btn btn-sm btn-outline-primary' do %>
+                        <i class="fa fa-pen"></i>
+                      <% end %>
+                      
+                      <% if params[:deleted].blank? %>
+                        <%= button_to soft_delete_admin_product_color_path(color),
+                              method: :patch,
+                              data: { turbo_confirm: 'Are you sure?' },
+                              class: 'btn btn-sm btn-outline-danger' do %>
+                          <i class="fa fa-trash"></i>
+                        <% end %>
+                      <% else %>
+                        <%= button_to admin_product_color_restore_path(color),
+                              method: :patch,
+                              data: { turbo_confirm: 'Are you sure?' },
+                              class: 'btn btn-sm btn-outline-success' do %>
+                          <i class="fa fa-rotate-left"></i>
+                        <% end %>
+                      <% end %>
+                    </div>
+                  </td>
+                </tr>
+              <% end %>
+            <% else %>
+              <tr>
+                <td colspan="4" class="text-center text-muted py-4">
+                  No colors found
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <%= render 'layouts/admin/pagination', paging_collection: @colors %>
+</div>

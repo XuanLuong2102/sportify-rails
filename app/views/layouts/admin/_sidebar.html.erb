@@ -52,17 +52,17 @@
           <nav class="sb-sidenav-menu-nested nav">
 
             <%= link_to admin_products_path,
-                  class: "nav-link #{'active' if action_name == 'index'}" do %>
+                  class: "nav-link #{'active' if controller_name == 'products'}" do %>
               <%= t('sidebar.products.list') %>
             <% end %>
 
-            <%= link_to admin_products_path,
-                  class: "nav-link #{'active' if action_name == 'new'}" do %>
+            <%= link_to admin_product_sizes_path,
+                  class: "nav-link #{'active' if controller_name == 'product_sizes'}" do %>
               <%= t('sidebar.products.sizes') %>
             <% end %>
 
-            <%= link_to '#',
-                  class: "nav-link" do %>
+            <%= link_to admin_product_colors_path,
+                  class: "nav-link #{'active' if controller_name == 'product_colors'}" do %>
               <%= t('sidebar.products.colors') %>
             <% end %>
 

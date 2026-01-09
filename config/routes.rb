@@ -55,12 +55,30 @@ Rails.application.routes.draw do
         end
         get :deleted, on: :collection
       end
+      resources :product_sizes, only: [:index, :new, :create, :edit, :update] do
+        member do
+          patch :soft_delete
+          patch :restore
+        end
+        get :deleted, on: :collection
+      end
+      resources :product_colors, only: [:index, :new, :create, :edit, :update] do
+        member do
+          patch :soft_delete
+          patch :restore
+        end
+        get :deleted, on: :collection
+      end
       resources :distributions, only: [:index] do
         member do
           patch :approve
           patch :reject
         end
       end
+      resources :stock_inbounds, only: [:index, :new, :create, :show] do
+        get :get_product_variants, on: :collection
+      end
+      resources :orders, only: [:index, :show]
     end
     # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
   end

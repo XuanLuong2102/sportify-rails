@@ -1,0 +1,43 @@
+<div class="container-fluid mt-5">
+  <div class="row mb-4">
+    <div class="col">
+      <h5><i class="fa fa-pen"></i> Edit Size</h5>
+    </div>
+    <div class="col-auto">
+      <%= link_to admin_product_sizes_path, class: 'btn btn-outline-secondary btn-sm' do %>
+        <i class="fa fa-arrow-left"></i> Back
+      <% end %>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-body">
+          <%= form_with model: [:admin, @size], local: true do |form| %>
+            <% if @size.errors.any? %>
+              <div class="alert alert-danger">
+                <h5><%= pluralize(@size.errors.count, "error") %> prohibited this size:</h5>
+                <ul>
+                  <% @size.errors.full_messages.each do |message| %>
+                    <li><%= message %></li>
+                  <% end %>
+                </ul>
+              </div>
+            <% end %>
+
+            <div class="mb-3">
+              <%= form.label :name, 'Size Name', class: 'form-label fw-bold' %>
+              <%= form.text_field :name, class: 'form-control', required: true %>
+            </div>
+
+            <div class="d-grid gap-2">
+              <%= form.submit 'Update Size', class: 'btn btn-primary' %>
+              <%= link_to 'Cancel', admin_product_sizes_path, class: 'btn btn-secondary' %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

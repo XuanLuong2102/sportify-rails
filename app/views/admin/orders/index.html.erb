@@ -1,0 +1,198 @@
+<div class="container-fluid mt-5">
+  <div class="row mb-4">
+    <div class="col">
+      <h5><i class="fa fa-shopping-cart"></i> Order Management</h5>
+    </div>
+  </div>
+
+  <!-- Search Form -->
+  <div class="card mb-4">
+    <div class="card-body">
+      <%= search_form_for @q, url: admin_orders_path, method: :get, html: { class: 'row g-3' } do |f| %>
+        <div class="col-md-3">
+          <%= f.label :order_code_cont, 'Order Code', class: 'form-label' %>
+          <%= f.search_field :order_code_cont, class: 'form-control', placeholder: 'Search by order code' %>
+        </div>
+        <div class="col-md-3">
+          <%= f.label :user_email_cont, 'Customer Email', class: 'form-label' %>
+          <%= f.search_field :user_email_cont, class: 'form-control', placeholder: 'Search by email' %>
+        </div>
+        <div class="col-md-3">
+          <%= f.label :status_eq, 'Order Status', class: 'form-label' %>
+          <%= f.select :status_eq, 
+              options_for_select([
+                ['All Status', ''],
+                ['Pending', 'pending'],
+                ['Processing', 'processing'],
+                ['Shipped', 'shipped'],
+                ['Delivered', 'delivered'],
+                ['Cancelled', 'cancelled']
+              ], params.dig(:q, :status_eq)),
+              {},
+              { class: 'form-select' } %>
+        </div>
+        <div class="col-md-3">
+          <%= f.label :created_at_gteq, 'From Date', class: 'form-label' %>
+          <%= f.date_field :created_at_gteq, class: 'form-control' %>
+        </div>
+        <div class="col-md-12">
+          <%= f.submit 'Search', class: 'btn btn-primary' %>
+          <%= link_to 'Reset', admin_orders_path, class: 'btn btn-secondary' %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+  <!-- Orders Table -->
+  <div class="card">
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th>Order Code</th>
+              <th>Customer</th>
+              <th>Place</th>
+              <th>Total Amount</th>
+              <th>Order Status</th>
+              <th>Payment Status</th>
+              <th>Date</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% if @orders.any? %>
+              <% @orders.each do |order| %>
+                <% payment = order.payments.last %>
+                <% payment_status = payment&.status || 'unpaid' %>
+                <tr>
+                  <td>
+                    <strong><%= link_to order.order_code, admin_order_path(order) %></strong>
+                  </td>
+                  <td>
+                    <%= order.user.email %><br>
+                    <small class="text-muted"><%= order.shipping_receiver_name %></small>
+                  </td>
+                  <td><%= order.place.name_en %></td>
+                  <td>
+                    <strong><%= number_to_currency(order.total_amount_vnd, unit: '₫', precision: 0) %></strong>
+                    <% if order.total_amount_usd.present? && order.total_amount_usd > 0 %>
+                      <br><small class="text-muted">$<%= number_with_precision(order.total_amount_usd, precision: 2) %></small>
+                    <% end %>
+                  </td>
+                  <td>
+                    <% case order.status %>
+                    <% when 'pending' %>
+                      <span class="badge bg-warning text-dark">Pending</span>
+                    <% when 'processing' %>
+                      <span class="badge bg-info">Processing</span>
+                    <% when 'shipped' %>
+                      <span class="badge bg-primary">Shipped</span>
+                    <% when 'delivered' %>
+                      <span class="badge bg-success">Delivered</span>
+                    <% when 'cancelled' %>
+                      <span class="badge bg-danger">Cancelled</span>
+                    <% else %>
+                      <span class="badge bg-secondary"><%= order.status %></span>
+                    <% end %>
+                  </td>
+                  <td>
+                    <% case payment_status %>
+                    <% when 'completed', 'success', 'paid' %>
+                      <span class="badge bg-success">
+                        <i class="fa fa-check-circle"></i> Paid
+                      </span>
+                    <% when 'pending' %>
+                      <span class="badge bg-warning text-dark">
+                        <i class="fa fa-clock"></i> Pending
+                      </span>
+                    <% when 'failed' %>
+                      <span class="badge bg-danger">
+                        <i class="fa fa-times-circle"></i> Failed
+                      </span>
+                    <% when 'refunded' %>
+                      <span class="badge bg-info">
+                        <i class="fa fa-undo"></i> Refunded
+                      </span>
+                    <% else %>
+                      <span class="badge bg-secondary">
+                        <i class="fa fa-question-circle"></i> Unpaid
+                      </span>
+                    <% end %>
+                    <% if payment&.paid_at.present? %>
+                      <br><small class="text-muted"><%= payment.paid_at.strftime('%d/%m/%Y') %></small>
+                    <% end %>
+                  </td>
+                  <td>
+                    <%= order.created_at.strftime('%d/%m/%Y %H:%M') %>
+                    <% if order.ordered_at.present? %>
+                      <br><small class="text-muted">Ordered: <%= order.ordered_at.strftime('%d/%m/%Y') %></small>
+                    <% end %>
+                  </td>
+                  <td>
+                    <%= link_to admin_order_path(order), class: 'btn btn-sm btn-info', title: 'View Details' do %>
+                      <i class="fa fa-eye"></i>
+                    <% end %>
+                  </td>
+                </tr>
+              <% end %>
+            <% else %>
+              <tr>
+                <td colspan="8" class="text-center text-muted py-4">
+                  <i class="fa fa-shopping-cart fa-3x mb-3 d-block"></i>
+                  No orders found
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Pagination -->
+      <% if @orders.any? %>
+        <div class="d-flex justify-content-between align-items-center mt-3">
+          <div>
+            Showing <%= @orders.offset + 1 %> to <%= [@orders.offset + @orders.length, @orders.total_entries].min %> of <%= @orders.total_entries %> entries
+          </div>
+          <%= will_paginate @orders, renderer: WillPaginate::ActionView::BootstrapLinkRenderer, class: 'pagination mb-0' %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+  <!-- Summary Cards -->
+  <div class="row mt-4">
+    <div class="col-md-3">
+      <div class="card bg-primary text-white">
+        <div class="card-body">
+          <h6 class="card-title">Total Orders</h6>
+          <h3 class="mb-0"><%= @orders.total_entries %></h3>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card bg-success text-white">
+        <div class="card-body">
+          <h6 class="card-title">Paid Orders</h6>
+          <h3 class="mb-0"><%= Order.joins(:payments).where(payments: { status: ['completed', 'success', 'paid'] }).count %></h3>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card bg-warning text-dark">
+        <div class="card-body">
+          <h6 class="card-title">Pending Payment</h6>
+          <h3 class="mb-0"><%= Order.joins(:payments).where(payments: { status: 'pending' }).count %></h3>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card bg-info text-white">
+        <div class="card-body">
+          <h6 class="card-title">Total Revenue (VND)</h6>
+          <h3 class="mb-0"><%= number_to_currency(Order.joins(:payments).where(payments: { status: ['completed', 'success', 'paid'] }).sum(:total_amount_vnd), unit: '₫', precision: 0) %></h3>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

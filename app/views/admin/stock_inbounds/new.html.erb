@@ -1,0 +1,203 @@
+<div class="container-fluid mt-5">
+  <div class="row mb-4">
+    <div class="col">
+      <h5><i class="fa fa-plus"></i> New Stock Inbound</h5>
+    </div>
+    <div class="col-auto">
+      <%= link_to admin_stock_inbounds_path, class: 'btn btn-outline-secondary btn-sm' do %>
+        <i class="fa fa-arrow-left"></i> Back
+      <% end %>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-body">
+          <%= form_with url: admin_stock_inbounds_path, method: :post, local: true, id: 'stock-inbound-form' do |form| %>
+            <div class="row mb-4">
+              <div class="col-md-3">
+                <%= label_tag 'stock_inbound[warehouse_id]', 'Warehouse', class: 'form-label fw-bold' %>
+                <%= select_tag 'stock_inbound[warehouse_id]', 
+                    options_for_select(@warehouses.map { |w| ["#{w.code} - #{w.name}", w.id] }),
+                    prompt: 'Select warehouse',
+                    class: 'form-select',
+                    required: true %>
+              </div>
+
+              <div class="col-md-3">
+                <%= label_tag 'stock_inbound[supplier_id]', 'Supplier', class: 'form-label fw-bold' %>
+                <%= select_tag 'stock_inbound[supplier_id]',
+                    options_for_select(@suppliers.map { |s| [s.name, s.id] }),
+                    prompt: 'Select supplier',
+                    class: 'form-select',
+                    required: true %>
+              </div>
+
+              <div class="col-md-3">
+                <%= label_tag 'stock_inbound[received_at]', 'Received At', class: 'form-label fw-bold' %>
+                <%= datetime_local_field_tag 'stock_inbound[received_at]', 
+                    Time.current.strftime('%Y-%m-%dT%H:%M'),
+                    class: 'form-control',
+                    required: true %>
+              </div>
+
+              <div class="col-md-3">
+                <%= label_tag 'stock_inbound[reference_code]', 'Reference Code', class: 'form-label fw-bold' %>
+                <%= text_field_tag 'stock_inbound[reference_code]', 
+                    nil,
+                    class: 'form-control',
+                    placeholder: 'e.g., PO-2024-001' %>
+              </div>
+            </div>
+
+            <hr class="my-4">
+
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <h6 class="mb-0"><i class="fa fa-list"></i> Inbound Items</h6>
+              <button type="button" class="btn btn-sm btn-success" id="add-item-btn">
+                <i class="fa fa-plus"></i> Add Item
+              </button>
+            </div>
+
+            <div class="table-responsive">
+              <table class="table table-bordered" id="items-table">
+                <thead class="table-light">
+                  <tr>
+                    <th style="width: 35%">Product</th>
+                    <th style="width: 25%">Variant</th>
+                    <th style="width: 10%">Quantity</th>
+                    <th style="width: 13%">Cost VND</th>
+                    <th style="width: 12%">Cost USD</th>
+                    <th style="width: 5%">Action</th>
+                  </tr>
+                </thead>
+                <tbody id="items-container">
+                  <!-- Items will be added here -->
+                </tbody>
+              </table>
+            </div>
+
+            <div class="d-grid gap-2 mt-4">
+              <%= submit_tag 'Create Stock Inbound', class: 'btn btn-primary btn-lg' %>
+              <%= link_to 'Cancel', admin_stock_inbounds_path, class: 'btn btn-secondary' %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<template id="item-row-template">
+  <tr class="item-row">
+    <td>
+      <select class="form-select product-select" name="stock_inbound[items][][product_id]" required>
+        <option value="">Select product</option>
+        <% @products.each do |product| %>
+          <option value="<%= product.id %>"><%= product.name_en %> (<%= product.brand&.name %>)</option>
+        <% end %>
+      </select>
+    </td>
+    <td>
+      <select class="form-select variant-select" name="stock_inbound[items][][product_variant_id]" required disabled>
+        <option value="">Select product first</option>
+      </select>
+    </td>
+    <td>
+      <input type="number" class="form-control" name="stock_inbound[items][][quantity]" min="1" value="1" required>
+    </td>
+    <td>
+      <input type="number" class="form-control" name="stock_inbound[items][][cost_price_vnd]" min="0" step="1000" placeholder="100000" required>
+    </td>
+    <td>
+      <input type="number" class="form-control" name="stock_inbound[items][][cost_price_usd]" min="0" step="0.01" placeholder="4.00">
+    </td>
+    <td class="text-center">
+      <button type="button" class="btn btn-sm btn-danger remove-item-btn">
+        <i class="fa fa-trash"></i>
+      </button>
+    </td>
+  </tr>
+</template>
+
+<script>
+  document.addEventListener('turbo:load', function() {
+    const itemsContainer = document.getElementById('items-container');
+    const addItemBtn = document.getElementById('add-item-btn');
+    const template = document.getElementById('item-row-template');
+
+    if (!itemsContainer || !addItemBtn || !template) return;
+
+    // Add first row on page load
+    if (itemsContainer.children.length === 0) {
+      addItemRow();
+    }
+
+    addItemBtn.addEventListener('click', function() {
+      addItemRow();
+    });
+
+    function addItemRow() {
+      const newRow = template.content.cloneNode(true);
+      const row = newRow.querySelector('.item-row');
+      
+      itemsContainer.appendChild(newRow);
+
+      // Setup event listeners for the new row
+      setupRowEventListeners(row);
+    }
+
+    function setupRowEventListeners(row) {
+      const productSelect = row.querySelector('.product-select');
+      const variantSelect = row.querySelector('.variant-select');
+      const removeBtn = row.querySelector('.remove-item-btn');
+
+      // Product change event
+      productSelect.addEventListener('change', function() {
+        const productId = this.value;
+        
+        variantSelect.innerHTML = '<option value="">Loading...</option>';
+        variantSelect.disabled = true;
+        
+        if (!productId) {
+          variantSelect.innerHTML = '<option value="">Select product first</option>';
+          return;
+        }
+
+        fetch(`/admin/stock_inbounds/get_product_variants?product_id=${productId}`)
+          .then(response => response.json())
+          .then(variants => {
+            variantSelect.innerHTML = '<option value="">Select variant</option>';
+            
+            variants.forEach(variant => {
+              const option = document.createElement('option');
+              option.value = variant.id;
+              option.textContent = `${variant.name} - SKU: ${variant.sku || 'N/A'}`;
+              variantSelect.appendChild(option);
+            });
+            
+            variantSelect.disabled = false;
+          })
+          .catch(error => {
+            console.error('Error fetching variants:', error);
+            variantSelect.innerHTML = '<option value="">Error loading variants</option>';
+          });
+      });
+
+      // Remove row event
+      removeBtn.addEventListener('click', function() {
+        if (itemsContainer.children.length > 1) {
+          row.remove();
+        } else {
+          alert('At least one item is required');
+        }
+      });
+    }
+
+    // Setup listeners for existing rows
+    document.querySelectorAll('.item-row').forEach(row => {
+      setupRowEventListeners(row);
+    });
+  });
+</script>

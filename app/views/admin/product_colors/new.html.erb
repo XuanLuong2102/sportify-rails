@@ -1,0 +1,61 @@
+<div class="container-fluid mt-5">
+  <div class="row mb-4">
+    <div class="col">
+      <h5><i class="fa fa-plus"></i> Add New Color</h5>
+    </div>
+    <div class="col-auto">
+      <%= link_to admin_product_colors_path, class: 'btn btn-outline-secondary btn-sm' do %>
+        <i class="fa fa-arrow-left"></i> Back
+      <% end %>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-body">
+          <%= form_with model: [:admin, @color], local: true do |form| %>
+            <% if @color.errors.any? %>
+              <div class="alert alert-danger">
+                <h5><%= pluralize(@color.errors.count, "error") %> prohibited this color:</h5>
+                <ul>
+                  <% @color.errors.full_messages.each do |message| %>
+                    <li><%= message %></li>
+                  <% end %>
+                </ul>
+              </div>
+            <% end %>
+
+            <div class="mb-3">
+              <%= form.label :name, 'Color Name', class: 'form-label fw-bold' %>
+              <%= form.text_field :name, class: 'form-control', required: true, placeholder: 'e.g., Red, Blue, Green' %>
+            </div>
+
+            <div class="mb-3">
+              <%= form.label :code_rgb, 'RGB Code (Optional)', class: 'form-label fw-bold' %>
+              <div class="input-group">
+                <%= form.color_field :code_rgb, class: 'form-control form-control-color', style: 'width: 60px; cursor: pointer;' %>
+                <%= form.text_field :code_rgb, class: 'form-control', placeholder: '#FFFFFF' %>
+              </div>
+              <small class="text-muted">Format: #RRGGBB or use color picker</small>
+            </div>
+
+            <div class="d-grid gap-2">
+              <%= form.submit 'Create Color', class: 'btn btn-primary' %>
+              <%= link_to 'Cancel', admin_product_colors_path, class: 'btn btn-secondary' %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-header fw-bold">Color Preview</div>
+        <div class="card-body">
+          <div id="color-preview" style="width: 100%; height: 200px; background-color: #FFFFFF; border: 2px solid #ddd; border-radius: 8px;"></div>
+          <p class="text-muted mt-3 mb-0">The color will update as you type or select from the color picker.</p>
+        </div>
+      </div>
+    </div>
+  </div>

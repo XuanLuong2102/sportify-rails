@@ -1,0 +1,78 @@
+<div class="container-fluid mt-5">
+  <div class="row mb-4">
+    <div class="col">
+      <h5><%= t('products.title.list') %> - Sizes</h5>
+    </div>
+    <div class="col-auto">
+      <%= link_to new_admin_product_size_path, class: 'btn btn-outline-primary' do %>
+        <i class="fa fa-plus"></i> Add Size
+      <% end %>
+      <% if params[:deleted].blank? %>
+        <%= link_to deleted_admin_product_sizes_path, class: 'btn btn-outline-danger' do %>
+          <i class="fa fa-trash"></i> Deleted
+        <% end %>
+      <% else %>
+        <%= link_to admin_product_sizes_path, class: 'btn btn-outline-secondary' do %>
+          <i class="fa fa-arrow-left"></i> Back
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-hover align-middle">
+          <thead class="table-light">
+            <tr>
+              <th>
+                <%= sort_link(@q, :name, 'Name', default_order: :asc) %>
+              </th>
+              <th class="text-end">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% if @sizes.any? %>
+              <% @sizes.each do |size| %>
+                <tr>
+                  <td><%= size.name %></td>
+                  <td class="text-end">
+                    <div class="btn-group" role="group">
+                      <%= link_to edit_admin_product_size_path(size), class: 'btn btn-sm btn-outline-primary' do %>
+                        <i class="fa fa-pen"></i>
+                      <% end %>
+                      
+                      <% if params[:deleted].blank? %>
+                        <%= button_to soft_delete_admin_product_size_path(size),
+                              method: :patch,
+                              data: { turbo_confirm: 'Are you sure?' },
+                              class: 'btn btn-sm btn-outline-danger' do %>
+                          <i class="fa fa-trash"></i>
+                        <% end %>
+                      <% else %>
+                        <%= button_to admin_product_size_restore_path(size),
+                              method: :patch,
+                              data: { turbo_confirm: 'Are you sure?' },
+                              class: 'btn btn-sm btn-outline-success' do %>
+                          <i class="fa fa-rotate-left"></i>
+                        <% end %>
+                      <% end %>
+                    </div>
+                  </td>
+                </tr>
+              <% end %>
+            <% else %>
+              <tr>
+                <td colspan="2" class="text-center text-muted py-4">
+                  No sizes found
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <%= render 'layouts/admin/pagination', paging_collection: @sizes %>
+</div>

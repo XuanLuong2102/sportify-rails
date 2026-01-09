@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_01_06_163623) do
+ActiveRecord::Schema[8.1].define(version: 2026_01_09_141501) do
   create_table "active_storage_attachments", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.bigint "blob_id", null: false
     t.datetime "created_at", null: false
@@ -234,8 +234,10 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_06_163623) do
   create_table "product_colors", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "code_rgb"
     t.datetime "created_at", null: false
+    t.datetime "deleted_at"
     t.string "name", null: false
     t.datetime "updated_at", null: false
+    t.index ["deleted_at"], name: "index_product_colors_on_deleted_at"
     t.index ["name", "code_rgb"], name: "index_product_colors_on_name_and_code_rgb", unique: true
   end
 
@@ -278,8 +280,10 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_06_163623) do
 
   create_table "product_sizes", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.datetime "created_at", null: false
+    t.datetime "deleted_at"
     t.string "name", null: false
     t.datetime "updated_at", null: false
+    t.index ["deleted_at"], name: "index_product_sizes_on_deleted_at"
   end
 
   create_table "product_stocks", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
@@ -383,6 +387,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_06_163623) do
   end
 
   create_table "stock_inbounds", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+    t.string "batch_number"
     t.decimal "cost_price_usd", precision: 10, scale: 2
     t.decimal "cost_price_vnd", precision: 10, scale: 2
     t.datetime "created_at", null: false
@@ -393,6 +398,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_06_163623) do
     t.bigint "supplier_id", null: false
     t.datetime "updated_at", null: false
     t.bigint "warehouse_id", null: false
+    t.index ["batch_number"], name: "index_stock_inbounds_on_batch_number"
     t.index ["product_variant_id"], name: "index_stock_inbounds_on_product_variant_id"
     t.index ["received_at"], name: "index_stock_inbounds_on_received_at"
     t.index ["supplier_id"], name: "index_stock_inbounds_on_supplier_id"

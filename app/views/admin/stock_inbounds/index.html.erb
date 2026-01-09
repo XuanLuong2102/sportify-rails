@@ -1,0 +1,126 @@
+<div class="container-fluid mt-5">
+  <div class="row mb-4">
+    <div class="col">
+      <h5><i class="fa fa-inbox"></i> Stock Inbound Management</h5>
+    </div>
+    <div class="col-auto">
+      <%= link_to new_admin_stock_inbound_path, class: 'btn btn-primary btn-sm' do %>
+        <i class="fa fa-plus"></i> New Inbound
+      <% end %>
+    </div>
+  </div>
+
+  <!-- Search Form -->
+  <div class="card mb-4">
+    <div class="card-body">
+      <%= search_form_for @q, url: admin_stock_inbounds_path, method: :get, html: { class: 'row g-3' } do |f| %>
+        <div class="col-md-3">
+          <%= f.label :batch_number_cont, 'Batch Number', class: 'form-label' %>
+          <%= f.search_field :batch_number_cont, class: 'form-control', placeholder: 'Search by batch' %>
+        </div>
+        <div class="col-md-3">
+          <%= f.label :reference_code_cont, 'Reference Code', class: 'form-label' %>
+          <%= f.search_field :reference_code_cont, class: 'form-control', placeholder: 'Search by reference code' %>
+        </div>
+        <div class="col-md-3">
+          <%= f.label :warehouse_code_cont, 'Warehouse', class: 'form-label' %>
+          <%= f.search_field :warehouse_code_cont, class: 'form-control', placeholder: 'Search by warehouse' %>
+        </div>
+        <div class="col-md-3">
+          <%= f.label :received_at_gteq, 'From Date', class: 'form-label' %>
+          <%= f.date_field :received_at_gteq, class: 'form-control' %>
+        </div>
+        <div class="col-md-12">
+          <%= f.submit 'Search', class: 'btn btn-primary' %>
+          <%= link_to 'Reset', admin_stock_inbounds_path, class: 'btn btn-secondary' %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+  <!-- Stock Inbounds Grouped by Batch -->
+  <% if @batches.any? %>
+    <% @batches.each do |batch_number, inbounds| %>
+      <% first_inbound = inbounds.first %>
+      <div class="card mb-3">
+        <div class="card-header bg-light">
+          <div class="row align-items-center">
+            <div class="col-md-8">
+              <strong><i class="fa fa-box"></i> <%= batch_number %></strong>
+              <span class="ms-3">
+                <i class="fa fa-calendar"></i> <%= first_inbound.received_at.strftime('%d/%m/%Y %H:%M') %>
+              </span>
+              <span class="badge bg-info ms-2"><%= first_inbound.warehouse.code %></span>
+              <span class="badge bg-secondary ms-2"><%= first_inbound.supplier.name %></span>
+              <% if first_inbound.reference_code.present? %>
+                <span class="text-muted ms-2">Ref: <%= first_inbound.reference_code %></span>
+              <% end %>
+            </div>
+            <div class="col-md-4 text-end">
+              <span class="badge bg-success"><%= inbounds.size %> item(s)</span>
+              <strong class="ms-3">
+                Total: <%= number_to_currency(inbounds.sum { |i| i.cost_price_vnd * i.quantity }, unit: '₫', precision: 0) %>
+              </strong>
+            </div>
+          </div>
+        </div>
+        <div class="card-body p-0">
+          <div class="table-responsive">
+            <table class="table table-sm table-hover mb-0">
+              <thead class="table-light">
+                <tr>
+                  <th>Product</th>
+                  <th>Variant</th>
+                  <th class="text-center">Quantity</th>
+                  <th class="text-end">Cost (VND)</th>
+                  <th class="text-end">Total (VND)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% inbounds.each do |inbound| %>
+                  <tr>
+                    <td><%= inbound.product_variant.product.name_en %></td>
+                    <td>
+                      <% if inbound.product_variant.product_color %>
+                        <span class="badge" style="background-color: <%= inbound.product_variant.product_color.code_rgb || '#6c757d' %>">
+                          <%= inbound.product_variant.product_color.name %>
+                        </span>
+                      <% end %>
+                      <% if inbound.product_variant.product_size %>
+                        <span class="badge bg-secondary">
+                          <%= inbound.product_variant.product_size.name %>
+                        </span>
+                      <% end %>
+                      <% if inbound.product_variant.sku.present? %>
+                        <small class="text-muted">(<%= inbound.product_variant.sku %>)</small>
+                      <% end %>
+                    </td>
+                    <td class="text-center"><strong><%= inbound.quantity %></strong></td>
+                    <td class="text-end"><%= number_to_currency(inbound.cost_price_vnd, unit: '₫', precision: 0) %></td>
+                    <td class="text-end"><strong><%= number_to_currency(inbound.cost_price_vnd * inbound.quantity, unit: '₫', precision: 0) %></strong></td>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    <% end %>
+
+    <!-- Pagination -->
+    <div class="d-flex justify-content-between align-items-center mt-3">
+      <div>
+        Showing <%= (@batches.current_page - 1) * @batches.per_page + 1 %> to <%= [@batches.current_page * @batches.per_page, @batches.total_entries].min %> of <%= @batches.total_entries %> batches
+      </div>
+      <%= will_paginate @batches, renderer: WillPaginate::ActionView::BootstrapLinkRenderer, class: 'pagination mb-0' %>
+    </div>
+  <% else %>
+    <div class="card">
+      <div class="card-body text-center text-muted py-5">
+        <i class="fa fa-inbox fa-3x mb-3 d-block"></i>
+        <h5>No stock inbound records found</h5>
+        <p class="mb-0">Start by creating your first inbound record</p>
+      </div>
+    </div>
+  <% end %>
+</div>
