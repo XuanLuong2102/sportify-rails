@@ -1,0 +1,43 @@
+<div class="product-edit-container">
+  <div class="page-header">
+    <h1>Edit Product</h1>
+    <%= link_to '← Back', agency_product_path(@product), class: 'btn btn-secondary' %>
+  </div>
+
+  <%= form_with model: @product, url: agency_product_path(@product), method: :patch, local: true do |f| %>
+    <% if @product.errors.any? %>
+      <div class="alert alert-danger">
+        <h4><%= pluralize(@product.errors.count, "error") %> prohibited this product from being saved:</h4>
+        <ul>
+          <% @product.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <div class="form-group">
+      <%= f.label :description_en, 'Description (English)' %>
+      <%= f.text_area :description_en, rows: 5, class: 'form-control' %>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :description_vi, 'Description (Vietnamese)' %>
+      <%= f.text_area :description_vi, rows: 5, class: 'form-control' %>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :status, 'Status' %>
+      <%= f.select :status, options_for_select([['Active', 'active'], ['Inactive', 'inactive']], @product.status), {}, class: 'form-control' %>
+    </div>
+
+    <div class="form-actions">
+      <%= f.submit 'Update Product', class: 'btn btn-primary' %>
+      <%= link_to 'Cancel', agency_product_path(@product), class: 'btn btn-secondary' %>
+    </div>
+  <% end %>
+
+  <p class="text-muted mt-3">
+    <small>Note: Agency users can only update product descriptions and status. To modify other fields like price or variants, please contact an administrator.</small>
+  </p>
+</div>

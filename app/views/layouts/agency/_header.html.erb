@@ -1,0 +1,19 @@
+<header class="agency-header">
+  <div class="header-content">
+    <div class="logo">
+      <%= link_to agency_root_path do %>
+        <h1>Sportify Agency</h1>
+      <% end %>
+    </div>
+    
+    <nav class="header-nav">
+      <div class="user-menu">
+        <% if present_user? %>
+          <span class="user-name"><%= current_user.full_name %></span>
+          <span class="user-role badge badge-agency">Agency</span>
+          <%= link_to t('agency.sign_out'), destroy_agency_user_session_path, method: :delete, class: 'btn btn-outline' %>
+        <% end %>
+      </div>
+    </nav>
+  </div>
+</header>

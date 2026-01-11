@@ -66,8 +66,8 @@
               <%= t('sidebar.products.colors') %>
             <% end %>
 
-            <%= link_to '#',
-                  class: "nav-link" do %>
+            <%= link_to admin_stock_inbounds_path,
+                  class: "nav-link #{'active' if controller_name == 'stock_inbounds'}" do %>
               <%= t('sidebar.products.import_product') %>
             <% end %>
           </nav>

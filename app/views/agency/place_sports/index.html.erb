@@ -1,0 +1,97 @@
+<div class="place-sports-container">
+  <div class='row pb-3 align-items-center'>
+    <h5 class='col-4'><%= t('agency.place_sports.title', default: 'Sport Fields Management') %></h5>
+    <div class='col-8 pe-4'>
+      <%= search_form_for @q, url: agency_place_sports_path, method: :get, html: { class: 'd-flex gap-2' } do |f| %>
+        <%= f.text_field :sportfield_name_cont, class: 'form-control', placeholder: 'Search by sport field name...' %>
+        <%= f.submit 'Search', class: 'btn btn-primary' %>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="d-flex justify-content-end pe-5 me-1 mb-3">
+    <%= link_to new_agency_place_sport_path, class: 'btn btn-primary' do %>
+      <i class="fa fa-plus"></i>
+      <%= t('agency.place_sports.buttons.add_new', default: 'Add New Sport Field') %>
+    <% end %>
+  </div>
+
+  <ul class="nav nav-tabs">
+    <li class="nav-item">
+      <%= link_to agency_place_sports_path,
+        class: "nav-link nav-tab #{'active' unless params.dig(:q, :is_close_eq) || params.dig(:q, :maintenance_sport_eq)}" do %>
+        All Fields
+      <% end %>
+    </li>
+    <li class="nav-item">
+      <%= link_to agency_place_sports_path(q: { is_close_eq: false }),
+        class: "nav-link nav-tab #{'active' if params.dig(:q, :is_close_eq) == 'false'}" do %>
+        Active
+      <% end %>
+    </li>
+    <li class="nav-item">
+      <%= link_to agency_place_sports_path(q: { is_close_eq: true }),
+        class: "nav-link nav-tab #{'active' if params.dig(:q, :is_close_eq) == 'true'}" do %>
+        Closed
+      <% end %>
+    </li>
+    <li class="nav-item">
+      <%= link_to agency_place_sports_path(q: { maintenance_sport_eq: true }),
+        class: "nav-link nav-tab #{'active' if params.dig(:q, :maintenance_sport_eq) == 'true'}" do %>
+        Maintenance
+      <% end %>
+    </li>
+  </ul>
+
+  <table class='table table-striped text-center align-middle'>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th class="text-start">Place</th>
+        <th class="text-start">Sport Field Name</th>
+        <th>Price/Hour (VND)</th>
+        <th>Status</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody class='table-group-divider'>
+      <% if @place_sports.present? %>
+        <% @place_sports.each do |place_sport| %>
+          <tr>
+            <td><%= place_sport.id %></td>
+            <td class="text-start"><%= place_sport.place.name rescue 'N/A' %></td>
+            <td class="text-start">
+              <%= place_sport.sportfield&.name || 'N/A' %>
+              <% if place_sport.maintenance_sport %>
+                <span class="badge bg-warning text-dark ms-2">Maintenance</span>
+              <% end %>
+            </td>
+            <td><%= number_to_currency(place_sport.price_per_hour_vnd, unit: '', precision: 0) %></td>
+            <td>
+              <% if place_sport.is_close %>
+                <span class="badge bg-danger">Closed</span>
+              <% else %>
+                <span class="badge bg-success">Active</span>
+              <% end %>
+            </td>
+            <td>
+              <%= link_to 'View', agency_place_sport_path(place_sport), class: 'btn btn-sm btn-info' %>
+              <%= link_to 'Edit', edit_agency_place_sport_path(place_sport), class: 'btn btn-sm btn-primary' %>
+              <% if place_sport.is_close %>
+                <%= button_to 'Restore', restore_agency_place_sport_path(place_sport), method: :patch, class: 'btn btn-sm btn-success', data: { turbo: false } %>
+              <% else %>
+                <%= button_to 'Close', soft_delete_agency_place_sport_path(place_sport), method: :patch, class: 'btn btn-sm btn-warning', data: { turbo: false } %>
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+      <% else %>
+        <tr>
+          <td class='text-center' colspan='6'><%= t('agency.place_sports.no_fields', default: 'No sport fields found') %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+  <%= render 'layouts/admin/pagination', paging_collection: @place_sports %>
+</div>

@@ -13,6 +13,17 @@ en:
     delete: Delete
     confirm: Confirm
 
+  date:
+    formats:
+      long_day: "%A"
+      short: "%m/%d"
+      long: "%B %d, %Y"
+
+  time:
+    formats:
+      short: "%m/%d/%Y %H:%M"
+      long: "%B %d, %Y %H:%M:%S"
+
   buttons:
     edit: Edit
     update: Update
@@ -57,6 +68,32 @@ en:
     place_managers: Place Managers
 
   admin:
+    dashboard:
+      title: Admin Dashboard
+      start_date: Start Date
+      end_date: End Date
+      apply_filter: Apply Filter
+      total_revenue: Total Revenue
+      total_costs: Total Costs
+      total_profit: Total Profit
+      bookings: Bookings
+      orders: Orders
+      operating: Operating Costs
+      stock_inbounds: Stock Inbound Costs
+      margin: Profit Margin
+      revenue_by_type: Revenue by Type
+      monthly_revenue: Monthly Revenue Trend
+      top_places: Top Performing Places
+      place_name: Place Name
+      location: Location
+      booking_revenue: Booking Revenue
+      order_revenue: Order Revenue
+      no_data: No data available
+      total_places: Total Places
+      total_users: Total Users
+      active_products: Active Products
+      bookings_this_month: Bookings This Month
+
     users:
       created: User created successfully
       updated: User updated successfully
@@ -416,3 +453,76 @@ en:
     product_brands:
       not_found: Brand not found
       fetched_brands_success: Brands information fetched successfully
+
+  agency:
+    menu:
+      dashboard: Dashboard
+      management: Management
+      orders: Orders
+      bookings: Bookings
+      schedules: Schedule
+      product_listings: Product Listings
+      stock_requests: Stock Requests
+      place_sports: Sport Fields
+
+    dashboard:
+      title: Agency Dashboard
+      total_revenue: Total Revenue
+      total_costs: Total Costs
+      total_profit: Total Profit
+      bookings: Bookings
+      orders: Orders
+      operating: Operating Costs
+      margin: Profit Margin
+      revenue_by_type: Revenue by Type
+      monthly_revenue: Monthly Revenue
+      managed_places: Managed Places
+      apply_filter: Apply Filter
+
+    products:
+      title: Products
+      no_products: No products found
+
+    product_listings:
+      title: Product Listings
+      buttons:
+        add_new: Add New Listing
+
+    place_sports:
+      title: Sport Fields Management
+      no_fields: No sport fields found
+      buttons:
+        add_new: Add New Sport Field
+      created_successfully: Sport field created successfully
+      updated_successfully: Sport field updated successfully
+      deleted_successfully: Sport field closed successfully
+      restored_successfully: Sport field opened successfully
+      delete_failed: Failed to close sport field
+      restore_failed: Failed to open sport field
+      maintenance_enabled: Maintenance mode enabled
+      maintenance_disabled: Maintenance mode disabled
+      maintenance_toggle_failed: Failed to toggle maintenance mode
+      not_found: Sport field not found
+      invalid_place: Invalid place selected
+
+    orders:
+      title: Orders Management
+      no_orders: No orders found
+
+    schedules:
+      title: Schedule Management
+      sport_field: Sport Field
+      time_slot: Time
+      previous_day: Previous Day
+      next_day: Next Day
+      today: Today
+      no_sport_fields: No sport fields found
+      legend: Legend
+      approved: Approved
+      completed: Completed
+      hover_hint: Hover over booking slots to see details
+      customer: Customer
+      time: Time
+      price: Price
+      status: Status
+      payment_confirmed: Payment Confirmed

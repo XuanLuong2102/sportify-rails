@@ -1,0 +1,63 @@
+<div class="product-listing-form-container">
+  <div class="page-header">
+    <h1>Edit Product Listing</h1>
+    <%= link_to '← Back to Listings', agency_product_listings_path, class: 'btn btn-secondary' %>
+  </div>
+
+  <%= form_with model: @product_listing, url: agency_product_listing_path(@product_listing), method: :patch, local: true do |f| %>
+    <% if @product_listing.errors.any? %>
+      <div class="alert alert-danger">
+        <h4><%= pluralize(@product_listing.errors.count, "error") %> prohibited this listing from being saved:</h4>
+        <ul>
+          <% @product_listing.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <div class="form-group">
+      <%= f.label :place_id, 'Place' %>
+      <%= f.select :place_id, options_from_collection_for_select(@available_places, :place_id, :name, @product_listing.place_id), { prompt: 'Select a place' }, class: 'form-control' %>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :product_id, 'Product' %>
+      <%= f.select :product_id, options_from_collection_for_select(@available_products, :id, :name, @product_listing.product_id), { prompt: 'Select a product' }, class: 'form-control' %>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :stock_quantity, 'Stock Quantity' %>
+      <%= f.number_field :stock_quantity, min: 0, class: 'form-control' %>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :min_stock_level, 'Minimum Stock Level' %>
+      <%= f.number_field :min_stock_level, min: 0, class: 'form-control' %>
+      <small class="form-text text-muted">Alert will be triggered when stock falls below this level</small>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :price_override_vnd, 'Price Override (VND)' %>
+      <%= f.number_field :price_override_vnd, step: 1000, class: 'form-control' %>
+      <small class="form-text text-muted">Leave blank to use product's default price</small>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :price_override_usd, 'Price Override (USD)' %>
+      <%= f.number_field :price_override_usd, step: 0.01, class: 'form-control' %>
+      <small class="form-text text-muted">Leave blank to use product's default price</small>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :is_active, 'Status' %>
+      <%= f.check_box :is_active, class: 'form-check-input' %>
+      <span class="form-check-label">Active</span>
+    </div>
+
+    <div class="form-actions">
+      <%= f.submit 'Update Listing', class: 'btn btn-primary' %>
+      <%= link_to 'Cancel', agency_product_listings_path, class: 'btn btn-secondary' %>
+    </div>
+  <% end %>
+</div>

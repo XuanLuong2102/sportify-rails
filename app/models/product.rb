@@ -1,7 +1,7 @@
 class Product < ApplicationRecord
   include Localizable
 
-  belongs_to :brand, class_name: 'ProductBrand', optional: true
+  belongs_to :product_brand, class_name: 'ProductBrand', foreign_key: 'brand_id', optional: true
   belongs_to :category, class_name: 'ProductCategory', optional: true
 
   has_many :product_variants, dependent: :destroy
@@ -38,7 +38,7 @@ class Product < ApplicationRecord
   end
 
   def self.ransackable_associations(auth_object = nil)
-    ['brand', 'category', 'product_variants', 'product_colors', 'product_sizes', 'product_listings', 'places']
+    ['product_brand', 'category', 'product_variants', 'product_colors', 'product_sizes', 'product_listings', 'places']
   end
   
   private

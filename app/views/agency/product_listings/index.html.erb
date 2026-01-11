@@ -1,0 +1,94 @@
+<div class="product-listings-container">
+  <div class='row pb-3 align-items-center'>
+    <h5 class='col-4'><%= t('agency.product_listings.title', default: 'Product Listings') %></h5>
+    <div class='col-8 pe-4'>
+      <%= search_form_for @q, url: agency_product_listings_path, method: :get, html: { class: 'd-flex gap-2' } do |f| %>
+        <%= f.text_field :product_name_cont, placeholder: 'Product Name', class: 'form-control' %>
+        <%= f.submit 'Search', class: 'btn btn-primary' %>
+      <% end %>
+    </div>
+  </div>
+
+  <div class='d-flex align-items-center justify-content-end pb-2'>
+    <%= link_to agency_product_listings_path(format: :csv), class: 'btn btn-outline-success me-2' do %>
+      <i class='fa-solid fa-download'></i> Export
+    <% end %>
+    <%= link_to new_agency_product_listing_path, class: 'btn btn-primary' do %>
+      <i class='fa-solid fa-plus'></i> Add New Listing
+    <% end %>
+  </div>
+
+  <ul class="nav nav-tabs">
+    <li class="nav-item">
+      <%= link_to agency_product_listings_path,
+        class: "nav-link nav-tab #{'active' unless params.dig(:q, :is_active_eq) == 'false'}" do %>
+        All Listings
+      <% end %>
+    </li>
+    <li class="nav-item">
+      <%= link_to agency_product_listings_path(q: { is_active_eq: true }),
+        class: "nav-link nav-tab #{'active' if params.dig(:q, :is_active_eq) == 'true'}" do %>
+        Active
+      <% end %>
+    </li>
+    <li class="nav-item">
+      <%= link_to agency_product_listings_path(q: { is_active_eq: false }),
+        class: "nav-link nav-tab #{'active' if params.dig(:q, :is_active_eq) == 'false'}" do %>
+        Inactive
+      <% end %>
+    </li>
+  </ul>
+
+  <table class='table table-striped text-center align-middle mt-3'>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th class="text-start">Product</th>
+        <th>Place</th>
+        <th>Stock</th>
+        <th>Sold Count</th>
+        <th>Status</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody class='table-group-divider'>
+      <% if @product_listings.present? %>
+        <% @product_listings.each do |listing| %>
+          <tr>
+            <td><%= listing.id %></td>
+            <td class="text-start"><%= listing.product.name rescue 'N/A' %></td>
+            <td><%= listing.place.name rescue 'N/A' %></td>
+            <td>
+              <% stock = listing.product.product_variants.sum { |v| v.product_stocks.sum(&:stock_quantity) } %>
+              <span class="badge <%= stock > 0 ? 'bg-success' : 'bg-danger' %>">
+                <%= stock %>
+              </span>
+            </td>
+            <td><%= listing.sold_count || 0 %></td>
+            <td>
+              <% if listing.is_active %>
+                <span class="badge bg-success">Active</span>
+              <% else %>
+                <span class="badge bg-secondary">Inactive</span>
+              <% end %>
+            </td>
+            <td>
+              <%= link_to 'View', agency_product_listing_path(listing), class: 'btn btn-sm btn-info' %>
+              <% if listing.is_active %>
+                <%= button_to 'Deactivate', soft_delete_agency_product_listing_path(listing), method: :patch, class: 'btn btn-sm btn-warning', data: { confirm: 'Deactivate this listing?' } %>
+              <% else %>
+                <%= button_to 'Activate', restore_agency_product_listing_path(listing), method: :patch, class: 'btn btn-sm btn-success', data: { confirm: 'Activate this listing?' } %>
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+      <% else %>
+        <tr>
+          <td class='text-center' colspan='7'>No product listings found</td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+  <%= render 'layouts/admin/pagination', paging_collection: @product_listings %>
+</div>

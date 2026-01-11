@@ -1,1 +1,196 @@
-<h1>Admin Dashboard</h1>
+<div class="dashboard-container">
+  <div class="page-header">
+    <h1><%= t('admin.dashboard.title') %></h1>
+    
+    <div class="date-range-filter">
+      <%= form_with url: admin_root_path, method: :get, local: true do |f| %>
+        <div class="d-flex gap-2 align-items-center">
+          <%= f.date_field :start_date, value: params[:start_date], class: 'form-control', placeholder: t('admin.dashboard.start_date') %>
+          <span>-</span>
+          <%= f.date_field :end_date, value: params[:end_date], class: 'form-control', placeholder: t('admin.dashboard.end_date') %>
+          <%= f.submit t('admin.dashboard.apply_filter'), class: 'btn btn-primary' %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+  <!-- Stats Cards -->
+  <div class="dashboard-stats">
+    <div class="stat-card revenue-card">
+      <div class="stat-icon">
+        <i class="fas fa-chart-line"></i>
+      </div>
+      <div class="stat-content">
+        <h3><%= t('admin.dashboard.total_revenue') %></h3>
+        <p class="stat-value"><%= number_to_currency(@revenue_data[:total_revenue], unit: 'đ', precision: 0, delimiter: ',') %></p>
+        <div class="stat-breakdown">
+          <span><i class="fas fa-calendar-check"></i> <%= t('admin.dashboard.bookings') %>: <%= number_to_currency(@revenue_data[:booking_revenue], unit: 'đ', precision: 0, delimiter: ',') %></span>
+          <span><i class="fas fa-shopping-cart"></i> <%= t('admin.dashboard.orders') %>: <%= number_to_currency(@revenue_data[:order_revenue], unit: 'đ', precision: 0, delimiter: ',') %></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="stat-card cost-card">
+      <div class="stat-icon">
+        <i class="fas fa-money-bill-wave"></i>
+      </div>
+      <div class="stat-content">
+        <h3><%= t('admin.dashboard.total_costs') %></h3>
+        <p class="stat-value"><%= number_to_currency(@cost_data[:total_costs], unit: 'đ', precision: 0, delimiter: ',') %></p>
+        <div class="stat-breakdown">
+          <span><i class="fas fa-cogs"></i> <%= t('admin.dashboard.operating') %>: <%= number_to_currency(@cost_data[:operating_costs], unit: 'đ', precision: 0, delimiter: ',') %></span>
+          <span><i class="fas fa-box"></i> <%= t('admin.dashboard.stock_inbounds') %>: <%= number_to_currency(@cost_data[:stock_inbound_costs], unit: 'đ', precision: 0, delimiter: ',') %></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="stat-card profit-card">
+      <div class="stat-icon">
+        <i class="fas fa-piggy-bank"></i>
+      </div>
+      <div class="stat-content">
+        <h3><%= t('admin.dashboard.total_profit') %></h3>
+        <p class="stat-value <%= @profit_data[:total_profit] >= 0 ? 'positive' : 'negative' %>">
+          <%= number_to_currency(@profit_data[:total_profit], unit: 'đ', precision: 0, delimiter: ',') %>
+        </p>
+        <div class="stat-breakdown">
+          <span><i class="fas fa-percent"></i> <%= t('admin.dashboard.margin') %>: <%= number_to_percentage(@profit_data[:profit_margin], precision: 2) %></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Charts -->
+  <div class="dashboard-charts">
+    <div class="chart-container">
+      <h3><i class="fas fa-chart-pie"></i> <%= t('admin.dashboard.revenue_by_type') %></h3>
+      <%= pie_chart @revenue_by_type_chart, 
+          library: { 
+            title: { display: false },
+            legend: { position: 'bottom' },
+            plugins: {
+              legend: {
+                labels: {
+                  font: { size: 14 }
+                }
+              }
+            }
+          },
+          colors: ['#28a745', '#007bff'] %>
+    </div>
+
+    <div class="chart-container">
+      <h3><i class="fas fa-chart-line"></i> <%= t('admin.dashboard.monthly_revenue') %></h3>
+      <%= line_chart @monthly_revenue_chart.map { |m| [m[:month], m[:total]] },
+          library: {
+            title: { display: false },
+            scales: {
+              y: { beginAtZero: true }
+            },
+            plugins: {
+              legend: {
+                display: false
+              }
+            }
+          },
+          colors: ['#667eea'] %>
+    </div>
+  </div>
+
+  <!-- Top Places Summary -->
+  <div class="dashboard-info mt-4">
+    <h3><i class="fas fa-trophy"></i> <%= t('admin.dashboard.top_places') %></h3>
+    <div class="table-responsive">
+      <table class="table table-hover table-striped">
+        <thead class="table-light">
+          <tr>
+            <th>#</th>
+            <th><%= t('admin.dashboard.place_name') %></th>
+            <th><%= t('admin.dashboard.location') %></th>
+            <th class="text-end"><%= t('admin.dashboard.booking_revenue') %></th>
+            <th class="text-end"><%= t('admin.dashboard.order_revenue') %></th>
+            <th class="text-end"><%= t('admin.dashboard.total_revenue') %></th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @places_summary.each_with_index do |data, index| %>
+            <tr>
+              <td><strong><%= index + 1 %></strong></td>
+              <td>
+                <strong><%= data[:place].name %></strong>
+              </td>
+              <td>
+                <small class="text-muted">
+                  <%= [data[:place].district, data[:place].city].compact.join(', ') %>
+                </small>
+              </td>
+              <td class="text-end">
+                <span class="badge bg-success">
+                  <%= number_to_currency(data[:booking_revenue], unit: 'đ', precision: 0, delimiter: ',') %>
+                </span>
+              </td>
+              <td class="text-end">
+                <span class="badge bg-primary">
+                  <%= number_to_currency(data[:order_revenue], unit: 'đ', precision: 0, delimiter: ',') %>
+                </span>
+              </td>
+              <td class="text-end">
+                <strong class="text-primary">
+                  <%= number_to_currency(data[:total_revenue], unit: 'đ', precision: 0, delimiter: ',') %>
+                </strong>
+              </td>
+            </tr>
+          <% end %>
+          <% if @places_summary.empty? %>
+            <tr>
+              <td colspan="6" class="text-center text-muted py-4">
+                <i class="fas fa-inbox fa-2x mb-2"></i>
+                <p><%= t('admin.dashboard.no_data') %></p>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- System Stats -->
+  <div class="row mt-4">
+    <div class="col-md-3">
+      <div class="card text-center">
+        <div class="card-body">
+          <i class="fas fa-map-marker-alt fa-3x text-primary mb-3"></i>
+          <h5><%= Place.count %></h5>
+          <p class="text-muted"><%= t('admin.dashboard.total_places') %></p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card text-center">
+        <div class="card-body">
+          <i class="fas fa-users fa-3x text-success mb-3"></i>
+          <h5><%= User.count %></h5>
+          <p class="text-muted"><%= t('admin.dashboard.total_users') %></p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card text-center">
+        <div class="card-body">
+          <i class="fas fa-box fa-3x text-warning mb-3"></i>
+          <h5><%= Product.where(is_active: true).count %></h5>
+          <p class="text-muted"><%= t('admin.dashboard.active_products') %></p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card text-center">
+        <div class="card-body">
+          <i class="fas fa-calendar-check fa-3x text-info mb-3"></i>
+          <h5><%= Booking.where(created_at: Date.current.beginning_of_month..Date.current.end_of_month).count %></h5>
+          <p class="text-muted"><%= t('admin.dashboard.bookings_this_month') %></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -57,6 +57,22 @@ class User < ApplicationRecord
     role&.name == 'agency'
   end
 
+  # Returns all places managed by this agency user
+  def managed_places
+    return Place.none unless agency?
+    
+    Place.joins(:place_managers)
+         .where(place_managers: { user_id: user_id })
+         .distinct
+  end
+
+  # Returns place IDs managed by this agency user
+  def managed_place_ids
+    return [] unless agency?
+    
+    place_managers.pluck(:place_id)
+  end
+
   def avatar_url(size = :avatar_30)
     avatar.variant(size)
   end

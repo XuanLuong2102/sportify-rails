@@ -1,0 +1,124 @@
+<div class="booking-detail-container">
+  <div class="page-header">
+    <h1>Booking #<%= @booking.id %></h1>
+    <%= link_to '← Back to Bookings', agency_bookings_path, class: 'btn btn-secondary' %>
+  </div>
+
+  <div class="booking-info">
+    <div class="info-section">
+      <h3>Booking Information</h3>
+      <dl>
+        <dt>Booking ID:</dt>
+        <dd><%= @booking.id %></dd>
+        
+        <dt>Date:</dt>
+        <dd><%= l(@booking.booking_date, format: :long) rescue @booking.booking_date %></dd>
+        
+        <dt>Time:</dt>
+        <dd><%= @booking.start_time %> - <%= @booking.end_time %></dd>
+        
+        <dt>Status:</dt>
+        <dd><span class="badge badge-<%= @booking.status %>"><%= @booking.status&.titleize %></span></dd>
+        
+        <dt>Payment Status:</dt>
+        <dd><span class="badge badge-<%= @booking.payment_status %>"><%= @booking.payment_status&.titleize %></span></dd>
+        
+        <dt>Total Price:</dt>
+        <dd><%= number_to_currency(@booking.total_price) %></dd>
+        
+        <dt>Created At:</dt>
+        <dd><%= l(@booking.created_at, format: :long) rescue @booking.created_at %></dd>
+      </dl>
+    </div>
+
+    <div class="info-section">
+      <h3>Customer Information</h3>
+      <dl>
+        <dt>Name:</dt>
+        <dd><%= @booking.user.full_name rescue 'N/A' %></dd>
+        
+        <dt>Email:</dt>
+        <dd><%= @booking.user.email rescue 'N/A' %></dd>
+        
+        <dt>Phone:</dt>
+        <dd><%= @booking.user.phone rescue 'N/A' %></dd>
+      </dl>
+    </div>
+
+    <div class="info-section">
+      <h3>Sport Field Information</h3>
+      <dl>
+        <dt>Sport:</dt>
+        <dd><%= @booking.place_sport&.sportfield&.name rescue 'N/A' %></dd>
+        
+        <dt>Place:</dt>
+        <dd><%= @booking.place_sport&.place&.name rescue 'N/A' %></dd>
+        
+        <dt>Address:</dt>
+        <dd><%= @booking.place_sport&.place&.full_address rescue 'N/A' %></dd>
+        
+        <dt>Price per Hour:</dt>
+        <dd><%= number_to_currency(@booking.place_sport&.price_per_hour_vnd) rescue 'N/A' %></dd>
+      </dl>
+    </div>
+  </div>
+
+  <% if @booking.notes.present? %>
+  <div class="booking-notes">
+    <h3>Customer Notes</h3>
+    <p><%= @booking.notes %></p>
+  </div>
+  <% end %>
+
+  <% if @booking.internal_notes.present? %>
+  <div class="internal-notes">
+    <h3>Internal Notes</h3>
+    <p><%= @booking.internal_notes %></p>
+  </div>
+  <% end %>
+
+  <div class="booking-actions">
+    <% if @booking.status == 'pending' %>
+      <%= button_to 'Approve Booking', approve_agency_booking_path(@booking), method: :patch, class: 'btn btn-success', data: { confirm: 'Approve this booking?' } %>
+      <%= button_to 'Reject Booking', reject_agency_booking_path(@booking), method: :patch, class: 'btn btn-danger', data: { confirm: 'Reject this booking?' } %>
+    <% end %>
+    
+    <% if @booking.status == 'approved' && @booking.payment_status == 'unpaid' %>
+      <%= button_to 'Confirm Payment', confirm_payment_agency_booking_path(@booking), method: :patch, class: 'btn btn-primary', data: { confirm: 'Confirm payment received?' } %>
+    <% end %>
+    
+    <% if @booking.status == 'approved' && @booking.payment_status == 'paid' %>
+      <%= button_to 'Complete Booking', complete_agency_booking_path(@booking), method: :patch, class: 'btn btn-success', data: { confirm: 'Complete this booking?' } %>
+    <% end %>
+    
+    <%= button_to 'Cancel Booking', cancel_agency_booking_path(@booking), method: :patch, class: 'btn btn-warning', data: { confirm: 'Cancel this booking?' } if @booking.status != 'cancelled' && @booking.status != 'completed' %>
+  </div>
+
+  <% if @booking.payments.any? %>
+  <div class="payment-history">
+    <h3>Payment History</h3>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Payment ID</th>
+          <th>Amount</th>
+          <th>Method</th>
+          <th>Status</th>
+          <th>Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @booking.payments.each do |payment| %>
+          <tr>
+            <td><%= payment.id %></td>
+            <td><%= number_to_currency(payment.amount) %></td>
+            <td><%= payment.payment_method&.titleize rescue 'N/A' %></td>
+            <td><span class="badge badge-<%= payment.status %>"><%= payment.status&.titleize %></span></td>
+            <td><%= l(payment.created_at, format: :short) rescue payment.created_at %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+  <% end %>
+</div>

@@ -8,7 +8,7 @@ class Admin::ProductsController < Admin::AdminController
   def index
     @q = Product.active.ransack(params[:q])
     @products = @q.result(distinct: true)
-                  .includes(:brand, :category)
+                  .includes(:product_brand, :category)
                   .includes(product_variants: :product_stocks)
                   .with_attached_thumbnail
                   .paginate(page: params[:page], per_page: params[:per_page])
@@ -16,12 +16,12 @@ class Admin::ProductsController < Admin::AdminController
 
   def deleted
     @q = Product.where(is_active: false).ransack(params[:q])
-    @products = @q.result(distinct: true).includes(:brand, :category)
+    @products = @q.result(distinct: true).includes(:product_brand, :category)
     @products = @products.paginate(page: params[:page], per_page: params[:per_page])
   end
 
   def show
-    @product = Product.includes(:brand, :category, 
+    @product = Product.includes(:product_brand, :category, 
                                 product_variants: [:product_color, :product_size, :product_stocks])
                       .find(params[:id])
   end

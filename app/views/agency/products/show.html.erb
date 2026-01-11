@@ -1,0 +1,89 @@
+<div class="product-detail-container">
+  <div class="page-header">
+    <h1><%= @product.name %></h1>
+    <%= link_to '← Back to Products', agency_products_path, class: 'btn btn-secondary' %>
+    <%= link_to 'Edit', edit_agency_product_path(@product), class: 'btn btn-primary' %>
+  </div>
+
+  <div class="product-details">
+    <div class="product-images">
+      <% if @product.product_images.any? %>
+        <% @product.product_images.each do |image| %>
+          <%= image_tag image.url, alt: @product.name, class: 'product-image-large' %>
+        <% end %>
+      <% else %>
+        <div class="no-image">No images available</div>
+      <% end %>
+    </div>
+
+    <div class="product-info">
+      <h2>Product Information</h2>
+      <dl>
+        <dt>Name:</dt>
+        <dd><%= @product.name %></dd>
+        
+        <dt>Description:</dt>
+        <dd><%= simple_format(@product.description) %></dd>
+        
+        <dt>Price:</dt>
+        <dd><%= number_to_currency(@product.price_vnd) %> / <%= number_to_currency(@product.price_usd, unit: '$') %></dd>
+        
+        <dt>Brand:</dt>
+        <dd><%= @product.product_brand&.name || 'N/A' %></dd>
+        
+        <dt>Category:</dt>
+        <dd><%= @product.product_category&.name || 'N/A' %></dd>
+        
+        <dt>Status:</dt>
+        <dd><span class="badge badge-<%= @product.status %>"><%= @product.status&.titleize || 'Active' %></span></dd>
+      </dl>
+    </div>
+  </div>
+
+  <% if @product.product_variants.any? %>
+  <div class="product-variants">
+    <h3>Product Variants</h3>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>SKU</th>
+          <th>Size</th>
+          <th>Color</th>
+          <th>Stock</th>
+          <th>Price</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @product.product_variants.each do |variant| %>
+          <tr>
+            <td><%= variant.sku %></td>
+            <td><%= variant.product_size&.name || '-' %></td>
+            <td><%= variant.product_color&.name || '-' %></td>
+            <td><%= variant.stock_quantity || 0 %></td>
+            <td><%= number_to_currency(variant.price_vnd || @product.price_vnd) %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+  <% end %>
+
+  <% if @product.product_listings.any? %>
+  <div class="product-listings">
+    <h3>Available at Places</h3>
+    <ul>
+      <% @product.product_listings.each do |listing| %>
+        <li>
+          <strong><%= listing.place.name %></strong>
+          - Stock: <%= listing.stock_quantity || 0 %>
+          <% if listing.is_active %>
+            <span class="badge badge-success">Active</span>
+          <% else %>
+            <span class="badge badge-secondary">Inactive</span>
+          <% end %>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+  <% end %>
+</div>

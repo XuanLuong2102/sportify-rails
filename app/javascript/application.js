@@ -3,6 +3,8 @@
 
 import "@hotwired/turbo-rails" 
 import "bootstrap"
+import "chartkick"
+import "Chart.bundle"
 import "./modules/products"
 import "./modules/product_colors"
 

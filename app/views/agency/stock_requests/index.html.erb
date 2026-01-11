@@ -1,0 +1,98 @@
+<div class="stock-requests-container">
+  <div class='row pb-3 align-items-center'>
+    <h5 class='col-6'><%= t('agency.stock_requests.title', default: 'Stock Requests') %></h5>
+    <div class='col-6 text-end'>
+      <%= link_to new_agency_stock_request_path, class: 'btn btn-primary' do %>
+        <i class='fa-solid fa-plus'></i> Create New Request
+      <% end %>
+    </div>
+  </div>
+
+  <ul class="nav nav-tabs">
+    <li class="nav-item">
+      <%= link_to agency_stock_requests_path, class: "nav-link nav-tab #{params[:action] == 'index' ? 'active' : ''}" do %>
+        All Requests
+        <% if @status_counts %>
+          <span class="badge bg-secondary ms-1"><%= @status_counts.values.sum %></span>
+        <% end %>
+      <% end %>
+    </li>
+    <li class="nav-item">
+      <%= link_to pending_agency_stock_requests_path, class: "nav-link nav-tab #{params[:action] == 'pending' ? 'active' : ''}" do %>
+        Pending
+        <% if @status_counts %>
+          <span class="badge bg-warning ms-1"><%= @status_counts[:pending] || 0 %></span>
+        <% end %>
+      <% end %>
+    </li>
+    <li class="nav-item">
+      <%= link_to approved_agency_stock_requests_path, class: "nav-link nav-tab #{params[:action] == 'approved' ? 'active' : ''}" do %>
+        Approved
+        <% if @status_counts %>
+          <span class="badge bg-success ms-1"><%= @status_counts[:approved] || 0 %></span>
+        <% end %>
+      <% end %>
+    </li>
+    <li class="nav-item">
+      <%= link_to rejected_agency_stock_requests_path, class: "nav-link nav-tab #{params[:action] == 'rejected' ? 'active' : ''}" do %>
+        Rejected
+        <% if @status_counts %>
+          <span class="badge bg-danger ms-1"><%= @status_counts[:rejected] || 0 %></span>
+        <% end %>
+      <% end %>
+    </li>
+  </ul>
+
+  <table class='table table-striped text-center align-middle mt-3'>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Place</th>
+        <th>Request Type</th>
+        <th>Requested By</th>
+        <th>Status</th>
+        <th>Created At</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody class='table-group-divider'>
+      <% if @stock_requests.present? %>
+        <% @stock_requests.each do |request| %>
+          <tr>
+            <td><%= request.id %></td>
+            <td><%= request.place.name rescue 'N/A' %></td>
+            <td><span class="badge bg-info"><%= request.request_type&.titleize || 'Import' %></span></td>
+            <td><%= request.requester.full_name rescue 'N/A' %></td>
+            <td>
+              <% case request.status %>
+              <% when 'pending' %>
+                <span class="badge bg-warning">Pending</span>
+              <% when 'approved' %>
+                <span class="badge bg-success">Approved</span>
+              <% when 'rejected' %>
+                <span class="badge bg-danger">Rejected</span>
+              <% when 'cancelled' %>
+                <span class="badge bg-secondary">Cancelled</span>
+              <% else %>
+                <span class="badge bg-secondary"><%= request.status&.titleize %></span>
+              <% end %>
+            </td>
+            <td><%= l(request.created_at, format: :short) rescue request.created_at.strftime('%Y-%m-%d %H:%M') %></td>
+            <td>
+              <%= link_to 'View', agency_stock_request_path(request), class: 'btn btn-sm btn-info' %>
+              <% if request.status == 'pending' %>
+                <%= button_to 'Cancel', cancel_agency_stock_request_path(request), method: :patch, class: 'btn btn-sm btn-warning', data: { confirm: 'Cancel this request?' } %>
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+      <% else %>
+        <tr>
+          <td class='text-center' colspan='7'>No stock requests found</td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+  <%= render 'layouts/admin/pagination', paging_collection: @stock_requests %>
+</div>

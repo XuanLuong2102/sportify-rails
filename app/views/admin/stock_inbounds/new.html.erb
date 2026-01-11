@@ -95,7 +95,7 @@
       <select class="form-select product-select" name="stock_inbound[items][][product_id]" required>
         <option value="">Select product</option>
         <% @products.each do |product| %>
-          <option value="<%= product.id %>"><%= product.name_en %> (<%= product.brand&.name %>)</option>
+          <option value="<%= product.id %>"><%= product.name_en %> (<%= product.product_brand&.name %>)</option>
         <% end %>
       </select>
     </td>

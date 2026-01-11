@@ -13,6 +13,17 @@ vi:
     delete: Xóa
     confirm: Xác nhận
 
+  date:
+    formats:
+      long_day: "%A"
+      short: "%d/%m"
+      long: "%d %B %Y"
+
+  time:
+    formats:
+      short: "%d/%m/%Y %H:%M"
+      long: "%d %B %Y %H:%M:%S"
+
   buttons:
     edit: Chỉnh sửa
     update: Cập nhật
@@ -57,6 +68,32 @@ vi:
     place_managers: Quản lý Sân
 
   admin:
+    dashboard:
+      title: Bảng Điều Khiển Quản Trị
+      start_date: Ngày Bắt Đầu
+      end_date: Ngày Kết Thúc
+      apply_filter: Áp Dụng Lọc
+      total_revenue: Tổng Doanh Thu
+      total_costs: Tổng Chi Phí
+      total_profit: Tổng Lợi Nhuận
+      bookings: Đặt Sân
+      orders: Đơn Hàng
+      operating: Chi Phí Vận Hành
+      stock_inbounds: Chi Phí Nhập Hàng
+      margin: Tỷ Suất Lợi Nhuận
+      revenue_by_type: Doanh Thu Theo Loại
+      monthly_revenue: Xu Hướng Doanh Thu Hàng Tháng
+      top_places: Địa Điểm Hoạt Động Tốt Nhất
+      place_name: Tên Địa Điểm
+      location: Vị Trí
+      booking_revenue: Doanh Thu Đặt Sân
+      order_revenue: Doanh Thu Đơn Hàng
+      no_data: Không có dữ liệu
+      total_places: Tổng Số Địa Điểm
+      total_users: Tổng Số Người Dùng
+      active_products: Sản Phẩm Hoạt Động
+      bookings_this_month: Đặt Sân Tháng Này
+
     users:
       created: Tạo người dùng thành công
       updated: Cập nhật người dùng thành công
@@ -380,3 +417,76 @@ vi:
     product_brands:
       not_found: Không tìm thấy thương hiệu
       fetched_brands_success: Lấy danh sách thương hiệu thành công
+
+  agency:
+    menu:
+      dashboard: Bảng Điều Khiển
+      management: Quản Lý
+      orders: Đơn Hàng
+      bookings: Đặt Sân
+      schedules: Lịch Đặt Sân
+      product_listings: Sản Phẩm
+      stock_requests: Yêu Cầu Hàng
+      place_sports: Sân Thể Thao
+
+    dashboard:
+      title: Bảng Điều Khiển Đại Lý
+      total_revenue: Tổng Doanh Thu
+      total_costs: Tổng Chi Phí
+      total_profit: Tổng Lợi Nhuận
+      bookings: Đặt Sân
+      orders: Đơn Hàng
+      operating: Chi Phí Vận Hành
+      margin: Tỷ Suất Lợi Nhuận
+      revenue_by_type: Doanh Thu Theo Loại
+      monthly_revenue: Doanh Thu Theo Tháng
+      managed_places: Địa Điểm Quản Lý
+      apply_filter: Áp Dụng Lọc
+
+    products:
+      title: Sản Phẩm
+      no_products: Không tìm thấy sản phẩm
+
+    product_listings:
+      title: Danh Sách Sản Phẩm
+      buttons:
+        add_new: Thêm Mới
+
+    place_sports:
+      title: Quản Lý Sân Thể Thao
+      no_fields: Không tìm thấy sân
+      buttons:
+        add_new: Thêm Sân Mới
+      created_successfully: Tạo sân thành công
+      updated_successfully: Cập nhật sân thành công
+      deleted_successfully: Đóng sân thành công
+      restored_successfully: Mở sân thành công
+      delete_failed: Không thể đóng sân
+      restore_failed: Không thể mở sân
+      maintenance_enabled: Đã bật chế độ bảo trì
+      maintenance_disabled: Đã tắt chế độ bảo trì
+      maintenance_toggle_failed: Không thể chuyển đổi chế độ bảo trì
+      not_found: Không tìm thấy sân
+      invalid_place: Địa điểm không hợp lệ
+
+    orders:
+      title: Quản Lý Đơn Hàng
+      no_orders: Không tìm thấy đơn hàng
+
+    schedules:
+      title: Quản Lý Lịch Đặt Sân
+      sport_field: Sân Thể Thao
+      time_slot: Giờ
+      previous_day: Ngày Trước
+      next_day: Ngày Sau
+      today: Hôm Nay
+      no_sport_fields: Không tìm thấy sân thể thao
+      legend: Chú Thích
+      approved: Đã Xác Nhận
+      completed: Hoàn Thành
+      hover_hint: Rê chuột vào ô để xem chi tiết
+      customer: Khách Hàng
+      time: Thời Gian
+      price: Giá Tiền
+      status: Trạng Thái
+      payment_confirmed: Đã Thanh Toán

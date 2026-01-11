@@ -1,0 +1,111 @@
+<div class="stock-request-form-container">
+  <div class="page-header">
+    <h1>New Stock Request</h1>
+    <%= link_to '← Back to Requests', agency_stock_requests_path, class: 'btn btn-secondary' %>
+  </div>
+
+  <%= form_with model: @stock_request, url: agency_stock_requests_path, local: true do |f| %>
+    <% if @stock_request.errors.any? %>
+      <div class="alert alert-danger">
+        <h4><%= pluralize(@stock_request.errors.count, "error") %> prohibited this request from being saved:</h4>
+        <ul>
+          <% @stock_request.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <div class="form-group">
+      <%= f.label :place_id, 'Place' %>
+      <%= f.select :place_id, options_from_collection_for_select(@available_places, :place_id, :name, @stock_request.place_id), { prompt: 'Select a place' }, class: 'form-control' %>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :request_type, 'Request Type' %>
+      <%= f.select :request_type, options_for_select([['Import Stock', 'import'], ['New Product Registration', 'registration']], @stock_request.request_type), { prompt: 'Select type' }, class: 'form-control' %>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :notes, 'Notes' %>
+      <%= f.text_area :notes, rows: 3, class: 'form-control', placeholder: 'Add any notes or special instructions...' %>
+    </div>
+
+    <div class="stock-request-items">
+      <h3>Request Items</h3>
+      
+      <div id="stock-request-items">
+        <%= f.fields_for :stock_request_items do |item_form| %>
+          <div class="item-fields card mb-3 p-3">
+            <div class="form-row">
+              <div class="col-md-4">
+                <%= item_form.label :product_id, 'Product' %>
+                <%= item_form.select :product_id, options_from_collection_for_select(Product.all, :id, :name), { prompt: 'Select product' }, class: 'form-control' %>
+              </div>
+              
+              <div class="col-md-3">
+                <%= item_form.label :quantity, 'Quantity' %>
+                <%= item_form.number_field :quantity, min: 1, class: 'form-control' %>
+              </div>
+              
+              <div class="col-md-3">
+                <%= item_form.label :unit_price, 'Unit Price (VND)' %>
+                <%= item_form.number_field :unit_price, step: 1000, class: 'form-control' %>
+              </div>
+              
+              <div class="col-md-2 d-flex align-items-end">
+                <%= item_form.check_box :_destroy, class: 'form-check-input d-none' %>
+                <button type="button" class="btn btn-danger btn-sm remove-item">Remove</button>
+              </div>
+            </div>
+            
+            <div class="form-group mt-2">
+              <%= item_form.label :notes, 'Item Notes' %>
+              <%= item_form.text_field :notes, class: 'form-control', placeholder: 'Optional notes for this item...' %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+      
+      <button type="button" class="btn btn-secondary" id="add-item">Add Item</button>
+    </div>
+
+    <div class="form-actions mt-4">
+      <%= f.submit 'Submit Request', class: 'btn btn-primary' %>
+      <%= link_to 'Cancel', agency_stock_requests_path, class: 'btn btn-secondary' %>
+    </div>
+  <% end %>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Add item functionality
+  document.getElementById('add-item').addEventListener('click', function() {
+    const container = document.getElementById('stock-request-items');
+    const itemFields = container.querySelector('.item-fields');
+    if (itemFields) {
+      const newItem = itemFields.cloneNode(true);
+      // Clear values
+      newItem.querySelectorAll('input, select, textarea').forEach(input => {
+        if (input.type === 'checkbox') input.checked = false;
+        else input.value = '';
+      });
+      container.appendChild(newItem);
+    }
+  });
+  
+  // Remove item functionality
+  document.addEventListener('click', function(e) {
+    if (e.target.classList.contains('remove-item')) {
+      const itemFields = e.target.closest('.item-fields');
+      const destroyInput = itemFields.querySelector('input[name*="_destroy"]');
+      if (destroyInput) {
+        destroyInput.value = '1';
+        itemFields.style.display = 'none';
+      } else {
+        itemFields.remove();
+      }
+    }
+  });
+});
+</script>

@@ -1,0 +1,67 @@
+<div class="place-sport-form-container">
+  <div class='row pb-3 align-items-center'>
+    <h5 class='col-6'>Edit Sport Field: <%= @place_sport.sportfield&.name || 'N/A' %></h5>
+    <div class='col-6 text-end'>
+      <%= link_to '← Back to Sport Fields', agency_place_sports_path, class: 'btn btn-secondary' %>
+    </div>
+  </div>
+
+  <%= form_with model: @place_sport, url: agency_place_sport_path(@place_sport), method: :patch, local: true, class: 'needs-validation' do |f| %>
+    <% if @place_sport.errors.any? %>
+      <div class="alert alert-danger">
+        <h4><%= pluralize(@place_sport.errors.count, "error") %> prohibited this sport field from being saved:</h4>
+        <ul>
+          <% @place_sport.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <div class="row">
+      <div class="col-md-6 mb-3">
+        <%= f.label :place_id, 'Place *', class: 'form-label' %>
+        <%= f.select :place_id, options_from_collection_for_select(@available_places, :place_id, :name, @place_sport.place_id), { prompt: 'Select a place' }, class: 'form-select', required: true %>
+        <small class="form-text text-muted">Only your managed places are shown</small>
+      </div>
+
+      <div class="col-md-6 mb-3">
+        <%= f.label :sportfield_id, 'Sport Field Type *', class: 'form-label' %>
+        <%= f.select :sportfield_id, options_from_collection_for_select(@sportfields, :sportfield_id, :name_en, @place_sport.sportfield_id), { prompt: 'Select sport field type' }, class: 'form-select', required: true %>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6 mb-3">
+        <%= f.label :price_per_hour_vnd, 'Price per Hour (VND) *', class: 'form-label' %>
+        <%= f.number_field :price_per_hour_vnd, step: 1000, class: 'form-control', placeholder: '100000', required: true %>
+      </div>
+      
+      <div class="col-md-6 mb-3">
+        <%= f.label :price_per_hour_usd, 'Price per Hour (USD)', class: 'form-label' %>
+        <%= f.number_field :price_per_hour_usd, step: 0.1, class: 'form-control', placeholder: '5.00' %>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6 mb-3">
+        <div class="form-check">
+          <%= f.check_box :is_close, class: 'form-check-input' %>
+          <%= f.label :is_close, 'Close this field', class: 'form-check-label' %>
+        </div>
+      </div>
+
+      <div class="col-md-6 mb-3">
+        <div class="form-check">
+          <%= f.check_box :maintenance_sport, class: 'form-check-input' %>
+          <%= f.label :maintenance_sport, 'Under Maintenance', class: 'form-check-label' %>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-actions mt-3">
+      <%= f.submit 'Update Sport Field', class: 'btn btn-primary' %>
+      <%= link_to 'Cancel', agency_place_sports_path, class: 'btn btn-secondary' %>
+    </div>
+  <% end %>
+</div>

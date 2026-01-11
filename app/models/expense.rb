@@ -1,12 +1,12 @@
 class Expense < ApplicationRecord
-  enum owner_type: { admin: 0, agency: 1 }
+  enum :owner_type, { admin: 0, agency: 1 }
 
   belongs_to :place,
              foreign_key: :owner_id,
              primary_key: :place_id,
              optional: true
 
-  enum expense_type: {
+  enum :expense_type, {
     inventory: 0,
     marketing: 1,
     operation: 2,

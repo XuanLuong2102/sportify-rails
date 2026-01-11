@@ -1,0 +1,201 @@
+<div class="product-listing-detail">
+  <!-- Header -->
+  <div class="row mb-4 align-items-center">
+    <div class="col">
+      <h5 class="mb-0"><%= @product_listing.product.name %></h5>
+      <small class="text-muted">
+        <%= t('agency.product_listings.place') %>: <%= @product_listing.place.name %>
+      </small>
+    </div>
+    <div class="col-auto">
+      <%= link_to agency_product_listings_path, class: 'btn btn-outline-secondary btn-sm' do %>
+        <i class="fa fa-arrow-left"></i> <%= t('common.back_to_list', default: 'Back to List') %>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="row">
+    <!-- Left Column - Product Image -->
+    <div class="col-md-4">
+      <div class="card mb-4">
+        <div class="card-body text-center">
+          <% if @product_listing.product.thumbnail.attached? %>
+            <%= image_tag @product_listing.product.thumbnail.variant(:thumbnail_300), class: 'img-fluid rounded', alt: @product_listing.product.name %>
+          <% else %>
+            <div class="bg-light p-5 rounded text-muted">
+              <i class="fa fa-image fa-3x"></i>
+              <p class="mt-2"><%= t('products.no_image', default: 'No Image') %></p>
+            </div>
+          <% end %>
+        </div>
+      </div>
+
+      <!-- Product Gallery -->
+      <div class="card">
+        <div class="card-header fw-bold">
+          <i class="fa fa-images"></i> <%= t('products.gallery', default: 'Gallery') %>
+        </div>
+        <div class="card-body">
+          <% if @product_listing.product.product_images.any? %>
+            <div class="row g-2">
+              <% @product_listing.product.product_images.each do |img| %>
+                <div class="col-6">
+                  <% if img.image.attached? %>
+                    <%= image_tag img.image, class: 'img-fluid rounded border', alt: img.product_color&.name %>
+                  <% end %>
+                </div>
+              <% end %>
+            </div>
+          <% else %>
+            <div class="text-muted text-center py-4">
+              <i class="fa fa-image"></i>
+              <p class="mb-0"><small><%= t('products.no_images', default: 'No Images') %></small></p>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Column - Details -->
+    <div class="col-md-8">
+      <!-- Listing Information -->
+      <div class="card mb-4">
+        <div class="card-header fw-bold">
+          <i class="fa fa-info-circle"></i> <%= t('agency.product_listings.listing_info', default: 'Listing Information') %>
+        </div>
+        <div class="card-body">
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <p class="mb-1"><strong><%= t('agency.product_listings.place', default: 'Place') %>:</strong></p>
+              <p class="text-muted"><%= @product_listing.place.name %></p>
+            </div>
+            <div class="col-md-6">
+              <p class="mb-1"><strong><%= t('common.status', default: 'Status') %>:</strong></p>
+              <p>
+                <% if @product_listing.is_active %>
+                  <span class="badge bg-success">Active</span>
+                <% else %>
+                  <span class="badge bg-secondary">Inactive</span>
+                <% end %>
+              </p>
+            </div>
+          </div>
+
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <p class="mb-1"><strong><%= t('agency.product_listings.sold_count', default: 'Sold Count') %>:</strong></p>
+              <p class="text-muted">
+                <span class="badge bg-info">
+                  <%= @product_listing.sold_count || 0 %>
+                </span>
+              </p>
+            </div>
+            <div class="col-md-6">
+              <p class="mb-1"><strong><%= t('products.total_stock', default: 'Total Stock') %>:</strong></p>
+              <p class="text-muted">
+                <% total_stock = @product_listing.product.product_variants.sum { |v| v.product_stocks.sum(&:stock_quantity) } %>
+                <span class="badge <%= total_stock > 0 ? 'bg-success' : 'bg-danger' %>">
+                  <%= total_stock %> <%= t('common.units', default: 'units') %>
+                </span>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Product Information -->
+      <div class="card mb-4">
+        <div class="card-header fw-bold">
+          <i class="fa fa-box"></i> <%= t('products.product_info', default: 'Product Information') %>
+        </div>
+        <div class="card-body">
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <p class="mb-1"><strong><%= t('products.brand', default: 'Brand') %>:</strong></p>
+              <p class="text-muted"><%= @product_listing.product.product_brand&.name || t('common.not_set', default: 'Not Set') %></p>
+            </div>
+            <div class="col-md-6">
+              <p class="mb-1"><strong><%= t('products.category', default: 'Category') %>:</strong></p>
+              <p class="text-muted"><%= @product_listing.product.category&.name || t('common.not_set', default: 'Not Set') %></p>
+            </div>
+          </div>
+
+          <div class="row mb-3">
+            <div class="col-md-12">
+              <p class="mb-1"><strong><%= t('products.variants', default: 'Variants') %>:</strong></p>
+              <p class="text-muted">
+                <span class="badge bg-info">
+                  <%= @product_listing.product.product_variants.count %>
+                </span>
+              </p>
+            </div>
+          </div>
+
+          <hr>
+
+          <p class="mb-1"><strong><%= t('products.description', default: 'Description') %>:</strong></p>
+          <div class="text-muted" style="max-height: 150px; overflow-y: auto;">
+            <%= simple_format(@product_listing.product.description) || t('common.not_set', default: 'Not Set') %>
+          </div>
+        </div>
+      </div>
+
+      <!-- Product Variants Table -->
+      <div class="card">
+        <div class="card-header fw-bold">
+          <i class="fa fa-list"></i> <%= t('products.variants', default: 'Variants') %> (<%= @product_listing.product.product_variants.count %>)
+        </div>
+        <div class="card-body p-0">
+          <% if @product_listing.product.product_variants.any? %>
+            <div class="table-responsive">
+              <table class="table table-hover mb-0">
+                <thead class="table-light">
+                  <tr>
+                    <th><%= t('products.color', default: 'Color') %></th>
+                    <th><%= t('products.size', default: 'Size') %></th>
+                    <th><%= t('products.sku', default: 'SKU') %></th>
+                    <th><%= t('products.price', default: 'Price') %></th>
+                    <th><%= t('products.stock', default: 'Stock') %></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% @product_listing.product.product_variants.each do |variant| %>
+                    <tr>
+                      <td>
+                        <% if variant.product_color %>
+                          <span class="badge" style="background-color: <%= variant.product_color.code_rgb || '#999999' %>; color: <%= hex_contrast_color(variant.product_color.code_rgb) %>">
+                            <%= variant.product_color.name %>
+                          </span>
+                        <% else %>
+                          <span class="text-muted">-</span>
+                        <% end %>
+                      </td>
+                      <td><%= variant.product_size&.name || '-' %></td>
+                      <td>
+                        <code><%= variant.sku || '-' %></code>
+                      </td>
+                      <td>
+                        <strong><%= number_to_currency(variant.price_vnd, unit: '₫', format: '%n %u') %></strong>
+                      </td>
+                      <td>
+                        <% stock = variant.product_stocks.sum(&:stock_quantity) %>
+                        <span class="badge <%= stock > 0 ? 'bg-success' : 'bg-danger' %>">
+                          <%= stock %> <%= t('common.units', default: 'units') %>
+                        </span>
+                      </td>
+                    </tr>
+                  <% end %>
+                </tbody>
+              </table>
+            </div>
+          <% else %>
+            <div class="text-muted text-center py-4">
+              <i class="fa fa-box-open"></i>
+              <p class="mb-0"><%= t('products.no_variants', default: 'No variants available') %></p>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

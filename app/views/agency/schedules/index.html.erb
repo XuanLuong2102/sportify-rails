@@ -1,0 +1,331 @@
+<div class="container-fluid mt-4">
+  <!-- Header with Date Navigation -->
+  <div class="row mb-4">
+    <div class="col-md-12">
+      <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+        <h5 class="mb-0"><%= t('agency.schedules.title') %></h5>
+        <div class="date-navigation">
+          <%= link_to agency_schedules_path(date: @selected_date - 1.day), class: "btn btn-outline-secondary btn-sm" do %>
+            <i class="fas fa-chevron-left"></i>
+          <% end %>
+          
+          <div class="date-picker-wrapper">
+            <%= form_with url: agency_schedules_path, method: :get, class: "d-inline-block" do |f| %>
+              <%= f.date_field :date, 
+                  value: @selected_date, 
+                  class: "form-control form-control-sm date-input",
+                  onchange: "this.form.submit()" %>
+            <% end %>
+          </div>
+          
+          <%= link_to agency_schedules_path(date: @selected_date + 1.day), class: "btn btn-outline-secondary btn-sm" do %>
+            <i class="fas fa-chevron-right"></i>
+          <% end %>
+          
+          <%= link_to agency_schedules_path, class: "btn btn-primary btn-sm" do %>
+            <i class="fas fa-calendar-day"></i> <%= t('agency.schedules.today') %>
+          <% end %>
+        </div>
+        
+        <div class="selected-date-display">
+          <span class="badge bg-secondary fs-6 py-2 px-3">
+            <%= l(@selected_date, format: :long) %>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Time-based Schedule Table -->
+  <div class="row">
+    <div class="col-md-12">
+      <div class="table-responsive schedule-table-wrapper">
+        <table class="table table-bordered schedule-table">
+          <thead>
+            <tr class="table-light">
+              <th style="width: 100px;" class="text-center"><%= t('agency.schedules.time_slot') %></th>
+              <% @place_sports.each do |place_sport| %>
+                <th class="text-center sport-field-header">
+                  <div class="fw-bold"><%= place_sport.sportfield.name %></div>
+                  <small class="text-muted"><%= place_sport.place.name %></small>
+                  <div class="small text-primary">
+                    <%= number_to_currency(place_sport.price_per_hour_vnd, unit: 'đ', precision: 0) %>/h
+                  </div>
+                </th>
+              <% end %>
+            </tr>
+          </thead>
+          <tbody>
+            <% if @place_sports.any? %>
+              <% @time_slots.each do |time_slot| %>
+                <tr>
+                  <td class="time-slot-cell text-center fw-bold">
+                    <%= time_slot.strftime('%H:%M') %>
+                  </td>
+                  <% @place_sports.each do |place_sport| %>
+                    <td class="schedule-cell">
+                      <% bookings_data = @schedule_data.dig(time_slot, place_sport.id) || [] %>
+                      <% if bookings_data.any? %>
+                        <% bookings_data.each do |data| %>
+                          <% booking = data[:booking] %>
+                          <% schedule = data[:schedule] %>
+                          <% duration = ((schedule.end_time - schedule.start_time) / 3600).round %>
+                          <div class="booking-slot <%= booking.status %>" 
+                               data-bs-toggle="tooltip" 
+                               data-bs-html="true"
+                               data-bs-placement="top"
+                               title="<%= render partial: 'booking_tooltip', locals: { booking: booking, schedule: schedule } %>">
+                            <div class="booking-time">
+                              <i class="fas fa-clock"></i>
+                              <%= schedule.start_time.strftime('%H:%M') %> - <%= schedule.end_time.strftime('%H:%M') %>
+                              <span class="badge bg-light text-dark ms-1"><%= duration %>h</span>
+                            </div>
+                            <div class="booking-customer">
+                              <i class="fas fa-user"></i>
+                              <%= booking.user.username || booking.user.email.split('@').first %>
+                            </div>
+                            <div class="booking-price">
+                              <i class="fas fa-money-bill-wave"></i>
+                              <%= number_to_currency(booking.total_price, unit: 'đ', precision: 0) %>
+                            </div>
+                          </div>
+                        <% end %>
+                      <% else %>
+                        <div class="empty-slot">
+                          <i class="fas fa-circle text-muted" style="font-size: 0.5rem;"></i>
+                        </div>
+                      <% end %>
+                    </td>
+                  <% end %>
+                </tr>
+              <% end %>
+            <% else %>
+              <tr>
+                <td colspan="100%" class="text-center text-muted py-5">
+                  <i class="fas fa-calendar-times fa-3x mb-3"></i>
+                  <p><%= t('agency.schedules.no_sport_fields') %></p>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Legend -->
+  <div class="row mt-3">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-body">
+          <h6 class="card-title"><%= t('agency.schedules.legend') %></h6>
+          <div class="d-flex gap-3 flex-wrap">
+            <span class="badge bg-success"><i class="fas fa-check"></i> <%= t('agency.schedules.approved') %></span>
+            <span class="badge bg-primary"><i class="fas fa-flag-checkered"></i> <%= t('agency.schedules.completed') %></span>
+            <span class="text-muted"><small><i class="fas fa-info-circle"></i> <%= t('agency.schedules.hover_hint') %></small></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+.schedule-table-wrapper {
+  overflow-x: auto;
+  max-height: 80vh;
+  position: relative;
+}
+
+.schedule-table {
+  min-width: 800px;
+  font-size: 0.9rem;
+  margin-bottom: 0;
+}
+
+.schedule-table thead th {
+  position: sticky;
+  top: 0;
+  background-color: #f8f9fa;
+  z-index: 10;
+  vertical-align: middle;
+  padding: 12px 8px;
+  border-bottom: 2px solid #dee2e6;
+}
+
+.sport-field-header {
+  min-width: 180px;
+}
+
+.time-slot-cell {
+  background-color: #f8f9fa;
+  position: sticky;
+  left: 0;
+  z-index: 5;
+  font-size: 0.85rem;
+  color: #495057;
+  vertical-align: middle;
+}
+
+.schedule-cell {
+  padding: 4px;
+  vertical-align: middle;
+  min-height: 60px;
+  height: 60px;
+  position: relative;
+}
+
+.empty-slot {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  opacity: 0.3;
+}
+
+.booking-slot {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 6px;
+  padding: 8px;
+  color: white;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.booking-slot:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  z-index: 3;
+}
+
+.booking-slot.approved {
+  background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+}
+
+.booking-slot.completed {
+  background: linear-gradient(135deg, #007bff 0%, #6610f2 100%);
+}
+
+.booking-time {
+  font-weight: 600;
+  margin-bottom: 4px;
+  font-size: 0.75rem;
+}
+
+.booking-customer {
+  font-size: 0.75rem;
+  opacity: 0.95;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-bottom: 2px;
+}
+
+.booking-price {
+  font-size: 0.7rem;
+  font-weight: 600;
+  opacity: 0.9;
+}
+
+.date-navigation {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.date-picker-wrapper {
+  display: inline-block;
+}
+
+.date-input {
+  min-width: 150px;
+  cursor: pointer;
+  font-weight: 500;
+  text-align: center;
+}
+
+.date-input::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+  font-size: 1.1rem;
+}
+
+.selected-date-display {
+  display: none;
+}
+
+/* Alternating row colors for better readability */
+.schedule-table tbody tr:nth-child(even) {
+  background-color: #f9fafb;
+}
+
+/* Highlight current time slot */
+.current-time-slot {
+  background-color: #fff3cd !important;
+}
+
+@media (max-width: 768px) {
+  .date-navigation {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+  }
+  
+  .date-picker-wrapper {
+    order: -1;
+    width: 100%;
+  }
+  
+  .date-input {
+    width: 100%;
+  }
+  
+  .selected-date-display {
+    display: block;
+    width: 100%;
+    text-align: center;
+    margin-top: 8px;
+  }
+  
+  .schedule-table {
+    font-size: 0.75rem;
+  }
+  
+  .booking-slot {
+    padding: 4px;
+    font-size: 0.7rem;
+  }
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Initialize Bootstrap tooltips
+  var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+  var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+    return new bootstrap.Tooltip(tooltipTriggerEl, {
+      html: true,
+      trigger: 'hover focus'
+    });
+  });
+  
+  // Highlight current time slot
+  var now = new Date();
+  var currentHour = now.getHours();
+  var timeSlotCells = document.querySelectorAll('.time-slot-cell');
+  
+  timeSlotCells.forEach(function(cell) {
+    var timeText = cell.textContent.trim();
+    var hour = parseInt(timeText.split(':')[0]);
+    
+    if (hour === currentHour) {
+      cell.parentElement.classList.add('current-time-slot');
+    }
+  });
+});
+</script>

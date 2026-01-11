@@ -1,0 +1,64 @@
+<nav class='sb-topnav navbar navbar-expand navbar-dark bg-dark '>
+  <!-- Navbar Brand-->
+  <div class='navbar-header'>
+    <p class=' ps-3 text-uppercase logo-team'>AGENCY</p>
+    <button class='btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0 ms-auto' id='sidebarToggle'><i class='fas fa-bars'></i></button>
+  </div>
+  <!-- Sidebar Toggle-->
+  <!-- Navbar-->
+  <p class='ms-auto me-0 me-md-3 my-2 my-md-0 text-white'><i class='fa fa-bell'></i></p>
+  <ul class='navbar-nav ms-auto ms-md-0 me-3 me-lg-4'>
+    <li class='nav-item dropdown'>
+      <a class='nav-link dropdown-toggle' id='navbarDropdown' role='button' data-bs-toggle='dropdown' aria-expanded='false'>
+        <% if present_user? %>
+          <i class="fas fa-user fa-fw"></i> <%= current_user.username %>
+        <% end %>
+      </a>
+      <ul class='dropdown-menu dropdown-menu-end' aria-labelledby='navbarDropdown'>
+        <li>
+          <%= link_to t('navbar.information'), agency_root_path, class: 'dropdown-item' %>
+        </li>
+
+        <li class="dropdown-submenu position-relative">
+          <a href="#"
+            class="dropdown-item d-flex align-items-center"
+            data-bs-toggle="dropdown">
+            <i class="fas fa-globe me-1"></i>
+            <%= t('language.title') %>
+          </a>
+
+          <ul class="dropdown-menu dropdown-menu-end position-absolute top-0 end-100 mt-0">
+
+            <li>
+              <%= link_to url_for(locale: :en),
+                          class: "dropdown-item #{'active' if I18n.locale == :en}" do %>
+                🇺🇸 <%= t('language.english') %>
+              <% end %>
+            </li>
+
+            <li>
+              <%= link_to url_for(locale: :vi),
+                          class: "dropdown-item #{'active' if I18n.locale == :vi}" do %>
+                🇻🇳 <%= t('language.vietnamese') %>
+              <% end %>
+            </li>
+
+          </ul>
+        </li>
+
+        <!-- Logout -->
+        <li>
+          <%= button_to destroy_agency_user_session_path,
+                        method: :delete,
+                        class: 'dropdown-item',
+                        data: { turbo: false } do %>
+            <div class="sb-nav-link-icon">
+              <i class="fa-solid fa-circle-arrow-left"></i>
+              <%= t('navbar.logout') %>
+            </div>
+          <% end %>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>

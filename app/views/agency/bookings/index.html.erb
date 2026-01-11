@@ -1,0 +1,122 @@
+<div class="bookings-container">
+  <div class='row pb-3 align-items-center'>
+    <h5 class='col-4'><%= t('agency.bookings.title', default: 'Bookings Management') %></h5>
+    <div class='col-8 pe-4'>
+      <%= search_form_for @q, url: agency_bookings_path, method: :get, html: { class: 'd-flex gap-2' } do |f| %>
+        <%= f.text_field :user_full_name_cont, placeholder: 'Customer Name', class: 'form-control' %>
+        <%= f.date_field :created_at_gteq, placeholder: 'From Date', class: 'form-control' %>
+        <%= f.date_field :created_at_lteq, placeholder: 'To Date', class: 'form-control' %>
+        <%= f.submit 'Search', class: 'btn btn-primary' %>
+      <% end %>
+    </div>
+  </div>
+
+  <ul class="nav nav-tabs">
+    <li class="nav-item">
+      <%= link_to agency_bookings_path, class: "nav-link nav-tab #{params[:action] == 'index' ? 'active' : ''}" do %>
+        All Bookings
+        <% if @status_counts %>
+          <span class="badge bg-secondary ms-1"><%= @status_counts.values.sum %></span>
+        <% end %>
+      <% end %>
+    </li>
+    <li class="nav-item">
+      <%= link_to pending_agency_bookings_path, class: "nav-link nav-tab #{params[:action] == 'pending' ? 'active' : ''}" do %>
+        Pending
+        <% if @status_counts %>
+          <span class="badge bg-warning ms-1"><%= @status_counts[:pending] || 0 %></span>
+        <% end %>
+      <% end %>
+    </li>
+    <li class="nav-item">
+      <%= link_to approved_agency_bookings_path, class: "nav-link nav-tab #{params[:action] == 'approved' ? 'active' : ''}" do %>
+        Approved
+        <% if @status_counts %>
+          <span class="badge bg-success ms-1"><%= @status_counts[:approved] || 0 %></span>
+        <% end %>
+      <% end %>
+    </li>
+    <li class="nav-item">
+      <%= link_to unpaid_agency_bookings_path, class: "nav-link nav-tab #{params[:action] == 'unpaid' ? 'active' : ''}" do %>
+        Unpaid
+        <% if @status_counts %>
+          <span class="badge bg-danger ms-1"><%= @status_counts[:unpaid] || 0 %></span>
+        <% end %>
+      <% end %>
+    </li>
+    <li class="nav-item">
+      <%= link_to completed_agency_bookings_path, class: "nav-link nav-tab #{params[:action] == 'completed' ? 'active' : ''}" do %>
+        Completed
+        <% if @status_counts %>
+          <span class="badge bg-primary ms-1"><%= @status_counts[:completed] || 0 %></span>
+        <% end %>
+      <% end %>
+    </li>
+    <li class="nav-item">
+      <%= link_to cancelled_agency_bookings_path, class: "nav-link nav-tab #{params[:action] == 'cancelled' ? 'active' : ''}" do %>
+        Cancelled
+        <% if @status_counts %>
+          <span class="badge bg-secondary ms-1"><%= @status_counts[:cancelled] || 0 %></span>
+        <% end %>
+      <% end %>
+    </li>
+  </ul>
+
+  <table class='table table-striped text-center align-middle mt-3'>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Customer</th>
+        <th>Sport Field</th>
+        <th>Total Price</th>
+        <th>Status</th>
+        <th>Created At</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody class='table-group-divider'>
+      <% if @bookings.present? %>
+        <% @bookings.each do |booking| %>
+          <tr>
+            <td><%= booking.id %></td>
+            <td><%= booking.user.full_name rescue 'N/A' %></td>
+            <td><%= booking.place_sport&.sportfield&.name rescue 'N/A' %></td>
+            <td><%= number_to_currency(booking.total_price, unit: '₫', precision: 0, delimiter: ',') %></td>
+            <td>
+              <% case booking.status %>
+              <% when 'pending' %>
+                <span class="badge bg-warning">Pending</span>
+              <% when 'approved' %>
+                <span class="badge bg-success">Approved</span>
+              <% when 'completed' %>
+                <span class="badge bg-primary">Completed</span>
+              <% when 'cancelled', 'rejected' %>
+                <span class="badge bg-danger">Cancelled</span>
+              <% else %>
+                <span class="badge bg-secondary"><%= booking.status&.titleize %></span>
+              <% end %>
+            </td>
+            <td><%= booking.created_at.strftime('%Y-%m-%d %H:%M') rescue 'N/A' %></td>
+            <td>
+              <%= link_to 'View', agency_booking_path(booking), class: 'btn btn-sm btn-info' %>
+              <% if booking.status == 'pending' %>
+                <%= button_to 'Approve', approve_agency_booking_path(booking), method: :patch, class: 'btn btn-sm btn-success', data: { confirm: 'Approve this booking?' } %>
+                <%= button_to 'Reject', reject_agency_booking_path(booking), method: :patch, class: 'btn btn-sm btn-danger', data: { confirm: 'Reject this booking?' } %>
+              <% elsif booking.status == 'approved' && booking.payments.empty? %>
+                <%= button_to 'Confirm Payment', confirm_payment_agency_booking_path(booking), method: :patch, class: 'btn btn-sm btn-primary', data: { confirm: 'Confirm payment?' } %>
+              <% elsif booking.status == 'approved' && booking.payments.any? %>
+                <%= button_to 'Complete', complete_agency_booking_path(booking), method: :patch, class: 'btn btn-sm btn-success', data: { confirm: 'Mark as completed?' } %>
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+      <% else %>
+        <tr>
+          <td class='text-center' colspan='7'>No bookings found</td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+  <%= render 'layouts/admin/pagination', paging_collection: @bookings %>
+</div>

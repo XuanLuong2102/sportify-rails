@@ -1,0 +1,64 @@
+<div id="layoutSidenav_nav">
+  <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
+    <div class="sb-sidenav-menu">
+      <div class="nav">
+
+        <!-- Dashboard -->
+        <%= link_to agency_root_path,
+              class: "nav-link #{'active' if current_page?(agency_root_path)}" do %>
+          <div class="sb-nav-link-icon">
+            <i class="fa-solid fa-chart-simple"></i>
+          </div>
+          <%= t('agency.menu.dashboard') %>
+        <% end %>
+
+        <div class="sb-sidenav-menu-heading text-white text-uppercase fs-heading">
+          <%= t('agency.menu.management') %>
+        </div>
+
+        <!-- Orders -->
+        <%= link_to agency_orders_path,
+              class: "nav-link #{'active' if controller_name == 'orders'}" do %>
+          <i class="fas fa-shopping-cart ms-1 me-2"></i>
+          <%= t('agency.menu.orders') %>
+        <% end %>
+
+        <!-- Bookings -->
+        <%= link_to agency_bookings_path,
+              class: "nav-link #{'active' if controller_name == 'bookings'}" do %>
+          <i class="fas fa-calendar-check ms-1 me-2"></i>
+          <%= t('agency.menu.bookings') %>
+        <% end %>
+
+        <!-- Schedules -->
+        <%= link_to agency_schedules_path,
+              class: "nav-link #{'active' if controller_name == 'schedules'}" do %>
+          <i class="fas fa-calendar-alt ms-1 me-2"></i>
+          <%= t('agency.menu.schedules') %>
+        <% end %>
+
+        <!-- Product Listings -->
+        <%= link_to agency_product_listings_path,
+              class: "nav-link #{'active' if controller_name == 'product_listings'}" do %>
+          <i class="fas fa-list ms-1 me-2"></i>
+          <%= t('agency.menu.product_listings') %>
+        <% end %>
+
+        <!-- Stock Requests -->
+        <%= link_to agency_stock_requests_path,
+              class: "nav-link #{'active' if controller_name == 'stock_requests'}" do %>
+          <i class="fas fa-warehouse ms-1 me-2"></i>
+          <%= t('agency.menu.stock_requests') %>
+        <% end %>
+
+        <!-- Place Sports / Sport Fields -->
+        <%= link_to agency_place_sports_path,
+              class: "nav-link #{'active' if controller_name == 'place_sports'}" do %>
+          <i class="fas fa-futbol ms-1 me-2"></i>
+          <%= t('agency.menu.sport_fields') %>
+        <% end %>
+
+      </div>
+    </div>
+  </nav>
+</div>

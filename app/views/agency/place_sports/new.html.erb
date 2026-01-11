@@ -1,0 +1,99 @@
+<div class="place-sport-form-container">
+  <div class="page-header">
+    <h1>Add New Sport Field</h1>
+    <%= link_to '← Back to Sport Fields', agency_place_sports_path, class: 'btn btn-secondary' %>
+  </div>
+
+  <%= form_with model: @place_sport, url: agency_place_sports_path, local: true do |f| %>
+    <% if @place_sport.errors.any? %>
+      <div class="alert alert-danger">
+        <h4><%= pluralize(@place_sport.errors.count, "error") %> prohibited this sport field from being saved:</h4>
+        <ul>
+          <% @place_sport.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <div class="form-group">
+      <%= f.label :place_id, 'Place *' %>
+      <%= f.select :place_id, options_from_collection_for_select(@available_places, :id, :name, @place_sport.place_id), { prompt: 'Select a place' }, class: 'form-control' %>
+      <small class="form-text text-muted">Only your managed places are shown</small>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group col-md-6">
+        <%= f.label :name, 'Sport Field Name *' %>
+        <%= f.text_field :name, class: 'form-control', placeholder: 'e.g., Football Field 1' %>
+      </div>
+      
+      <div class="form-group col-md-6">
+        <%= f.label :sport_type, 'Sport Type *' %>
+        <%= f.select :sport_type, options_for_select(['Football', 'Basketball', 'Tennis', 'Volleyball', 'Badminton'], @place_sport.sport_type), { prompt: 'Select sport type' }, class: 'form-control' %>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group col-md-6">
+        <%= f.label :price_per_hour_vnd, 'Price per Hour (VND) *' %>
+        <%= f.number_field :price_per_hour_vnd, step: 1000, class: 'form-control', placeholder: '100000' %>
+      </div>
+      
+      <div class="form-group col-md-6">
+        <%= f.label :price_per_hour_usd, 'Price per Hour (USD)' %>
+        <%= f.number_field :price_per_hour_usd, step: 0.1, class: 'form-control', placeholder: '5.00' %>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group col-md-4">
+        <%= f.label :capacity, 'Capacity (people)' %>
+        <%= f.number_field :capacity, class: 'form-control', placeholder: '10' %>
+      </div>
+      
+      <div class="form-group col-md-4">
+        <%= f.label :size, 'Size (e.g., 5x5, 7x7)' %>
+        <%= f.text_field :size, class: 'form-control', placeholder: '7x7' %>
+      </div>
+      
+      <div class="form-group col-md-4">
+        <%= f.label :surface_type, 'Surface Type' %>
+        <%= f.text_field :surface_type, class: 'form-control', placeholder: 'Artificial grass, Natural grass, etc.' %>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :description, 'Description' %>
+      <%= f.text_area :description, rows: 4, class: 'form-control', placeholder: 'Detailed description of the sport field...' %>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :facilities, 'Facilities (comma separated)' %>
+      <%= f.text_field :facilities, class: 'form-control', placeholder: 'Parking, Shower, Locker room, Lighting' %>
+      <small class="form-text text-muted">Enter facilities separated by commas</small>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group col-md-6">
+        <%= f.label :opening_time, 'Opening Time' %>
+        <%= f.time_field :opening_time, class: 'form-control', value: @place_sport.opening_time || '06:00' %>
+      </div>
+      
+      <div class="form-group col-md-6">
+        <%= f.label :closing_time, 'Closing Time' %>
+        <%= f.time_field :closing_time, class: 'form-control', value: @place_sport.closing_time || '22:00' %>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :status, 'Status' %>
+      <%= f.select :status, options_for_select([['Active', 'active'], ['Inactive', 'inactive']], @place_sport.status || 'active'), {}, class: 'form-control' %>
+    </div>
+
+    <div class="form-actions">
+      <%= f.submit 'Create Sport Field', class: 'btn btn-primary' %>
+      <%= link_to 'Cancel', agency_place_sports_path, class: 'btn btn-secondary' %>
+    </div>
+  <% end %>
+</div>

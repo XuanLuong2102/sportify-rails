@@ -1,0 +1,186 @@
+<div class="place-sport-detail-container">
+  <div class='row pb-3 align-items-center border-bottom mb-4'>
+    <div class='col-6'>
+      <h3><%= @place_sport.sportfield&.name || 'Sport Field' %></h3>
+      <p class='text-muted mb-0'><%= @place_sport.place.name rescue 'N/A' %></p>
+    </div>
+    <div class='col-6 text-end'>
+      <%= link_to '← Back', agency_place_sports_path, class: 'btn btn-secondary' %>
+      <%= link_to 'Edit', edit_agency_place_sport_path(@place_sport), class: 'btn btn-primary' %>
+      <% if @place_sport.maintenance_sport %>
+        <%= button_to 'Disable Maintenance', toggle_maintenance_agency_place_sport_path(@place_sport), method: :patch, class: 'btn btn-success' %>
+      <% else %>
+        <%= button_to 'Set Maintenance', toggle_maintenance_agency_place_sport_path(@place_sport), method: :patch, class: 'btn btn-warning' %>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="sport-field-info">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-header">
+            <h5>Basic Information</h5>
+          </div>
+          <div class="card-body">
+            <dl class="row">
+              <dt class="col-sm-4">Place:</dt>
+              <dd class="col-sm-8"><%= @place_sport.place.name rescue 'N/A' %></dd>
+              
+              <dt class="col-sm-4">Sport Field:</dt>
+              <dd class="col-sm-8"><%= @place_sport.sportfield&.name || 'N/A' %></dd>
+              
+              <dt class="col-sm-4">Status:</dt>
+              <dd class="col-sm-8">
+                <% if @place_sport.is_close %>
+                  <span class="badge bg-danger">Closed</span>
+                <% else %>
+                  <span class="badge bg-success">Open</span>
+                <% end %>
+                <% if @place_sport.maintenance_sport %>
+                  <span class="badge bg-warning text-dark ms-1">Maintenance</span>
+                <% end %>
+              </dd>
+              
+              <dt class="col-sm-4">Created:</dt>
+              <dd class="col-sm-8"><%= @place_sport.created_at.strftime('%Y-%m-%d %H:%M') rescue 'N/A' %></dd>
+              
+              <dt class="col-sm-4">Last Updated:</dt>
+              <dd class="col-sm-8"><%= @place_sport.updated_at.strftime('%Y-%m-%d %H:%M') rescue 'N/A' %></dd>
+            </dl>
+          </div>
+        </div>
+      </div>
+      
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-header">
+            <h5>Pricing Information</h5>
+          </div>
+          <div class="card-body">
+            <dl class="row">
+              <dt class="col-sm-5">Price/Hour (VND):</dt>
+              <dd class="col-sm-7">
+                <strong class="text-primary fs-5">
+                  <%= number_to_currency(@place_sport.price_per_hour_vnd, unit: '₫', precision: 0, delimiter: ',') %>
+                </strong>
+              </dd>
+              
+              <dt class="col-sm-5">Price/Hour (USD):</dt>
+              <dd class="col-sm-7">
+                <%= number_to_currency(@place_sport.price_per_hour_usd || 0, unit: '$', precision: 2) %>
+              </dd>
+            </dl>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <% if @place_sport.sportfield&.description_en.present? %>
+    <div class="row mt-4">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-header">
+            <h5>Description</h5>
+          </div>
+          <div class="card-body">
+            <p><%= simple_format(@place_sport.sportfield.description_en) %></p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <% end %>
+
+    <div class="row mt-4">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-header">
+            <h5>Upcoming Bookings</h5>
+          </div>
+          <div class="card-body">
+            <% upcoming_bookings = @place_sport.bookings.where(status: ['pending', 'confirmed']).order(created_at: :desc).limit(10) %>
+            <% if upcoming_bookings.any? %>
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th>Booking ID</th>
+                    <th>Customer</th>
+                    <th>Total Price</th>
+                    <th>Status</th>
+                    <th>Created At</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% upcoming_bookings.each do |booking| %>
+                    <tr>
+                      <td><%= booking.id %></td>
+                      <td><%= booking.user.full_name rescue 'N/A' %></td>
+                      <td><%= number_to_currency(booking.total_price, unit: '₫', precision: 0, delimiter: ',') %></td>
+                      <td>
+                        <% case booking.status %>
+                        <% when 'pending' %>
+                          <span class="badge bg-warning">Pending</span>
+                        <% when 'confirmed' %>
+                          <span class="badge bg-success">Confirmed</span>
+                        <% when 'cancelled' %>
+                          <span class="badge bg-danger">Cancelled</span>
+                        <% else %>
+                          <span class="badge bg-secondary"><%= booking.status&.titleize %></span>
+                        <% end %>
+                      </td>
+                      <td><%= booking.created_at.strftime('%Y-%m-%d %H:%M') rescue 'N/A' %></td>
+                      <td>
+                        <%= link_to 'View', agency_booking_path(booking), class: 'btn btn-sm btn-info' if defined?(agency_booking_path) %>
+                      </td>
+                    </tr>
+                  <% end %>
+                </tbody>
+              </table>
+            <% else %>
+              <p class="text-muted">No upcoming bookings for this sport field.</p>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row mt-4">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-header">
+            <h5>Booking Statistics</h5>
+          </div>
+          <div class="card-body">
+            <div class="row text-center">
+              <div class="col-md-3">
+                <div class="p-3 border rounded">
+                  <h3 class="text-primary"><%= @place_sport.bookings.where(status: ['pending', 'confirmed']).count %></h3>
+                  <p class="text-muted mb-0">Active Bookings</p>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="p-3 border rounded">
+                  <h3 class="text-success"><%= @place_sport.bookings.where(status: 'completed').count %></h3>
+                  <p class="text-muted mb-0">Completed</p>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="p-3 border rounded">
+                  <h3 class="text-info"><%= number_to_currency(@place_sport.bookings.where(status: 'completed').sum(:total_price), unit: '₫', precision: 0, delimiter: ',') %></h3>
+                  <p class="text-muted mb-0">Total Revenue</p>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="p-3 border rounded">
+                  <h3 class="text-warning"><%= @place_sport.bookings.count %></h3>
+                  <p class="text-muted mb-0">Total Bookings</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

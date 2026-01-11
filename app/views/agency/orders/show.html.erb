@@ -1,0 +1,111 @@
+<div class="order-detail-container">
+  <div class="page-header">
+    <h1>Order #<%= @order.order_code %></h1>
+    <%= link_to '← Back to Orders', agency_orders_path, class: 'btn btn-secondary' %>
+  </div>
+
+  <div class="order-info">
+    <div class="info-section">
+      <h3>Order Information</h3>
+      <dl>
+        <dt>Order Code:</dt>
+        <dd><%= @order.order_code %></dd>
+        
+        <dt>Status:</dt>
+        <dd><span class="badge badge-<%= @order.status %>"><%= @order.status&.titleize %></span></dd>
+        
+        <dt>Payment Status:</dt>
+        <dd><span class="badge badge-<%= @order.payment_status %>"><%= @order.payment_status&.titleize %></span></dd>
+        
+        <dt>Created At:</dt>
+        <dd><%= l(@order.created_at, format: :long) rescue @order.created_at %></dd>
+        
+        <% if @order.confirmed_at %>
+        <dt>Confirmed At:</dt>
+        <dd><%= l(@order.confirmed_at, format: :long) rescue @order.confirmed_at %></dd>
+        <% end %>
+        
+        <% if @order.shipped_at %>
+        <dt>Shipped At:</dt>
+        <dd><%= l(@order.shipped_at, format: :long) rescue @order.shipped_at %></dd>
+        <% end %>
+        
+        <% if @order.completed_at %>
+        <dt>Completed At:</dt>
+        <dd><%= l(@order.completed_at, format: :long) rescue @order.completed_at %></dd>
+        <% end %>
+      </dl>
+    </div>
+
+    <div class="info-section">
+      <h3>Customer Information</h3>
+      <dl>
+        <dt>Name:</dt>
+        <dd><%= @order.user.full_name rescue 'N/A' %></dd>
+        
+        <dt>Email:</dt>
+        <dd><%= @order.user.email rescue 'N/A' %></dd>
+        
+        <dt>Phone:</dt>
+        <dd><%= @order.user.phone rescue 'N/A' %></dd>
+      </dl>
+    </div>
+
+    <div class="info-section">
+      <h3>Place Information</h3>
+      <dl>
+        <dt>Place:</dt>
+        <dd><%= @order.place.name rescue 'N/A' %></dd>
+        
+        <dt>Address:</dt>
+        <dd><%= @order.place.full_address rescue 'N/A' %></dd>
+      </dl>
+    </div>
+  </div>
+
+  <div class="order-items">
+    <h3>Order Items</h3>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Product</th>
+          <th>Variant</th>
+          <th>Quantity</th>
+          <th>Unit Price</th>
+          <th>Subtotal</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @order.order_items.each do |item| %>
+          <tr>
+            <td><%= item.product.name rescue 'N/A' %></td>
+            <td><%= item.product_variant&.name || '-' %></td>
+            <td><%= item.quantity %></td>
+            <td><%= number_to_currency(item.unit_price_vnd) %></td>
+            <td><%= number_to_currency(item.quantity * item.unit_price_vnd) %></td>
+          </tr>
+        <% end %>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td colspan="4" class="text-right"><strong>Total:</strong></td>
+          <td><strong><%= number_to_currency(@order.total_amount_vnd) %></strong></td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+
+  <div class="order-actions">
+    <% if @order.status == 'pending' %>
+      <%= button_to 'Confirm Order', confirm_agency_order_path(@order), method: :patch, class: 'btn btn-success', data: { confirm: 'Confirm this order?' } %>
+    <% elsif @order.status == 'confirmed' %>
+      <%= button_to 'Mark as Shipping', ship_agency_order_path(@order), method: :patch, class: 'btn btn-primary', data: { confirm: 'Mark this order as shipping?' } %>
+    <% elsif @order.status == 'shipping' %>
+      <%= button_to 'Complete Order', complete_agency_order_path(@order), method: :patch, class: 'btn btn-success', data: { confirm: 'Complete this order?' } %>
+    <% end %>
+    
+    <%= button_to 'Mark as Returned', return_agency_order_path(@order), method: :patch, class: 'btn btn-warning', data: { confirm: 'Mark this order as returned?' } if @order.status != 'returned' %>
+    
+    <%= link_to 'Print Delivery Slip', delivery_slip_agency_order_path(@order), class: 'btn btn-secondary', target: '_blank' %>
+  </div>
+</div>

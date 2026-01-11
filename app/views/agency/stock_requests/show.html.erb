@@ -1,0 +1,97 @@
+<div class="stock-request-detail-container">
+  <div class="page-header">
+    <h1>Stock Request #<%= @stock_request.id %></h1>
+    <%= link_to '← Back to Requests', agency_stock_requests_path, class: 'btn btn-secondary' %>
+  </div>
+
+  <div class="request-info">
+    <div class="info-section">
+      <h3>Request Information</h3>
+      <dl>
+        <dt>Request ID:</dt>
+        <dd><%= @stock_request.id %></dd>
+        
+        <dt>Place:</dt>
+        <dd><%= @stock_request.place.name rescue 'N/A' %></dd>
+        
+        <dt>Request Type:</dt>
+        <dd><span class="badge badge-info"><%= @stock_request.request_type&.titleize || 'Import' %></span></dd>
+        
+        <dt>Status:</dt>
+        <dd><span class="badge badge-<%= @stock_request.status %>"><%= @stock_request.status.titleize %></span></dd>
+        
+        <dt>Requested By:</dt>
+        <dd><%= @stock_request.requester.full_name rescue 'N/A' %></dd>
+        
+        <dt>Created At:</dt>
+        <dd><%= l(@stock_request.created_at, format: :long) rescue @stock_request.created_at %></dd>
+        
+        <% if @stock_request.approved? %>
+          <dt>Approved By:</dt>
+          <dd><%= @stock_request.approver&.full_name || 'N/A' %></dd>
+          
+          <dt>Approved At:</dt>
+          <dd><%= l(@stock_request.approved_at, format: :long) rescue @stock_request.approved_at %></dd>
+        <% end %>
+        
+        <% if @stock_request.rejected? %>
+          <dt>Rejected By:</dt>
+          <dd><%= @stock_request.approver&.full_name || 'N/A' %></dd>
+          
+          <dt>Rejected At:</dt>
+          <dd><%= l(@stock_request.rejected_at, format: :long) rescue @stock_request.rejected_at %></dd>
+        <% end %>
+      </dl>
+    </div>
+
+    <% if @stock_request.notes.present? %>
+    <div class="info-section">
+      <h3>Notes</h3>
+      <p><%= simple_format(@stock_request.notes) %></p>
+    </div>
+    <% end %>
+  </div>
+
+  <div class="request-items">
+    <h3>Request Items</h3>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Product</th>
+          <th>Variant</th>
+          <th>Quantity</th>
+          <th>Unit Price</th>
+          <th>Subtotal</th>
+          <th>Notes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% total = 0 %>
+        <% @stock_request.stock_request_items.each do |item| %>
+          <% subtotal = (item.quantity || 0) * (item.unit_price || 0) %>
+          <% total += subtotal %>
+          <tr>
+            <td><%= item.product&.name || 'N/A' %></td>
+            <td><%= item.product_variant&.sku || '-' %></td>
+            <td><%= item.quantity %></td>
+            <td><%= number_to_currency(item.unit_price) %></td>
+            <td><%= number_to_currency(subtotal) %></td>
+            <td><%= item.notes %></td>
+          </tr>
+        <% end %>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td colspan="4" class="text-right"><strong>Total:</strong></td>
+          <td colspan="2"><strong><%= number_to_currency(total) %></strong></td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+
+  <div class="request-actions">
+    <% if @stock_request.pending? %>
+      <%= button_to 'Cancel Request', cancel_agency_stock_request_path(@stock_request), method: :patch, class: 'btn btn-warning', data: { confirm: 'Cancel this request? This action cannot be undone.' } %>
+    <% end %>
+  </div>
+</div>

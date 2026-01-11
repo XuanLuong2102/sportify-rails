@@ -8,6 +8,13 @@ class Order < ApplicationRecord
   validates :order_code, presence: true, uniqueness: true
   validates :status, presence: true
 
+  # Scopes for agency filtering
+  scope :for_agency_places, ->(place_ids) { where(place_id: place_ids) }
+  scope :for_agency_user, ->(user) { 
+    place_ids = user.managed_place_ids
+    where(place_id: place_ids)
+  }
+
   def self.ransackable_attributes(auth_object = nil)
     %w[order_code status created_at ordered_at paid_at cancelled_at 
        total_amount_vnd total_amount_usd user_id place_id]

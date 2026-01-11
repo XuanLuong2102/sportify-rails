@@ -30,7 +30,7 @@ module Admin
       @stock_inbound = StockInbound.new
       @warehouses = Warehouse.all
       @suppliers = Supplier.active
-      @products = Product.active.includes(:brand, :category)
+      @products = Product.active.includes(:product_brand, :category)
     end
 
     def create
@@ -73,7 +73,7 @@ module Admin
       else
         @warehouses = Warehouse.all
         @suppliers = Supplier.active
-        @products = Product.active.includes(:brand, :category)
+        @products = Product.active.includes(:product_brand, :category)
         flash.now[:alert] = errors.any? ? errors.join('<br>').html_safe : 'No items to create'
         render :new, status: :unprocessable_entity
       end

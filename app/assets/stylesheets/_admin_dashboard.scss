@@ -1,0 +1,190 @@
+// Admin Dashboard Styles (reusing agency dashboard styles with admin-specific overrides)
+
+@import 'agency_dashboard';
+
+// Admin-specific dashboard styles
+.dashboard-container {
+  .stat-card {
+    .stat-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 60px;
+      height: 60px;
+      border-radius: 12px;
+      margin-bottom: 1rem;
+      font-size: 1.5rem;
+
+      i {
+        color: white;
+      }
+    }
+
+    .stat-content {
+      h3 {
+        font-size: 0.875rem;
+        margin-bottom: 0.75rem;
+      }
+
+      .stat-value {
+        font-size: 1.75rem;
+        margin-bottom: 0.75rem;
+      }
+
+      .stat-breakdown {
+        span {
+          font-size: 0.8rem;
+          
+          i {
+            margin-right: 0.25rem;
+          }
+        }
+      }
+    }
+
+    &.revenue-card .stat-icon {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+
+    &.cost-card .stat-icon {
+      background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    }
+
+    &.profit-card .stat-icon {
+      background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    }
+  }
+
+  // Top places table styling
+  .dashboard-info {
+    background: white;
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+
+    h3 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+      color: #212529;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+
+      i {
+        color: #ffc107;
+      }
+    }
+
+    .table {
+      margin-bottom: 0;
+
+      thead th {
+        font-weight: 600;
+        font-size: 0.875rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        border-bottom: 2px solid #dee2e6;
+        color: #495057;
+      }
+
+      tbody {
+        tr {
+          transition: background-color 0.2s;
+
+          &:hover {
+            background-color: #f8f9fa;
+          }
+
+          td {
+            vertical-align: middle;
+            padding: 0.75rem;
+          }
+        }
+      }
+
+      .badge {
+        font-weight: 500;
+        padding: 0.35rem 0.65rem;
+      }
+    }
+  }
+
+  // System stats cards
+  .card {
+    border: none;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    border-radius: 12px;
+    transition: all 0.3s ease;
+
+    &:hover {
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+      transform: translateY(-2px);
+    }
+
+    .card-body {
+      padding: 1.5rem;
+
+      h5 {
+        font-size: 2rem;
+        font-weight: 700;
+        margin: 0.5rem 0;
+        color: #212529;
+      }
+
+      p {
+        margin: 0;
+        font-size: 0.875rem;
+        color: #6c757d;
+        font-weight: 500;
+      }
+    }
+  }
+}
+
+// Responsive adjustments
+@media (max-width: 992px) {
+  .dashboard-container {
+    .page-header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1rem;
+
+      .date-range-filter {
+        width: 100%;
+        
+        .d-flex {
+          flex-wrap: wrap;
+        }
+      }
+    }
+
+    .dashboard-stats {
+      grid-template-columns: 1fr;
+    }
+  }
+}
+
+@media (max-width: 576px) {
+  .dashboard-container {
+    padding: 1rem;
+
+    .page-header h1 {
+      font-size: 1.5rem;
+    }
+
+    .stat-card {
+      .stat-value {
+        font-size: 1.5rem;
+      }
+    }
+
+    .dashboard-info {
+      padding: 1rem;
+
+      .table {
+        font-size: 0.875rem;
+      }
+    }
+  }
+}

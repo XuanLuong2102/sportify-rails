@@ -1,0 +1,76 @@
+<div class="dashboard-container">
+  <div class="page-header">
+    <h1><%= t('agency.dashboard.title') %></h1>
+    
+    <div class="date-range-filter">
+      <%= form_with url: agency_dashboard_path, method: :get, local: true do |f| %>
+        <%= f.date_field :start_date, value: params[:start_date], class: 'form-control' %>
+        <%= f.date_field :end_date, value: params[:end_date], class: 'form-control' %>
+        <%= f.submit t('agency.dashboard.apply_filter'), class: 'btn btn-primary' %>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="dashboard-stats">
+    <div class="stat-card revenue-card">
+      <h3><%= t('agency.dashboard.total_revenue') %></h3>
+      <p class="stat-value"><%= number_to_currency(@revenue_data[:total_revenue]) %></p>
+      <div class="stat-breakdown">
+        <span><%= t('agency.dashboard.bookings') %>: <%= number_to_currency(@revenue_data[:booking_revenue]) %></span>
+        <span><%= t('agency.dashboard.orders') %>: <%= number_to_currency(@revenue_data[:order_revenue]) %></span>
+      </div>
+    </div>
+
+    <div class="stat-card cost-card">
+      <h3><%= t('agency.dashboard.total_costs') %></h3>
+      <p class="stat-value"><%= number_to_currency(@cost_data[:total_costs]) %></p>
+      <div class="stat-breakdown">
+        <span><%= t('agency.dashboard.operating') %>: <%= number_to_currency(@cost_data[:operating_costs]) %></span>
+      </div>
+    </div>
+
+    <div class="stat-card profit-card">
+      <h3><%= t('agency.dashboard.total_profit') %></h3>
+      <p class="stat-value <%= @profit_data[:total_profit] >= 0 ? 'positive' : 'negative' %>">
+        <%= number_to_currency(@profit_data[:total_profit]) %>
+      </p>
+      <div class="stat-breakdown">
+        <span><%= t('agency.dashboard.margin') %>: <%= number_to_percentage(@profit_data[:profit_margin], precision: 2) %></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="dashboard-charts">
+    <div class="chart-container">
+      <h3><%= t('agency.dashboard.revenue_by_type') %></h3>
+      <%= pie_chart @revenue_by_type_chart, 
+          library: { 
+            title: { display: false },
+            legend: { position: 'bottom' }
+          } %>
+    </div>
+
+    <div class="chart-container">
+      <h3><%= t('agency.dashboard.monthly_revenue') %></h3>
+      <%= line_chart @monthly_revenue_chart.map { |m| [m[:month], m[:total]] },
+          library: {
+            title: { display: false },
+            scales: {
+              y: { beginAtZero: true }
+            }
+          } %>
+    </div>
+  </div>
+
+  <div class="dashboard-info">
+    <h3><%= t('agency.dashboard.managed_places') %></h3>
+    <ul class="places-list">
+      <% current_agency_places.each do |place| %>
+        <li>
+          <strong><%= place.name %></strong>
+          <span class="place-location"><%= place.full_address %></span>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+</div>

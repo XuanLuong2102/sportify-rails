@@ -1,0 +1,123 @@
+<div class="orders-container">
+  <div class='row pb-3 align-items-center'>
+    <h5 class='col-4'><%= t('agency.orders.title', default: 'Orders Management') %></h5>
+    <div class='col-8 pe-4'>
+      <%= search_form_for @q, url: agency_orders_path, method: :get, html: { class: 'd-flex gap-2' } do |f| %>
+        <%= f.text_field :order_code_cont, placeholder: 'Order Code', class: 'form-control' %>
+        <%= f.submit 'Search', class: 'btn btn-primary' %>
+      <% end %>
+    </div>
+  </div>
+
+  <ul class="nav nav-tabs">
+    <li class="nav-item">
+      <%= link_to agency_orders_path, class: "nav-link nav-tab #{params[:action] == 'index' ? 'active' : ''}" do %>
+        All Orders
+        <% if @status_counts %>
+          <span class="badge bg-secondary ms-1"><%= @status_counts.values.sum %></span>
+        <% end %>
+      <% end %>
+    </li>
+    <li class="nav-item">
+      <%= link_to pending_agency_orders_path, class: "nav-link nav-tab #{params[:action] == 'pending' ? 'active' : ''}" do %>
+        Pending
+        <% if @status_counts %>
+          <span class="badge bg-warning ms-1"><%= @status_counts[:pending] || 0 %></span>
+        <% end %>
+      <% end %>
+    </li>
+    <li class="nav-item">
+      <%= link_to confirmed_agency_orders_path, class: "nav-link nav-tab #{params[:action] == 'confirmed' ? 'active' : ''}" do %>
+        Confirmed
+        <% if @status_counts %>
+          <span class="badge bg-info ms-1"><%= @status_counts[:confirmed] || 0 %></span>
+        <% end %>
+      <% end %>
+    </li>
+    <li class="nav-item">
+      <%= link_to shipping_agency_orders_path, class: "nav-link nav-tab #{params[:action] == 'shipping' ? 'active' : ''}" do %>
+        Shipping
+        <% if @status_counts %>
+          <span class="badge bg-primary ms-1"><%= @status_counts[:shipping] || 0 %></span>
+        <% end %>
+      <% end %>
+    </li>
+    <li class="nav-item">
+      <%= link_to completed_agency_orders_path, class: "nav-link nav-tab #{params[:action] == 'completed' ? 'active' : ''}" do %>
+        Completed
+        <% if @status_counts %>
+          <span class="badge bg-success ms-1"><%= @status_counts[:completed] || 0 %></span>
+        <% end %>
+      <% end %>
+    </li>
+    <li class="nav-item">
+      <%= link_to returned_agency_orders_path, class: "nav-link nav-tab #{params[:action] == 'returned' ? 'active' : ''}" do %>
+        Returned
+        <% if @status_counts %>
+          <span class="badge bg-danger ms-1"><%= @status_counts[:returned] || 0 %></span>
+        <% end %>
+      <% end %>
+    </li>
+  </ul>
+
+  <table class='table table-striped text-center align-middle mt-3'>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Order Code</th>
+        <th>Customer</th>
+        <th>Place</th>
+        <th>Total Amount</th>
+        <th>Status</th>
+        <th>Created At</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody class='table-group-divider'>
+      <% if @orders.present? %>
+        <% @orders.each do |order| %>
+          <tr>
+            <td><%= order.order_id %></td>
+            <td><%= link_to order.order_code, agency_order_path(order), class: 'text-decoration-none' %></td>
+            <td><%= order.user.full_name rescue 'N/A' %></td>
+            <td><%= order.place.name rescue 'N/A' %></td>
+            <td><%= number_to_currency(order.total_amount_vnd, unit: '₫', precision: 0, delimiter: ',') %></td>
+            <td>
+              <% case order.status %>
+              <% when 'pending' %>
+                <span class="badge bg-warning">Pending</span>
+              <% when 'confirmed' %>
+                <span class="badge bg-info">Confirmed</span>
+              <% when 'shipping' %>
+                <span class="badge bg-primary">Shipping</span>
+              <% when 'completed' %>
+                <span class="badge bg-success">Completed</span>
+              <% when 'returned' %>
+                <span class="badge bg-danger">Returned</span>
+              <% else %>
+                <span class="badge bg-secondary"><%= order.status&.titleize %></span>
+              <% end %>
+            </td>
+            <td><%= l(order.created_at, format: :short) rescue order.created_at.strftime('%Y-%m-%d %H:%M') %></td>
+            <td>
+              <%= link_to 'View', agency_order_path(order), class: 'btn btn-sm btn-info' %>
+              <% if order.status == 'pending' %>
+                <%= button_to 'Confirm', confirm_agency_order_path(order), method: :patch, class: 'btn btn-sm btn-success', data: { confirm: 'Confirm this order?' } %>
+              <% elsif order.status == 'confirmed' %>
+                <%= button_to 'Ship', ship_agency_order_path(order), method: :patch, class: 'btn btn-sm btn-primary', data: { confirm: 'Mark as shipped?' } %>
+              <% elsif order.status == 'shipping' %>
+                <%= button_to 'Complete', complete_agency_order_path(order), method: :patch, class: 'btn btn-sm btn-success', data: { confirm: 'Mark as completed?' } %>
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+      <% else %>
+        <tr>
+          <td class='text-center' colspan='8'>No orders found</td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+  <%= render 'layouts/admin/pagination', paging_collection: @orders %>
+</div>

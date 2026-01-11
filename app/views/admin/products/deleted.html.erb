@@ -37,7 +37,7 @@
               <% end %>
             </td>
             <td class="text-start"><strong><%= product.name %></strong></td>
-            <td><%= product.brand&.name %></td>
+            <td><%= product.product_brand&.name %></td>
             <td><%= product.category&.name %></td>
             <td>
               <small><%= l product.created_at, format: :short %></small>

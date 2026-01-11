@@ -3,6 +3,112 @@ Rails.application.routes.draw do
     root to: redirect('/admin/sign_in')
     # devise_for :users, path: '', controllers: { sessions: 'sessions' }
     # resources :users, only: [:show, :edit, :update]
+    
+    # ========================================
+    # Agency namespace routes
+    # ========================================
+    namespace :agency do
+      devise_for :users,
+        path: '',
+        path_names: {
+          sign_in: 'sign_in',
+          sign_out: 'sign_out',
+          sign_up: 'sign_up'
+        }, controllers: { sessions: 'agency/sessions' }
+      
+      root 'dashboard#index'
+      
+      # Dashboard
+      get 'dashboard', to: 'dashboard#index'
+      
+      # Orders management with status filtering
+      resources :orders, only: [:index, :show, :update] do
+        member do
+          patch :confirm
+          patch :ship
+          patch :complete
+          patch :return
+          get :delivery_slip
+        end
+        collection do
+          get :pending
+          get :confirmed
+          get :shipping
+          get :completed
+          get :returned
+        end
+      end
+      
+      # Products management (disabled - use product_listings instead)
+      # resources :products, only: [:index, :show, :edit, :update] do
+      #   get :deleted, on: :collection
+      # end
+      
+      # Product listings for this agency's places
+      resources :product_listings, only: [:index, :new, :create, :show] do
+        member do
+          patch :soft_delete
+          patch :restore
+        end
+      end
+      
+      # Stock requests (for new products and imports)
+      resources :stock_requests, only: [:index, :new, :create, :show] do
+        member do
+          patch :cancel
+        end
+        collection do
+          get :pending
+          get :approved
+          get :rejected
+        end
+      end
+      
+      # Sport fields management
+      resources :sportfields, only: [:index, :show, :edit, :update] do
+        member do
+          patch :update_schedule
+          patch :set_maintenance
+        end
+        collection do
+          get :schedules
+        end
+      end
+      
+      # Place sports management
+      resources :place_sports, only: [:index, :new, :create, :show, :edit, :update, :destroy] do
+        member do
+          patch :soft_delete
+          patch :restore
+          patch :toggle_maintenance
+        end
+      end
+      
+      # Bookings management with status filtering
+      resources :bookings, only: [:index, :show, :update] do
+        member do
+          patch :approve
+          patch :reject
+          patch :confirm_payment
+          patch :complete
+          patch :cancel
+        end
+        collection do
+          get :pending
+          get :approved
+          get :unpaid
+          get :completed
+          get :cancelled
+        end
+      end
+      
+      # Schedules - weekly calendar view of confirmed bookings
+      resources :schedules, only: [:index]
+    end
+    
+    # ========================================
+    # Admin namespace routes
+    # ========================================
     namespace :admin do
       devise_for :users,
         path: '',

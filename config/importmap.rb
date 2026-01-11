@@ -7,3 +7,5 @@ pin "@hotwired/stimulus-loading", to: "stimulus-loading.js", preload: true
 pin "@hotwired/turbo", to: "@hotwired--turbo.js" # @8.0.18
 pin "@rails/actioncable/src", to: "@rails--actioncable--src.js" # @8.1.0
 pin "bootstrap", to: "https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+pin "chartkick", to: "chartkick.js"
+pin "Chart.bundle", to: "Chart.bundle.js"
