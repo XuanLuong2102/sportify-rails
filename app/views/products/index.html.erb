@@ -1,0 +1,161 @@
+<% content_for :title, t('user.orders.products') %>
+
+<style>
+/* Fixed left sidebar for filters */
+.filters-sidebar {
+  position: sticky;
+  top: 20px;
+  max-height: calc(100vh - 40px);
+  overflow-y: auto;
+}
+
+/* Products container */
+.products-section {
+  min-height: 400px;
+}
+</style>
+
+<div class="container-fluid py-4" data-controller="cart-sidebar">
+  <%= render 'cart_sidebar' %>
+
+  <!-- Controls Row: Place Selection & Search -->
+  <div class="row mb-4 align-items-end">
+    <!-- Place Selection (Left) -->
+    <div class="col-md-4">
+      <label class="form-label fw-bold"><i class="bi bi-geo-alt"></i> <%= t('user.orders.select_place', default: 'Chọn địa điểm đặt hàng') %></label>
+      <%= form_with url: products_path, method: :get, local: true, class: 'd-flex gap-2' do %>
+        <%# Preserve Ransack search params if present %>
+        <% if params[:q].is_a?(ActionController::Parameters) || params[:q].is_a?(Hash) %>
+          <% params[:q].each do |key, value| %>
+            <%= hidden_field_tag "q[#{key}]", value %>
+          <% end %>
+        <% end %>
+        <%# Preserve legacy filters %>
+        <%= hidden_field_tag :color_id, params[:color_id] if params[:color_id].present? %>
+        <%= hidden_field_tag :size_id, params[:size_id] if params[:size_id].present? %>
+        <%= hidden_field_tag :category_id, params[:category_id] if params[:category_id].present? %>
+        
+        <%= select_tag :place_id, 
+                      options_from_collection_for_select(@places, :place_id, :name, @selected_place_id),
+                      class: 'form-select',
+                      prompt: t('user.orders.all_places', default: '--- Tất cả địa điểm ---'),
+                      onchange: 'this.form.submit()' %>
+      <% end %>
+    </div>
+
+    <div class="col-md-4 ms-auto">
+      <!-- Search Bar (Right) -->
+      <label class="form-label fw-bold"><i class="bi bi-search"></i> <%= t('user.products.search_label', default: 'Tìm kiếm sản phẩm') %></label>
+      <%= search_form_for @q, url: products_path, method: :get, local: true, class: 'd-flex gap-2' do |f| %>
+        <%# Preserve filters in search form %>
+        <%= hidden_field_tag :place_id, @selected_place_id if @selected_place_id.present? %>
+        <%= hidden_field_tag :color_id, params[:color_id] if params[:color_id].present? %>
+        <%= hidden_field_tag :size_id, params[:size_id] if params[:size_id].present? %>
+        <%= hidden_field_tag :category_id, params[:category_id] if params[:category_id].present? %>
+        
+        <div class="input-group">
+          <%= f.search_field :name_cont, class: 'form-control', placeholder: t('user.products.search_placeholder', default: 'Nhập tên sản phẩm...') %>
+          <button class="btn btn-green-theme" type="submit">
+            <i class="bi bi-search"></i>
+          </button>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+  <!-- Place Tabs -->
+  <div class="mb-4 d-none"> <!-- Hide tabs as we use select now, or keep both? I'll hide for clearness -->
+    <ul class="nav nav-pills" role="tablist">
+      <% @places.each do |place| %>
+        <li class="nav-item" role="presentation">
+          <%= link_to products_path(place_id: place.place_id), 
+                      class: "nav-link #{place.place_id == @selected_place_id.to_i ? 'active' : ''}" do %>
+            <%= place.name %>
+          <% end %>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+
+  <div class="row">
+    <!-- Filters Sidebar - LEFT (fixed width, sticky) -->
+    <div class="col-lg-3 mb-4">
+      <div class="filters-sidebar">
+        <div class="card">
+          <div class="card-header">
+            <h5 class="mb-0"><i class="bi bi-funnel"></i> <%= t('user.orders.filters') %></h5>
+          </div>
+          <div class="card-body">
+            <!-- Color Filter -->
+            <% if @colors.any? %>
+              <h6 class="mb-3"><%= t('user.orders.color') %></h6>
+              <div class="d-flex flex-wrap gap-2 mb-4">
+                <%= link_to products_path(place_id: @selected_place_id, q: params[:q]), 
+                            class: "badge #{params[:color_id].blank? ? 'bg-primary' : 'bg-secondary'}" do %>
+                  <%= t('common.all') %>
+                <% end %>
+                <% @colors.each do |color| %>
+                  <%= link_to products_path(place_id: @selected_place_id, color_id: color.id, size_id: params[:size_id], category_id: params[:category_id], q: params[:q]),
+                              class: "badge #{params[:color_id].to_i == color.id ? 'bg-primary' : 'bg-secondary'}" do %>
+                    <%= color.name %>
+                  <% end %>
+                <% end %>
+              </div>
+            <% end %>
+
+            <!-- Size Filter -->
+            <% if @sizes.any? %>
+              <h6 class="mb-3"><%= t('user.orders.size') %></h6>
+              <div class="d-flex flex-wrap gap-2 mb-4">
+                <%= link_to products_path(place_id: @selected_place_id, color_id: params[:color_id], q: params[:q]), 
+                            class: "badge #{params[:size_id].blank? ? 'bg-primary' : 'bg-secondary'}" do %>
+                  <%= t('common.all') %>
+                <% end %>
+                <% @sizes.each do |size| %>
+                  <%= link_to products_path(place_id: @selected_place_id, color_id: params[:color_id], size_id: size.id, category_id: params[:category_id], q: params[:q]),
+                              class: "badge #{params[:size_id].to_i == size.id ? 'bg-primary' : 'bg-secondary'}" do %>
+                    <%= size.name %>
+                  <% end %>
+                <% end %>
+              </div>
+            <% end %>
+
+            <!-- Category Filter -->
+            <% if @categories.any? %>
+              <h6 class="mb-3"><%= t('user.orders.category') %></h6>
+              <div class="list-group mb-3">
+                <%= link_to products_path(place_id: @selected_place_id, q: params[:q]), 
+                            class: "list-group-item list-group-item-action #{params[:category_id].blank? ? 'active' : ''}" do %>
+                  <%= t('common.all') %>
+                <% end %>
+                <% @categories.each do |category| %>
+                  <%= link_to products_path(place_id: @selected_place_id, color_id: params[:color_id], size_id: params[:size_id], category_id: category.id, q: params[:q]),
+                              class: "list-group-item list-group-item-action #{params[:category_id].to_i == category.id ? 'active' : ''}" do %>
+                    <%= category.name %>
+                  <% end %>
+                <% end %>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Products Grid - RIGHT (takes remaining width) -->
+    <div class="col-lg-9">
+      <div class="products-section">
+        <% if @products&.any? %>
+          <div class="row g-3">
+            <% @products.each do |product| %>
+              <%= render 'product_card', product: product %>
+            <% end %>
+          </div>
+        <% else %>
+          <div class="alert alert-info">
+            <%= t('user.orders.no_products') %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,96 @@
+<% content_for :title, t('user.bookings.select_place.title') %>
+
+<div class="container py-4">
+  <div class="mb-4">
+    <h2><%= t('user.bookings.select_place.title') %></h2>
+    <p class="text-muted"><%= t('user.bookings.select_place.subtitle') %></p>
+  </div>
+
+  <!-- Step 1: Select Place -->
+  <% unless @selected_place %>
+    <div class="row g-4">
+      <% @places.each do |place| %>
+        <div class="col-md-6 col-lg-4">
+          <%= link_to select_place_bookings_path(place_id: place.place_id), class: 'text-decoration-none' do %>
+            <div class="card h-100 hover-shadow">
+              <div class="card-body">
+                <h5 class="card-title"><%= place.name %></h5>
+                <p class="text-muted mb-2">
+                  <i class="bi bi-geo-alt"></i>
+                  <%= place.address %>
+                </p>
+                <p class="text-muted mb-2">
+                  <i class="bi bi-clock"></i>
+                  <%= place.open_time.strftime('%H:%M') %> - <%= place.close_time.strftime('%H:%M') %>
+                </p>
+                <p class="text-primary fw-bold mb-0">
+                  <%= pluralize(place.place_sports.where(is_active: true).count, t('user.bookings.select_place.field')) %>
+                </p>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+
+  <!-- Step 2: Select Field -->
+  <% if @selected_place %>
+    <div class="mb-4">
+      <%= link_to select_place_bookings_path, class: 'btn btn-outline-secondary' do %>
+        <i class="bi bi-arrow-left"></i> <%= t('common.back') %>
+      <% end %>
+    </div>
+
+    <div class="card mb-4">
+      <div class="card-body">
+        <h4><%= @selected_place.name %></h4>
+        <p class="text-muted"><i class="bi bi-geo-alt"></i> <%= @selected_place.address %></p>
+      </div>
+    </div>
+
+    <h4 class="mb-3"><%= t('user.bookings.select_place.select_field') %></h4>
+    
+    <% if @place_sports&.any? %>
+      <div class="row g-3">
+        <% @place_sports.each do |place_sport| %>
+          <div class="col-md-6">
+            <%= link_to select_time_bookings_path(place_sport_id: place_sport.id), class: 'text-decoration-none' do %>
+              <div class="card h-100 hover-shadow">
+                <div class="card-body">
+                  <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                      <h5 class="card-title"><%= place_sport.sportfield.name %></h5>
+                      <p class="text-muted mb-2">
+                        <%= place_sport.sportfield.description %>
+                      </p>
+                    </div>
+                  </div>
+                  <div class="mt-3">
+                    <span class="badge bg-primary">
+                      <%= number_to_currency(place_sport.price_per_hour_vnd, unit: '₫', format: '%n %u') %> / <%= t('user.bookings.per_hour') %>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+    <% else %>
+      <div class="alert alert-info">
+        <%= t('user.bookings.select_place.no_fields') %>
+      </div>
+    <% end %>
+  <% end %>
+</div>
+
+<style>
+  .hover-shadow {
+    transition: all 0.3s;
+  }
+  .hover-shadow:hover {
+    box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+    transform: translateY(-2px);
+  }
+</style>

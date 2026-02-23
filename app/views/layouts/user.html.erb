@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Sportify</title>
+    <title><%= content_for?(:title) ? yield(:title) + ' - Sportify' : 'Sportify' %></title>
     <%= favicon_link_tag %>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
@@ -11,20 +11,16 @@
     <%= javascript_importmap_tags %>
   </head>
 
-  <body>
-    <%= render 'layouts/navbar' %>
-   <div class="container-fluid mt-3">
-      <div class="row">
-        <div class="col-md-3 col-lg-2 min-vh-100">
-          <%= render 'layouts/user_sidebar' %>
-        </div>
+  <body class="user-layout">
+    <%= render 'layouts/user/header' %>
 
-        <div class="col-md-9 col-lg-10">
-          <%= render 'layouts/messages' %>
-          <%= yield %>
-        </div>
-      </div>
-    </div>
+    <main class="main-content">
+      <%= render 'layouts/messages' %>
+      <%= yield %>
+    </main>
+
+    <%= render 'layouts/user/footer' %>
+
     <link rel="stylesheet" href="https://unpkg.com/swiper@8/swiper-bundle.min.css" />
     <script src="https://unpkg.com/swiper@8/swiper-bundle.min.js"></script>
   </body>

@@ -1,0 +1,59 @@
+<% content_for :title, t('user.bookings.title') %>
+
+<div class="container py-4">
+  <h2 class="mb-4"><%= t('user.bookings.my_bookings') %></h2>
+
+  <% if @bookings.any? %>
+    <div class="row g-3">
+      <% @bookings.each do |booking| %>
+        <div class="col-md-6 col-lg-4">
+          <div class="card h-100">
+            <div class="card-body">
+              <div class="d-flex justify-content-between align-items-start mb-3">
+                <h5 class="card-title mb-0"><%= booking.place_sport.place.name %></h5>
+                <span class="badge bg-<%= booking_status_color(booking.status) %>">
+                  <%= t("user.bookings.status.#{booking.status}") %>
+                </span>
+              </div>
+              
+              <p class="text-muted mb-2">
+                <i class="bi bi-dribbble"></i>
+                <%= booking.place_sport.sportfield.name %>
+              </p>
+              
+              <% if booking.field_schedule %>
+                <p class="text-muted mb-2">
+                  <i class="bi bi-calendar"></i>
+                  <%= l(booking.field_schedule.date, format: :long) %>
+                </p>
+                <p class="text-muted mb-2">
+                  <i class="bi bi-clock"></i>
+                  <%= booking.field_schedule.start_time.strftime('%H:%M') %> - 
+                  <%= booking.field_schedule.end_time.strftime('%H:%M') %>
+                </p>
+              <% end %>
+              
+              <p class="fw-bold text-primary mb-3">
+                <%= number_to_currency(booking.total_price, unit: '₫', format: '%n %u') %>
+              </p>
+              
+              <%= link_to t('common.view_details'), booking_path(booking), class: 'btn btn-sm btn-outline-primary w-100' %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  <% else %>
+    <div class="text-center py-5">
+      <i class="bi bi-calendar-x text-muted" style="font-size: 4rem;"></i>
+      <p class="text-muted mt-3"><%= t('user.bookings.no_bookings') %></p>
+      <%= link_to t('user.bookings.make_booking'), select_place_bookings_path, class: 'btn btn-primary mt-3' %>
+    </div>
+  <% end %>
+
+  <% if @bookings.any? %>
+    <div class="d-flex justify-content-center mt-4">
+      <%= link_to t('user.bookings.new_booking'), select_place_bookings_path, class: 'btn btn-primary' %>
+    </div>
+  <% end %>
+</div>

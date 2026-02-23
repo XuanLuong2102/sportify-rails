@@ -1,8 +1,58 @@
 Rails.application.routes.draw do
   scope "(:locale)", locale: /en|vi/ do
-    root to: redirect('/admin/sign_in')
-    # devise_for :users, path: '', controllers: { sessions: 'sessions' }
-    # resources :users, only: [:show, :edit, :update]
+    # User-facing pages root
+    root 'home#index'
+    
+    # ========================================
+    # User-facing routes
+    # ========================================
+    devise_for :users, path: '', path_names: {
+      sign_in: 'login',
+      sign_out: 'logout',
+      sign_up: 'register'
+    }, controllers: { sessions: 'sessions' }
+    
+    # Home page
+    get 'home', to: 'home#index', as: :user_home
+    
+    # Bookings flow
+    resources :bookings, only: [:index, :new, :create, :show] do
+      collection do
+        get :select_place      # Step 1: Select place and field
+        get :select_time       # Step 2: Select date and time
+        post :calculate_price  # AJAX: Calculate price for selected time
+      end
+      member do
+        get :confirm           # Step 3: Confirm booking
+        post :pay              # Step 4: Process payment
+      end
+    end
+    
+    # Orders/Products flow
+    resources :orders, only: [:index, :create, :show] do
+      member do
+        get :confirm           # Confirm order before payment
+        post :pay              # Process payment
+      end
+    end
+    
+    # Cart management (session-based)
+    resource :cart, only: [] do
+      post :add_item
+      patch :update_item
+      delete :remove_item
+      delete :clear
+      get :show
+    end
+    
+    # User profile
+    resource :profile, only: [:show, :edit, :update]
+    
+    # Payment callbacks
+    namespace :payments do
+      get :vnpay_return      # VNPay return URL
+      post :vnpay_ipn        # VNPay IPN callback
+    end
     
     # ========================================
     # Agency namespace routes

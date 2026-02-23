@@ -1,0 +1,88 @@
+<% content_for :title, t('user.bookings.schedule.title') %>
+
+<div class="container-fluid py-4" data-controller="booking-schedule">
+  <!-- Back Button -->
+  <div class="mb-3">
+    <%= link_to select_place_bookings_path(place_id: @place_sport.place.place_id), class: 'btn btn-outline-secondary' do %>
+      <i class="bi bi-arrow-left"></i> <%= t('common.back') %>
+    <% end %>
+  </div>
+
+  <!-- Field Info Card -->
+  <div class="card mb-4">
+    <div class="card-body">
+      <div class="row align-items-center">
+        <div class="col-md-6">
+          <h4 class="mb-1"><%= @place_sport.sportfield.name %></h4>
+          <p class="text-muted mb-1">
+            <i class="bi bi-geo-alt"></i> <%= @place_sport.place.name %>
+          </p>
+          <p class="text-muted mb-0"><%= @place_sport.place.address %></p>
+        </div>
+        <div class="col-md-3">
+          <h5 class="text-primary mb-0">
+            <%= number_to_currency(@place_sport.price_per_hour_vnd, unit: '₫', format: '%n %u') %>
+          </h5>
+          <small class="text-muted"><%= t('user.bookings.per_hour') %></small>
+        </div>
+        <div class="col-md-3 text-end">
+          <!-- Booking Mode Toggle -->
+          <div class="btn-group" role="group">
+            <%= link_to new_booking_path(place_sport_id: @place_sport.id, mode: 'single'), 
+                        class: "btn btn-sm btn-outline-primary #{@booking_mode == 'single' ? 'active' : ''}" do %>
+              <i class="bi bi-calendar-check"></i> <%= t('user.bookings.schedule.single') %>
+            <% end %>
+            <%= link_to new_booking_path(place_sport_id: @place_sport.id, mode: 'monthly'), 
+                        class: "btn btn-sm btn-outline-primary #{@booking_mode == 'monthly' ? 'active' : ''}" do %>
+              <i class="bi bi-calendar3"></i> <%= t('user.bookings.schedule.monthly') %>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <% if @booking_mode == 'single' %>
+    <%= render 'weekly_schedule', 
+               place_sport: @place_sport,
+               week_dates: @week_dates,
+               time_slots: @time_slots,
+               bookings_by_date: @bookings_by_date %>
+  <% else %>
+    <%= render 'monthly_booking_form',
+               place_sport: @place_sport,
+               time_slots: @time_slots %>
+  <% end %>
+</div>
+
+<style>
+  .schedule-table {
+    overflow-x: auto;
+  }
+  .time-cell {
+    min-width: 100px;
+    padding: 8px;
+    text-align: center;
+    cursor: pointer;
+    border: 1px solid #dee2e6;
+    transition: all 0.2s;
+  }
+  .time-cell.available:hover {
+    background-color: #e7f3ff;
+    transform: scale(1.02);
+  }
+  .time-cell.available {
+    background-color: #d1f4d1;
+    color: #155724;
+  }
+  .time-cell.booked {
+    background-color: #f8d7da;
+    color: #721c24;
+    cursor: not-allowed;
+  }
+  .time-cell.selected {
+    background-color: #667eea;
+    color: white;
+    font-weight: bold;
+  }
+</style>

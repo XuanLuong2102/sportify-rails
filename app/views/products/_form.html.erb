@@ -1,0 +1,94 @@
+<%= form_with url: add_item_cart_path, method: :post, local: true, id: 'add-to-cart-form', data: { turbo: false, current_cart_place_id: session[:cart]&.values&.first&.dig('place_id') } do |f| %>
+  <%= hidden_field_tag :variant_id, nil, id: 'variant-id-input' %>
+  
+  <!-- Place Context -->
+  <div class="mb-4">
+    <% if selected_place_id.present? %>
+      <% 
+        # Find place name
+        selected_place = Place.find_by(place_id: selected_place_id)
+      %>
+      <div class="alert alert-info py-2 mb-0 d-flex align-items-center">
+        <i class="bi bi-geo-alt-fill me-2"></i>
+        <span><%= t('user.orders.ordering_from', default: 'Ordering from') %>: <strong><%= selected_place&.name %></strong></span>
+        <%= hidden_field_tag :place_id, selected_place_id %>
+      </div>
+    <% else %>
+      <div class="mb-3">
+        <label class="form-label fw-bold"><i class="bi bi-geo-alt"></i> <%= t('user.orders.select_place', default: 'Chọn địa điểm đặt hàng') %></label>
+        <%= select_tag :place_id, 
+                      options_from_collection_for_select(available_places, :place_id, :name),
+                      class: 'form-select',
+                      id: 'place-select',
+                      prompt: t('user.products.select_place_prompt', default: '--- Chọn một địa điểm ---'),
+                      required: true %>
+      </div>
+    <% end %>
+  </div>
+  
+  <div class="row">
+    <!-- Colors Select -->
+    <% if colors.any? %>
+      <div class="col-md-6 mb-3">
+        <label class="form-label fw-bold"><%= t('user.orders.color') %></label>
+        <div class="d-flex align-items-center gap-2">
+          <div class="color-circle-preview large border border-secondary" 
+               id="color-preview"
+               style="background-color: #eee;"></div>
+          <%= collection_select(
+            nil, 
+            :color_id, 
+            colors, 
+            :id, 
+            :name, 
+            { prompt: t('user.products.select_color') },
+            { 
+              class: 'form-select', 
+              id: 'color-select'
+            }
+          ) %>
+        </div>
+        <!-- Store color codes for JS -->
+        <script type="application/json" id="color-data">
+          <%= raw colors.map { |c| { id: c.id, code: c.code_rgb, name: c.name } }.to_json %>
+        </script>
+      </div>
+    <% end %>
+
+    <!-- Sizes Select -->
+    <% if sizes.any? %>
+      <div class="col-md-6 mb-3" id="size-container">
+        <label class="form-label fw-bold"><%= t('user.orders.size') %></label>
+        <select class="form-select" id="size-select">
+          <option value="" selected disabled><%= t('user.products.select_size') %></option>
+          <% sizes.each do |size| %>
+            <option value="<%= size.id %>" data-original-text="<%= size.name %>">
+              <%= size.name %>
+            </option>
+          <% end %>
+        </select>
+      </div>
+    <% end %>
+  </div>
+
+  <!-- Quantity -->
+  <div class="mb-4" style="max-width: 150px;">
+    <h6 class="fw-bold"><%= t('user.cart.quantity') %></h6>
+    <div class="input-group">
+      <button type="button" class="btn btn-outline-secondary" id="qty-minus">
+        <i class="bi bi-dash"></i>
+      </button>
+      <%= number_field_tag :quantity, 1, min: 1, class: "form-control text-center", id: 'quantity-input' %>
+      <button type="button" class="btn btn-outline-secondary" id="qty-plus">
+        <i class="bi bi-plus"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- Add to Cart -->
+  <div class="d-grid gap-2">
+    <%= f.button type: :submit, class: 'btn btn-green-theme btn-lg', id: 'add-to-cart-btn', disabled: true do %>
+      <i class="bi bi-cart-plus"></i> <%= t('user.orders.add_to_cart') %>
+    <% end %>
+  </div>
+<% end %>

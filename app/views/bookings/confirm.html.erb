@@ -1,0 +1,84 @@
+<% content_for :title, t('user.bookings.confirm.title') %>
+
+<div class="container py-4">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <div class="card">
+        <div class="card-header bg-primary text-white">
+          <h4 class="mb-0"><%= t('user.bookings.confirm.title') %></h4>
+        </div>
+        <div class="card-body">
+          <!-- Booking Details -->
+          <h5 class="mb-3"><%= t('user.bookings.confirm.booking_details') %></h5>
+          
+          <div class="row mb-3">
+            <div class="col-sm-4 text-muted"><%= t('user.bookings.confirm.place') %>:</div>
+            <div class="col-sm-8 fw-bold"><%= @booking.place_sport.place.name %></div>
+          </div>
+          
+          <div class="row mb-3">
+            <div class="col-sm-4 text-muted"><%= t('user.bookings.confirm.field') %>:</div>
+            <div class="col-sm-8 fw-bold"><%= @booking.place_sport.sportfield.name %></div>
+          </div>
+          
+          <% if @booking.field_schedule %>
+            <div class="row mb-3">
+              <div class="col-sm-4 text-muted"><%= t('user.bookings.confirm.date') %>:</div>
+              <div class="col-sm-8 fw-bold"><%= l(@booking.field_schedule.date, format: :long) %></div>
+            </div>
+            
+            <div class="row mb-3">
+              <div class="col-sm-4 text-muted"><%= t('user.bookings.confirm.time') %>:</div>
+              <div class="col-sm-8 fw-bold">
+                <%= @booking.field_schedule.start_time.strftime('%H:%M') %> - 
+                <%= @booking.field_schedule.end_time.strftime('%H:%M') %>
+              </div>
+            </div>
+          <% end %>
+          
+          <hr>
+          
+          <div class="row mb-4">
+            <div class="col-sm-4 text-muted"><%= t('user.bookings.confirm.total_price') %>:</div>
+            <div class="col-sm-8">
+              <h4 class="text-primary mb-0">
+                <%= number_to_currency(@booking.total_price, unit: '₫', format: '%n %u') %>
+              </h4>
+            </div>
+          </div>
+          
+          <!-- Payment Method Selection -->
+          <h5 class="mb-3"><%= t('user.bookings.confirm.select_payment') %></h5>
+          
+          <%= form_with url: pay_booking_path(@booking), method: :post do |f| %>
+            <div class="form-check mb-3">
+              <%= f.radio_button :payment_method, 'cash', 
+                                  class: 'form-check-input', 
+                                  id: 'payment_cash',
+                                  checked: true %>
+              <%= f.label :payment_method, class: 'form-check-label', for: 'payment_cash' do %>
+                <i class="bi bi-cash"></i> <%= t('user.bookings.confirm.cash') %>
+                <small class="text-muted d-block"><%= t('user.bookings.confirm.cash_description') %></small>
+              <% end %>
+            </div>
+            
+            <div class="form-check mb-4">
+              <%= f.radio_button :payment_method, 'vnpay', 
+                                  class: 'form-check-input', 
+                                  id: 'payment_vnpay' %>
+              <%= f.label :payment_method, class: 'form-check-label', for: 'payment_vnpay' do %>
+                <i class="bi bi-credit-card"></i> <%= t('user.bookings.confirm.vnpay') %>
+                <small class="text-muted d-block"><%= t('user.bookings.confirm.vnpay_description') %></small>
+              <% end %>
+            </div>
+            
+            <div class="d-grid gap-2">
+              <%= f.submit t('user.bookings.confirm.confirm_payment'), class: 'btn btn-primary btn-lg' %>
+              <%= link_to t('common.cancel'), bookings_path, class: 'btn btn-outline-secondary' %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

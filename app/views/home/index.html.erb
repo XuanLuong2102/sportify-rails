@@ -1,3 +1,129 @@
-<%= render 'banner' %>
-<%= render 'sport_categories' %>
-<%= render 'location_categories' %>
+<% content_for :title, t('user.home.title') %>
+
+<!-- Hero Section -->
+<section class="hero-section py-5" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-lg-6 text-center text-lg-start">
+        <h1 class="display-4 fw-bold mb-4"><%= t('user.home.hero.title') %></h1>
+        <p class="lead mb-4"><%= t('user.home.hero.subtitle') %></p>
+        <div class="d-flex gap-3 justify-content-center justify-content-lg-start">
+          <%= link_to bookings_path, class: 'btn btn-light btn-lg' do %>
+            <i class="bi bi-calendar-check"></i> <%= t('user.home.hero.book_field') %>
+          <% end %>
+          <%= link_to orders_path, class: 'btn btn-outline-light btn-lg' do %>
+            <i class="bi bi-bag"></i> <%= t('user.home.hero.order_products') %>
+          <% end %>
+        </div>
+      </div>
+      <div class="col-lg-6 text-center mt-4 mt-lg-0">
+        <i class="bi bi-trophy" style="font-size: 10rem; opacity: 0.8;"></i>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- How It Works Section -->
+<section class="py-5 bg-light">
+  <div class="container">
+    <h2 class="text-center mb-5"><%= t('user.home.how_it_works.title') %></h2>
+    <div class="row g-4">
+      <!-- Booking Process -->
+      <div class="col-md-6">
+        <div class="card h-100 shadow-sm">
+          <div class="card-body">
+            <div class="text-center mb-3">
+              <i class="bi bi-calendar-check text-primary" style="font-size: 3rem;"></i>
+            </div>
+            <h4 class="card-title text-center"><%= t('user.home.how_it_works.booking.title') %></h4>
+            <ol class="mt-3">
+              <li><%= t('user.home.how_it_works.booking.step1') %></li>
+              <li><%= t('user.home.how_it_works.booking.step2') %></li>
+              <li><%= t('user.home.how_it_works.booking.step3') %></li>
+              <li><%= t('user.home.how_it_works.booking.step4') %></li>
+            </ol>
+            <div class="text-center mt-3">
+              <%= link_to t('user.home.how_it_works.booking.cta'), bookings_path, class: 'btn btn-primary' %>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Ordering Process -->
+      <div class="col-md-6">
+        <div class="card h-100 shadow-sm">
+          <div class="card-body">
+            <div class="text-center mb-3">
+              <i class="bi bi-bag text-success" style="font-size: 3rem;"></i>
+            </div>
+            <h4 class="card-title text-center"><%= t('user.home.how_it_works.ordering.title') %></h4>
+            <ol class="mt-3">
+              <li><%= t('user.home.how_it_works.ordering.step1') %></li>
+              <li><%= t('user.home.how_it_works.ordering.step2') %></li>
+              <li><%= t('user.home.how_it_works.ordering.step3') %></li>
+              <li><%= t('user.home.how_it_works.ordering.step4') %></li>
+            </ol>
+            <div class="text-center mt-3">
+              <%= link_to t('user.home.how_it_works.ordering.cta'), orders_path, class: 'btn btn-success' %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Featured Places Section -->
+<% if @featured_places.any? %>
+<section class="py-5">
+  <div class="container">
+    <h2 class="text-center mb-5"><%= t('user.home.featured_places.title') %></h2>
+    <div class="row g-4">
+      <% @featured_places.each do |place| %>
+        <div class="col-md-4">
+          <div class="card h-100 shadow-sm">
+            <div class="card-body">
+              <h5 class="card-title"><%= place.name %></h5>
+              <p class="text-muted"><i class="bi bi-geo-alt"></i> <%= place.address %></p>
+              <p class="text-muted">
+                <i class="bi bi-clock"></i> 
+                <%= place.open_time.strftime('%H:%M') %> - <%= place.close_time.strftime('%H:%M') %>
+              </p>
+              <%= link_to t('user.home.featured_places.book_now'), bookings_path(place_id: place.place_id), class: 'btn btn-primary btn-sm' %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</section>
+<% end %>
+
+<!-- Featured Products Section -->
+<% if @featured_products.any? %>
+<section class="py-5 bg-light">
+  <div class="container">
+    <h2 class="text-center mb-5"><%= t('user.home.featured_products.title') %></h2>
+    <div class="row g-4">
+      <% @featured_products.each do |product| %>
+        <div class="col-md-3">
+          <div class="card h-100 shadow-sm">
+            <% if product.thumbnail.attached? %>
+              <%= image_tag product.thumbnail.variant(:thumbnail_300), class: 'card-img-top', alt: product.name %>
+            <% else %>
+              <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height: 200px;">
+                <i class="bi bi-image text-muted" style="font-size: 3rem;"></i>
+              </div>
+            <% end %>
+            <div class="card-body">
+              <h6 class="card-title"><%= product.name %></h6>
+              <p class="text-muted small"><%= product.product_brand&.name %></p>
+              <%= link_to t('user.home.featured_products.view_details'), orders_path(product_id: product.id), class: 'btn btn-success btn-sm w-100' %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</section>
+<% end %>

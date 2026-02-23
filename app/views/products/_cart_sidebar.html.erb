@@ -1,0 +1,138 @@
+<%# Floating Cart Button %>
+<%= link_to cart_path, class: "cart-toggle-btn", method: :get do %>
+  <i class="bi bi-cart3 fs-4"></i>
+  <% if session[:cart]&.any? %>
+    <span class="badge rounded-pill bg-danger">
+      <%= session[:cart].values.sum { |item| item['quantity'] } %>
+    </span>
+  <% end %>
+<% end %>
+
+<%# Cart Overlay %>
+<div class="cart-overlay" data-cart-sidebar-target="overlay" data-action="click->cart-sidebar#close"></div>
+
+<%# Cart Sidebar %>
+<div class="cart-sidebar" data-cart-sidebar-target="sidebar">
+  <div class="d-flex justify-content-between align-items-center p-3 border-bottom">
+    <h5 class="mb-0"><i class="bi bi-cart3"></i> <%= t('user.orders.cart') %></h5>
+    <button class="btn-close" data-action="click->cart-sidebar#close"></button>
+  </div>
+
+  <div class="p-3">
+    <% cart_items = session[:cart] || {} %>
+    <% if cart_items.any? %>
+      <%# Cart Bound Place %>
+      <% first_item_place_id = cart_items.values.first&.dig('place_id') %>
+      <% if first_item_place_id %>
+        <% cart_place = Place.find_by(place_id: first_item_place_id) %>
+        <div class="alert alert-light border small py-2 mb-3">
+          <i class="bi bi-geo-alt"></i> <%= t('user.orders.ordering_from') %>: <strong><%= cart_place&.name %></strong>
+        </div>
+      <% end %>
+
+      <%# Cart Items %>
+      <% cart_items.each do |variant_id, item| %>
+        <% next if variant_id.blank? %>
+        <% variant = ProductVariant.find_by(id: variant_id) %>
+        <% next unless variant %>
+        <div class="card mb-3" data-controller="cart-item">
+          <div class="card-body p-2">
+            <div class="d-flex gap-2">
+              <% if variant.product.product_images.first %>
+                <%= image_tag variant.product.product_images.first.image_url, 
+                            class: 'rounded', 
+                            style: 'width: 60px; height: 60px; object-fit: cover;' %>
+              <% else %>
+                <div class="bg-light rounded d-flex align-items-center justify-content-center" 
+                     style="width: 60px; height: 60px;">
+                  <i class="bi bi-image text-muted"></i>
+                </div>
+              <% end %>
+
+              <div class="flex-grow-1">
+                <h6 class="mb-1 small"><%= variant.product.name %></h6>
+                <p class="text-muted mb-1 small">
+                  <%= variant.product_color&.name %> / <%= variant.product_size&.name %>
+                </p>
+                <p class="text-primary fw-bold mb-1 small">
+                  <%= number_to_currency(variant.price_vnd, unit: '₫', format: '%n%u') %>
+                </p>
+
+                <div class="d-flex align-items-center gap-2">
+                  <div class="btn-group btn-group-sm">
+                    <button class="btn btn-outline-secondary" 
+                            data-action="click->cart-item#decrease"
+                            data-cart-item-variant-id-param="<%= variant_id %>">
+                      <i class="bi bi-dash"></i>
+                    </button>
+                    <input type="number" 
+                           class="form-control form-control-sm text-center" 
+                           value="<%= item['quantity'] %>" 
+                           style="width: 50px;"
+                           readonly>
+                    <button class="btn btn-outline-secondary" 
+                            data-action="click->cart-item#increase"
+                            data-cart-item-variant-id-param="<%= variant_id %>">
+                      <i class="bi bi-plus"></i>
+                    </button>
+                  </div>
+
+                  <%= link_to remove_item_cart_path(variant_id: variant_id), 
+                              method: :delete,
+                              data: { confirm: t('user.cart.confirm_remove') },
+                              class: 'btn btn-sm btn-outline-danger' do %>
+                    <i class="bi bi-trash"></i>
+                  <% end %>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      <% end %>
+
+      <%# Cart Summary %>
+      <div class="card bg-light">
+        <div class="card-body">
+          <div class="d-flex justify-content-between mb-2">
+            <span><%= t('user.cart.subtotal') %></span>
+            <strong>
+              <%= number_to_currency(
+                cart_items.sum { |vid, item| 
+                  ProductVariant.find_by(id: vid)&.price_vnd.to_i * item['quantity'] 
+                }, 
+                unit: '₫', format: '%n%u'
+              ) %>
+            </strong>
+          </div>
+          <div class="d-flex justify-content-between mb-2">
+            <span><%= t('user.cart.shipping') %></span>
+            <strong>30,000₫</strong>
+          </div>
+          <hr>
+          <div class="d-flex justify-content-between mb-3">
+            <strong><%= t('user.cart.total') %></strong>
+            <strong class="text-primary">
+              <%= number_to_currency(
+                cart_items.sum { |vid, item| 
+                  ProductVariant.find_by(id: vid)&.price_vnd.to_i * item['quantity'] 
+                } + 30000, 
+                unit: '₫', format: '%n%u'
+              ) %>
+            </strong>
+          </div>
+
+          <% if user_signed_in? %>
+            <%= link_to t('user.orders.checkout'), cart_path, class: 'btn btn-green-theme w-100' %>
+          <% else %>
+            <%= link_to t('user.nav.login'), new_user_session_path, class: 'btn btn-green-theme w-100' %>
+          <% end %>
+        </div>
+      </div>
+    <% else %>
+      <div class="text-center py-5">
+        <i class="bi bi-cart-x text-muted" style="font-size: 3rem;"></i>
+        <p class="text-muted mt-3"><%= t('user.orders.cart_empty') %></p>
+      </div>
+    <% end %>
+  </div>
+</div>

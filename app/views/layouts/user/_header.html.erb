@@ -1,0 +1,66 @@
+<nav class="navbar navbar-expand-lg navbar-dark user-header">
+  <div class="container">
+    <%= link_to root_path, class: 'navbar-brand' do %>
+      <i class="bi bi-trophy"></i> Sportify
+    <% end %>
+    
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#userNavbar">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="userNavbar">
+      <ul class="navbar-nav me-auto">
+        <li class="nav-item">
+          <%= link_to t('user.nav.home'), root_path, class: "nav-link #{'active' if current_page?(root_path)}" %>
+        </li>
+        <li class="nav-item">
+          <%= link_to t('user.nav.bookings'), bookings_path, class: "nav-link #{'active' if controller_name == 'bookings'}" %>
+        </li>
+        <li class="nav-item">
+          <%= link_to t('user.nav.products'), orders_path, class: "nav-link #{'active' if controller_name == 'orders'}" %>
+        </li>
+      </ul>
+
+      <ul class="navbar-nav">
+        <% if user_signed_in? %>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+              <i class="bi bi-person-circle"></i>
+              <%= current_user.username || current_user.email.split('@').first %>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end">
+              <li>
+                <%= link_to profile_path, class: 'dropdown-item' do %>
+                  <i class="bi bi-person"></i> <%= t('user.nav.profile') %>
+                <% end %>
+              </li>
+              <li>
+                <%= link_to bookings_path, class: 'dropdown-item' do %>
+                  <i class="bi bi-calendar-check"></i> <%= t('user.nav.my_bookings') %>
+                <% end %>
+              </li>
+              <li>
+                <%= link_to orders_path, class: 'dropdown-item' do %>
+                  <i class="bi bi-bag-check"></i> <%= t('user.nav.my_orders') %>
+                <% end %>
+              </li>
+              <li><hr class="dropdown-divider"></li>
+              <li>
+                <%= link_to destroy_user_session_path, method: :delete, class: 'dropdown-item text-danger' do %>
+                  <i class="bi bi-box-arrow-right"></i> <%= t('user.nav.logout') %>
+                <% end %>
+              </li>
+            </ul>
+          </li>
+        <% else %>
+          <li class="nav-item">
+            <%= link_to t('user.nav.login'), new_user_session_path, class: 'nav-link' %>
+          </li>
+          <li class="nav-item">
+            <%= link_to t('user.nav.register'), new_user_registration_path, class: 'btn btn-light btn-sm ms-2' %>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+  </div>
+</nav>

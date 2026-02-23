@@ -1,0 +1,118 @@
+<% content_for :title, @product.name %>
+<%= javascript_import_module_tag "product_detail" %>
+
+<div class="container py-5" data-controller="cart-sidebar">
+  <%= render 'cart_sidebar' %>
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><%= link_to t('user.nav.home'), root_path %></li>
+      <li class="breadcrumb-item"><%= link_to t('user.orders.products'), products_path %></li>
+      <li class="breadcrumb-item active" aria-current="page"><%= @product.name %></li>
+    </ol>
+  </nav>
+
+  <% 
+    variants_json = @product.product_variants.active.map { |v| 
+      {
+        id: v.id,
+        color_id: v.product_color_id,
+        size_id: v.product_size_id,
+        size_name: v.product_size&.name,
+        price: v.price_vnd,
+        stock: v.product_stocks.sum(&:stock_quantity)
+      } 
+    }.to_json.html_safe
+  %>
+
+  <div class="row mb-5" id="product-detail-container">
+    <!-- Store variants data -->
+    <div id="variants-data" data-variants='<%= variants_json %>'></div>
+    
+    <!-- Gallery -->
+    <div class="col-md-6 mb-4">
+      <% if @product.product_images.any? %>
+        <div class="main-image mb-3 text-center border rounded p-2">
+          <%= image_tag @product.product_images.first.image_url, 
+                        class: 'img-fluid', 
+                        style: 'max-height: 500px; object-fit: contain;',
+                        id: 'main-image' %>
+        </div>
+        <div class="d-flex gap-2 overflow-auto">
+          <% @product.product_images.each do |image| %>
+            <%= image_tag image.image_url, 
+                          class: "rounded border cursor-pointer image-thumb", 
+                          style: "width: 80px; height: 80px; object-fit: cover;",
+                          data: { src: image.image_url } %>
+          <% end %>
+        </div>
+      <% elsif @product.thumbnail.attached? %>
+        <div class="text-center border rounded p-2">
+          <%= image_tag @product.thumbnail.variant(:thumbnail_300), class: 'img-fluid' %>
+        </div>
+      <% else %>
+         <div class="bg-light rounded d-flex align-items-center justify-content-center" style="height: 400px;">
+            <i class="bi bi-image text-muted" style="font-size: 5rem;"></i>
+         </div>
+      <% end %>
+    </div>
+
+    <!-- Product Info -->
+    <div class="col-md-6">
+      <h1 class="h2 mb-2"><%= @product.name %></h1>
+      
+      <% if @product.product_brand %>
+        <p class="text-muted mb-3"><%= t('user.orders.brand') %>: <%= @product.product_brand.name %></p>
+      <% end %>
+      
+      <!-- Rating Stars -->
+      <div class="mb-3 d-flex align-items-center">
+         <div class="text-warning me-2">
+           <% 5.times do |i| %>
+             <% if i < @average_rating.floor %>
+               <i class="bi bi-star-fill"></i>
+             <% elsif i < @average_rating %>
+               <i class="bi bi-star-half"></i>
+             <% else %>
+               <i class="bi bi-star"></i>
+             <% end %>
+           <% end %>
+         </div>
+         <span class="text-muted small">(<%= @total_reviews %> reviews)</span>
+      </div>
+
+      <div class="mb-4">
+        <h3 class="text-primary fw-bold" id="product-price">
+          <%= number_to_currency(@product.product_variants.minimum(:price_vnd), unit: '₫', format: '%n %u') %>
+          <% if @product.product_variants.minimum(:price_vnd) != @product.product_variants.maximum(:price_vnd) %>
+             - <%= number_to_currency(@product.product_variants.maximum(:price_vnd), unit: '₫', format: '%n %u') %>
+          <% end %>
+        </h3>
+      </div>
+      
+      <%= render 'form', 
+                 product: @product, 
+                 colors: @colors, 
+                 sizes: @product.product_variants.active.map(&:product_size).uniq.compact.sort_by(&:id),
+                 available_places: @available_places,
+                 selected_place_id: @selected_place_id %>
+    </div>
+  </div>
+  
+  <!-- Full Description Section -->
+  <div class="row mb-5">
+    <div class="col-12">
+      <div class="mb-4">
+        <h5 class="fw-bold border-bottom pb-2"><%= t('user.products.description', default: 'Mô tả sản phẩm') %></h5>
+        <div class="text-muted mt-3">
+           <%= simple_format @product.description %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Customer Reviews Section -->
+  <%= render 'reviews', 
+             reviews: @reviews, 
+             average_rating: @average_rating, 
+             total_reviews: @total_reviews %>
+</div>

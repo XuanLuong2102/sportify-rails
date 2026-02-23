@@ -7,6 +7,7 @@ import "chartkick"
 import "Chart.bundle"
 import "./modules/products"
 import "./modules/product_colors"
+import "./stimulus-loading"
 
 document.addEventListener("turbo:load", () => {
   const sidebarToggle = document.body.querySelector("#sidebarToggle");

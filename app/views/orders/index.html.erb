@@ -1,0 +1,302 @@
+<% content_for :title, t('user.orders.products') %>
+
+<style>
+/* Cart Sidebar - slides in from right */
+.cart-sidebar {
+  position: fixed;
+  top: 0;
+  right: -420px;
+  width: 420px;
+  height: 100vh;
+  background: white;
+  box-shadow: -2px 0 10px rgba(0,0,0,0.1);
+  transition: right 0.3s ease;
+  z-index: 1050;
+  overflow-y: auto;
+}
+
+.cart-sidebar.open {
+  right: 0;
+}
+
+/* Overlay when cart is open */
+.cart-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+  z-index: 1040;
+  display: none;
+}
+
+.cart-overlay.show {
+  display: block;
+}
+
+/* Floating cart button */
+.cart-toggle-btn {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  z-index: 1030;
+  transition: transform 0.2s;
+  cursor: pointer;
+}
+
+.cart-toggle-btn:hover {
+  transform: scale(1.1);
+}
+
+.cart-toggle-btn .badge {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+}
+
+/* Fixed left sidebar for filters */
+.filters-sidebar {
+  position: sticky;
+  top: 20px;
+  max-height: calc(100vh - 40px);
+  overflow-y: auto;
+}
+
+/* Products container */
+.products-section {
+  min-height: 400px;
+}
+</style>
+
+<div class="container-fluid py-4" data-controller="cart-sidebar">
+  <!-- Cart Toggle Button -->
+  <button class="cart-toggle-btn" data-action="click->cart-sidebar#toggle">
+    <i class="bi bi-cart3 fs-4"></i>
+    <% if @cart.any? %>
+      <span class="badge rounded-pill bg-danger">
+        <%= @cart.values.sum { |item| item['quantity'] } %>
+      </span>
+    <% end %>
+  </button>
+
+  <!-- Cart Overlay -->
+  <div class="cart-overlay" data-cart-sidebar-target="overlay" data-action="click->cart-sidebar#close"></div>
+
+  <!-- Cart Sidebar -->
+  <div class="cart-sidebar" data-cart-sidebar-target="sidebar">
+    <div class="d-flex justify-content-between align-items-center p-3 border-bottom">
+      <h5 class="mb-0"><i class="bi bi-cart3"></i> <%= t('user.orders.cart') %></h5>
+      <button class="btn-close" data-action="click->cart-sidebar#close"></button>
+    </div>
+
+    <div class="p-3">
+      <% if @cart.any? %>
+        <!-- Cart Items -->
+        <% @cart.each do |variant_id, item| %>
+          <% variant = ProductVariant.find(variant_id) %>
+          <div class="card mb-3" data-controller="cart-item">
+            <div class="card-body p-2">
+              <div class="d-flex gap-2">
+                <% if variant.product.product_images.first %>
+                  <%= image_tag variant.product.product_images.first.image_url, 
+                              class: 'rounded', 
+                              style: 'width: 60px; height: 60px; object-fit: cover;' %>
+                <% else %>
+                  <div class="bg-light rounded d-flex align-items-center justify-content-center" 
+                       style="width: 60px; height: 60px;">
+                    <i class="bi bi-image text-muted"></i>
+                  </div>
+                <% end %>
+
+                <div class="flex-grow-1">
+                  <h6 class="mb-1 small"><%= variant.product.name %></h6>
+                  <p class="text-muted mb-1 small">
+                    <%= variant.product_color&.name %> / <%= variant.product_size&.name %>
+                  </p>
+                  <p class="text-primary fw-bold mb-1 small">
+                    <%= number_to_currency(variant.price_vnd, unit: '₫', format: '%n%u') %>
+                  </p>
+
+                  <div class="d-flex align-items-center gap-2">
+                    <div class="btn-group btn-group-sm">
+                      <button class="btn btn-outline-secondary" 
+                              data-action="click->cart-item#decrease"
+                              data-cart-item-variant-id-param="<%= variant_id %>">
+                        <i class="bi bi-dash"></i>
+                      </button>
+                      <input type="number" 
+                             class="form-control form-control-sm text-center" 
+                             value="<%= item['quantity'] %>" 
+                             style="width: 50px;"
+                             readonly>
+                      <button class="btn btn-outline-secondary" 
+                              data-action="click->cart-item#increase"
+                              data-cart-item-variant-id-param="<%= variant_id %>">
+                        <i class="bi bi-plus"></i>
+                      </button>
+                    </div>
+
+                    <%= link_to remove_item_cart_path(variant_id: variant_id), 
+                                method: :delete,
+                                data: { confirm: t('user.cart.confirm_remove') },
+                                class: 'btn btn-sm btn-outline-danger' do %>
+                      <i class="bi bi-trash"></i>
+                    <% end %>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        <% end %>
+
+        <!-- Cart Summary -->
+        <div class="card bg-light">
+          <div class="card-body">
+            <div class="d-flex justify-content-between mb-2">
+              <span><%= t('user.cart.subtotal') %></span>
+              <strong>
+                <%= number_to_currency(
+                  @cart.sum { |vid, item| 
+                    ProductVariant.find(vid).price_vnd * item['quantity'] 
+                  }, 
+                  unit: '₫', format: '%n%u'
+                ) %>
+              </strong>
+            </div>
+            <div class="d-flex justify-content-between mb-2">
+              <span><%= t('user.cart.shipping') %></span>
+              <strong>30,000₫</strong>
+            </div>
+            <hr>
+            <div class="d-flex justify-content-between mb-3">
+              <strong><%= t('user.cart.total') %></strong>
+              <strong class="text-primary">
+                <%= number_to_currency(
+                  @cart.sum { |vid, item| 
+                    ProductVariant.find(vid).price_vnd * item['quantity'] 
+                  } + 30000, 
+                  unit: '₫', format: '%n%u'
+                ) %>
+              </strong>
+            </div>
+
+            <% if user_signed_in? %>
+              <%= link_to t('user.orders.checkout'), cart_path, class: 'btn btn-primary w-100' %>
+            <% else %>
+              <%= link_to t('user.nav.login'), new_user_session_path, class: 'btn btn-primary w-100' %>
+            <% end %>
+          </div>
+        </div>
+      <% else %>
+        <div class="text-center py-5">
+          <i class="bi bi-cart-x text-muted" style="font-size: 3rem;"></i>
+          <p class="text-muted mt-3"><%= t('user.orders.cart_empty') %></p>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+  <!-- Place Tabs -->
+  <div class="mb-4">
+    <ul class="nav nav-pills" role="tablist">
+      <% @places.each do |place| %>
+        <li class="nav-item" role="presentation">
+          <%= link_to orders_path(place_id: place.place_id), 
+                      class: "nav-link #{place.place_id == @selected_place_id.to_i ? 'active' : ''}" do %>
+            <%= place.name %>
+          <% end %>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+
+  <div class="row">
+    <!-- Filters Sidebar - LEFT (fixed width, sticky) -->
+    <div class="col-lg-3 mb-4">
+      <div class="filters-sidebar">
+        <div class="card">
+          <div class="card-header">
+            <h5 class="mb-0"><i class="bi bi-funnel"></i> <%= t('user.orders.filters') %></h5>
+          </div>
+          <div class="card-body">
+            <!-- Color Filter -->
+            <% if @colors.any? %>
+              <h6 class="mb-3"><%= t('user.orders.color') %></h6>
+              <div class="d-flex flex-wrap gap-2 mb-4">
+                <%= link_to orders_path(place_id: @selected_place_id), 
+                            class: "badge #{params[:color_id].blank? ? 'bg-primary' : 'bg-secondary'}" do %>
+                  <%= t('common.all') %>
+                <% end %>
+                <% @colors.each do |color| %>
+                  <%= link_to orders_path(place_id: @selected_place_id, color_id: color.id, size_id: params[:size_id], category_id: params[:category_id]),
+                              class: "badge #{params[:color_id].to_i == color.id ? 'bg-primary' : 'bg-secondary'}" do %>
+                    <%= color.name %>
+                  <% end %>
+                <% end %>
+              </div>
+            <% end %>
+
+            <!-- Size Filter -->
+            <% if @sizes.any? %>
+              <h6 class="mb-3"><%= t('user.orders.size') %></h6>
+              <div class="d-flex flex-wrap gap-2 mb-4">
+                <%= link_to orders_path(place_id: @selected_place_id, color_id: params[:color_id]), 
+                            class: "badge #{params[:size_id].blank? ? 'bg-primary' : 'bg-secondary'}" do %>
+                  <%= t('common.all') %>
+                <% end %>
+                <% @sizes.each do |size| %>
+                  <%= link_to orders_path(place_id: @selected_place_id, color_id: params[:color_id], size_id: size.id, category_id: params[:category_id]),
+                              class: "badge #{params[:size_id].to_i == size.id ? 'bg-primary' : 'bg-secondary'}" do %>
+                    <%= size.name %>
+                  <% end %>
+                <% end %>
+              </div>
+            <% end %>
+
+            <!-- Category Filter -->
+            <% if @categories.any? %>
+              <h6 class="mb-3"><%= t('user.orders.category') %></h6>
+              <div class="list-group mb-3">
+                <%= link_to orders_path(place_id: @selected_place_id), 
+                            class: "list-group-item list-group-item-action #{params[:category_id].blank? ? 'active' : ''}" do %>
+                  <%= t('common.all') %>
+                <% end %>
+                <% @categories.each do |category| %>
+                  <%= link_to orders_path(place_id: @selected_place_id, color_id: params[:color_id], size_id: params[:size_id], category_id: category.id),
+                              class: "list-group-item list-group-item-action #{params[:category_id].to_i == category.id ? 'active' : ''}" do %>
+                    <%= category.name %>
+                  <% end %>
+                <% end %>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Products Grid - RIGHT (takes remaining width) -->
+    <div class="col-lg-9">
+      <div class="products-section">
+        <% if @products&.any? %>
+          <div class="row g-3">
+            <% @products.each do |product| %>
+              <%= render 'product_card', product: product %>
+            <% end %>
+          </div>
+        <% else %>
+          <div class="alert alert-info">
+            <%= t('user.orders.no_products') %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
